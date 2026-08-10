@@ -15,11 +15,11 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
-          import textwrap
           w=Path('.github/workflows/sticker-market-v09.yml').read_text()
           start=w.index('          from pathlib import Path')
           end=w.index('      - name: Validate')
-          code=textwrap.dedent(w[start:end])
+          block=w[start:end]
+          code='\n'.join(line[10:] if line.startswith('          ') else line for line in block.splitlines())
           exec(compile(code,'sticker_v09_patch.py','exec'))
           PY
       - name: Validate requested changes
