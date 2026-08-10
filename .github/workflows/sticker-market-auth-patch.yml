@@ -1,0 +1,62 @@
+name: Patch Sticker Market auth UX
+
+on:
+  push:
+    paths:
+      - '.github/workflows/sticker-market-auth-patch.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch public demo
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('sticker-market-demo/index.html')
+          s = p.read_text(encoding='utf-8')
+
+          # v0.8 title
+          s = s.replace('Sticker Market — Public Demo v0.7', 'Sticker Market — Public Demo v0.8')
+
+          # Keep both auth buttons visible on mobile LP.
+          s = s.replace('.lp-nav .mh{display:none}', '.lp-nav .mh{display:inline-flex}')
+
+          # Product/creator click while logged out goes directly to login and returns to the target after auth.
+          old = "function requireLogin(target){if(state.user){go(target);return}sessionStorage.setItem('afterLogin',target);modal(`<h2>ログインが必要です</h2><p class=\"muted\">この機能を利用するにはログインまたは無料登録してください。</p><div class=\"rowBtns\"><button class=\"btn\" onclick=\"closeModal()\">キャンセル</button><button class=\"btn\" onclick=\"closeModal();go('login')\">ログイン</button><button class=\"btn accent\" onclick=\"closeModal();go('signup')\">無料登録</button></div>`)}"
+          new = "function requireLogin(target){if(state.user){go(target);return}sessionStorage.setItem('afterLogin',target);go('login')}"
+          if old not in s:
+              raise SystemExit('requireLogin target not found')
+          s = s.replace(old, new)
+
+          # Add cross-links between login and sign-up pages.
+          old = "<button class=\"btn accent\" id=\"authDo\">${signup?'登録して始める':'ログイン'}</button></section></main>`;"
+          new = "<button class=\"btn accent\" id=\"authDo\" style=\"width:100%\">${signup?'登録して始める':'ログイン'}</button><div style=\"margin-top:18px;padding-top:16px;border-top:1px solid var(--line);text-align:center\"><p class=\"muted\">${signup?'すでにアカウントをお持ちですか？':'アカウントをお持ちでない方'}</p><button class=\"btn\" onclick=\"go('${signup?'login':'signup'}')\">${signup?'ログインはこちら':'無料で新規登録'}</button></div></section></main>`;"
+          if old not in s:
+              raise SystemExit('auth button target not found')
+          s = s.replace(old, new)
+
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Validate requested changes
+        run: |
+          grep -q 'Public Demo v0.8' sticker-market-demo/index.html
+          grep -q "function requireLogin(target).*go('login')" sticker-market-demo/index.html
+          grep -q '無料で新規登録' sticker-market-demo/index.html
+          grep -q '.lp-nav .mh{display:inline-flex}' sticker-market-demo/index.html
+      - name: Commit patched demo
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sticker-market-demo/index.html
+          if git diff --cached --quiet; then
+            echo 'No changes to commit.'
+          else
+            git commit -m 'Fix public auth navigation and sign-up links'
+            git push
+          fi
