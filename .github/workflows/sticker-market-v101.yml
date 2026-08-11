@@ -1,0 +1,66 @@
+name: Sticker Market v1.0.1 UX patch
+on:
+  push:
+    paths:
+      - '.github/workflows/sticker-market-v101.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch public demo
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+          p=Path('sticker-market-demo/index.html')
+          s=p.read_text()
+          s=s.replace('Public Demo v1.0','Public Demo v1.0.1')
+          css='''
+          /* v1.0.1 LP/footer/auth/creator responsive fixes */
+          .app-main{overflow-x:hidden}
+          .legal-footer{max-width:1180px;margin:26px auto 90px;padding:24px 16px;border-top:1px solid var(--line);display:grid;grid-template-columns:1.1fr repeat(3,1fr);gap:18px;color:var(--muted)}
+          .legal-footer b{color:var(--text)}.legal-footer button{display:block;border:0;background:none;padding:4px 0;color:var(--muted);text-align:left;font-size:12px}
+          .upload-card,.upload-zone,#sellBody{min-width:0;max-width:100%;overflow:hidden}
+          #sellBody *{box-sizing:border-box}#sellBody input[type=file]{display:block;width:100%;max-width:100%;min-width:0;font-size:13px}
+          .public-product-wrap{max-width:1180px;margin:auto;padding:22px 16px 90px}
+          .public-product-head{position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:13px 16px;background:color-mix(in srgb,var(--bg) 94%,transparent);border-bottom:1px solid var(--line);backdrop-filter:blur(15px)}
+          @media(max-width:900px){.legal-footer{grid-template-columns:1fr 1fr;margin-bottom:84px}.footer{display:grid!important}.explain-upload{width:100%;max-width:100%}}
+          @media(max-width:560px){.legal-footer{grid-template-columns:1fr;padding-bottom:24px}.lp-head{align-items:center}.lp-head .rowBtns{flex-wrap:nowrap}.lp-head .btn{padding:9px 10px;font-size:12px}.explain-upload,.upload-card,.upload-zone{width:100%;max-width:100%}#sellBody{width:100%;padding:14px}.app-main{padding-left:12px;padding-right:12px}}
+          '''
+          s=s.replace('</style>',css+'</style>')
+          s=s.replace('.footer{display:none}', '.footer{display:grid}')
+          s=re.sub(r'''function productCard\(p,lp=false\)\{.*?\}\nfunction lp\(''', '''function productCard(p,lp=false){return`<article class="card"><div class="art" style="--c:${p.color}" onclick="go('product/${p.id}')">${p.emoji}</div><div class="pad"><h3>${esc(p.name)}</h3><div class="muted">${esc(p.creator)}</div><span class="badge">${esc(p.category)}</span><div class="row"><b>${yen(Math.min(p.digital,p.physical))}〜</b><span>★${p.rating.toFixed(1)}</span></div></div></article>`}\nfunction lp(''', s, flags=re.S)
+          m=re.search(r'''function lp\(\)\{.*?\}\nfunction nav\(''',s,re.S)
+          new_lp=r'''function lp(){const pop=[...products].sort((a,b)=>b.favs-a.favs).slice(0,10);$('#root').innerHTML=`<header class="lp-head"><div class="brand">Sticker Market</div><div class="rowBtns"><button class="btn" onclick="go('login')">ログイン</button><button class="btn accent" onclick="go('signup')">無料登録</button></div></header><main class="lp-main"><section class="hero"><div><div class="muted">DESIGN × STICKER MARKETPLACE</div><h1>デザインを探す。<br>買う。シールにする。</h1><p>世界中のクリエイターと、あなたの「好き」をつなぐマーケットプレイス。作品は登録前でも自由に見られ、購入・保存するときにアカウントを作れます。</p></div><div class="collage"><div class="st" style="background:#ffd486">🐶</div><div class="st" style="background:#dbe7ff">🌌</div><div class="st" style="background:#def0d7">⛺</div><div class="st" style="background:#eadbff">🪐</div></div></section><section class="section" id="popular"><h2>人気の作品</h2><div class="carousel">${pop.map(p=>productCard(p,true)).join('')}</div></section><section class="section"><h2>売れ筋ランキング</h2><div class="carousel">${[...products].sort((a,b)=>b.sales-a.sales).slice(0,10).map(p=>productCard(p,true)).join('')}</div></section>${['アート','動物・ペット','アウトドア','かわいい'].map(c=>`<section class="section"><h2>${c}で人気</h2><div class="carousel">${products.filter(p=>p.category===c).slice(0,8).map(p=>productCard(p,true)).join('')}</div></section>`).join('')}<section class="section"><h2>人気クリエイター</h2><div class="creator-row">${creators.map(c=>`<div class="creator-card"><h3>${c.name}</h3><div class="muted">${c.genre}</div></div>`).join('')}</div></section><section class="section"><h2>Sticker Marketの使い方</h2><div class="ux-grid"><div class="panel"><h3>買う</h3><p>作品詳細まで自由に閲覧。購入するときだけログインします。</p></div><div class="panel"><h3>作る</h3><p>自分の画像からオリジナルシールを作成。</p></div><div class="panel"><h3>売る</h3><p>クリエイターとしてデザインを販売。</p></div></div></section></main>${legalFooter()}`}\nfunction nav('''
+          s=s[:m.start()]+new_lp+s[m.end():]
+          idx=s.index('function shell(content,search=true)')
+          legal='''function legalFooter(){return`<footer class="legal-footer"><div><b>Sticker Market</b><p>デザインを探す・買う・シールにするマーケットプレイス。</p></div><div><b>法務・安全</b><button>利用規約</button><button>プライバシーポリシー</button><button>セキュリティポリシー</button></div><div><b>取引について</b><button>特定商取引法に基づく表記</button><button>返品・返金について</button><button>著作権・AI生成作品ポリシー</button></div><div><b>サポート</b><button>ご利用ガイド</button><button>よくある質問</button><button>お問い合わせ</button></div></footer>`}\n'''
+          s=s[:idx]+legal+s[idx:]
+          s=s.replace('${nav()}<footer class="footer">利用規約 / プライバシー / セキュリティ / お問い合わせ</footer>`','${nav()}${legalFooter()}`')
+          m=re.search(r'''function product\(id\)\{.*?\}\nfunction cart\(''',s,re.S)
+          new_product=r'''function product(id){const p=products.find(x=>x.id===id);if(!p)return go(state.user?'home':'landing');const body=`<button class="btn" onclick="history.back()">← 戻る</button><div class="product"><div><div class="gallery-main" style="--gc:${p.color}">${p.emoji}</div><div class="thumbs"><button class="thumb on">${p.emoji}</button><button class="thumb">✨</button><button class="thumb">🔍</button></div></div><section><h1>${esc(p.name)}</h1><p class="muted">by ${esc(p.creator)}</p><span class="badge">${p.category}</span> <span class="badge">★${p.rating.toFixed(1)}</span><p>デザインデータとして購入するほか、シールとして注文できます。</p><div class="panel"><div class="row"><span>価格</span><b>${yen(p.digital)}〜</b></div><div class="rowBtns"><button class="btn accent" id="addCart">カートに追加</button><button class="btn" id="fav">${state.user&&data().fav.includes(p.id)?'♥':'♡'} お気に入り</button></div>${!state.user?'<p class="muted" style="font-size:12px">商品詳細はログイン不要です。カート追加・お気に入り保存時にログインします。</p>':''}</div></section></div>`;if(state.user)shell(body);else $('#root').innerHTML=`<header class="public-product-head"><div class="brand" onclick="go('landing')">Sticker Market</div><div class="rowBtns"><button class="btn" onclick="go('login')">ログイン</button><button class="btn accent" onclick="go('signup')">無料登録</button></div></header><main class="public-product-wrap">${body}</main>${legalFooter()}`;$('#addCart').onclick=()=>{if(!state.user){sessionStorage.setItem('afterLogin',`product/${p.id}`);go('login');return}data().cart.push({id:p.id,name:p.name,price:p.digital});save();toast('カートに追加しました')};$('#fav').onclick=()=>{if(!state.user){sessionStorage.setItem('afterLogin',`product/${p.id}`);go('login');return}const a=data().fav,i=a.indexOf(p.id);if(i>=0)a.splice(i,1);else a.push(p.id);save();product(id)}}\nfunction cart('''
+          s=s[:m.start()]+new_product+s[m.end():]
+          p.write_text(s)
+      - name: Validate
+        run: |
+          grep -q 'Public Demo v1.0.1' sticker-market-demo/index.html
+          grep -q 'プライバシーポリシー' sticker-market-demo/index.html
+          grep -q '商品詳細はログイン不要です' sticker-market-demo/index.html
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('sticker-market-demo/index.html').read_text()
+          js=re.search(r'<script>(.*)</script>',s,re.S).group(1)
+          Path('/tmp/app.js').write_text(js)
+          PY
+          node --check /tmp/app.js
+      - name: Commit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sticker-market-demo/index.html
+          git commit -m 'Improve LP and public product browsing' || exit 0
+          git push
