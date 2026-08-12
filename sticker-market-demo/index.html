@@ -124,8 +124,10 @@ button:focus-visible,.btn:focus-visible,[role=button]:focus-visible,input:focus-
 
 
 
+
+
 /* V161_CSS_START */
-/* Sticker Market v1.6.1 — shop category layout hotfix */
+/* Sticker Market v1.6.1 — focused layout hotfixes */
 /* Keep the existing shop-management UI; only allow category choices to share rows. */
 .check-grid:has(input[data-shopcat]){
   display:grid;
@@ -147,9 +149,43 @@ button:focus-visible,.btn:focus-visible,[role=button]:focus-visible,input:focus-
   height:22px;
   margin:0;
 }
+
+/* Creator shop product column picker */
+.v161-column-picker{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-left:auto}
+.v161-column-picker>span{font-size:12px;color:var(--muted);font-weight:800;margin-right:2px}
+.v161-column-picker .btn{min-height:38px;padding:7px 10px;font-size:12px;border-radius:10px}
+.v161-column-picker .btn.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 25%,transparent)}
+.v161-shop-grid{display:grid!important;gap:14px!important;width:100%;max-width:100%;overflow:visible!important}
+.v161-shop-grid.shop-cols-1{grid-template-columns:minmax(0,1fr)!important}
+.v161-shop-grid.shop-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.v161-shop-grid.shop-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.v161-shop-grid>.market-product-card{min-width:0!important;width:100%!important;max-width:100%!important;overflow:hidden}
+.v161-shop-grid>.market-product-card .art{aspect-ratio:1/1;min-height:0;height:auto}
+.v161-shop-grid>.market-product-card .v16-product-img{width:100%;height:100%;object-fit:cover}
+.v161-shop-grid>.market-product-card h3{overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height:1.35}
+.v161-shop-grid.shop-cols-2>.market-product-card .pad{padding:11px}
+.v161-shop-grid.shop-cols-2>.market-product-card h3{font-size:14px;margin-bottom:7px}
+.v161-shop-grid.shop-cols-2>.market-product-card .creator-name{font-size:12px}
+.v161-shop-grid.shop-cols-3{gap:8px!important}
+.v161-shop-grid.shop-cols-3>.market-product-card .pad{padding:8px}
+.v161-shop-grid.shop-cols-3>.market-product-card h3{font-size:12px;margin:0 0 6px}
+.v161-shop-grid.shop-cols-3>.market-product-card .creator-name{display:none}
+.v161-shop-grid.shop-cols-3>.market-product-card .badge{display:none}
+.v161-shop-grid.shop-cols-3>.market-product-card .card-bottom{gap:4px;align-items:flex-end;flex-direction:column}
+.v161-shop-grid.shop-cols-3>.market-product-card .card-bottom b,
+.v161-shop-grid.shop-cols-3>.market-product-card .card-bottom span{font-size:11px;white-space:nowrap}
+
 @media(max-width:430px){
   .check-grid:has(input[data-shopcat]){grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
   .check-grid:has(input[data-shopcat])>label{font-size:13px;padding:9px 8px;white-space:nowrap}
+  .shop-search-tools{display:grid!important;grid-template-columns:minmax(0,1fr) auto;gap:8px!important;align-items:center}
+  .shop-search-tools>input{grid-column:1/-1;min-width:0}
+  .shop-search-tools>select{min-width:0}
+  .v161-column-picker{grid-column:1/-1;margin-left:0;justify-content:flex-end}
+  .v161-shop-grid{gap:10px!important}
+  .v161-shop-grid.shop-cols-3{gap:6px!important}
+  .v161-shop-grid.shop-cols-3>.market-product-card .pad{padding:6px}
+  .v161-shop-grid.shop-cols-3>.market-product-card h3{font-size:11px}
 }
 
 /* V161_CSS_END */
@@ -652,6 +688,10 @@ const v16ShellBase=shell;shell=function(content,searchOn=true){v16ShellBase(cont
 const v16RouteBase=route;route=function(){const parts=(location.hash.slice(2)||(state.user?'home':'landing')).split('/'),p=parts[0];if(p==='sitemap'){closeModal();applyTheme();v16Sitemap();scrollTo(0,0);return}if(p==='integrity'){closeModal();applyTheme();v16IntegrityPage();scrollTo(0,0);return}if(p==='isolation'){closeModal();applyTheme();v16IsolationPage();scrollTo(0,0);return}if(p==='moderation'){closeModal();applyTheme();v16ModerationPage();scrollTo(0,0);return}v16RouteBase();requestAnimationFrame(v16PostRender)};window.onhashchange=route;window.addEventListener('hashchange',()=>requestAnimationFrame(v16RestoreScroll));route();
 
 /* V16_JS_END */
+</script>
+
+<script>
+
 </script>
 
 <script>
