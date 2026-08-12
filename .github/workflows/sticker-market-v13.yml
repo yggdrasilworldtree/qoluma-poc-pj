@@ -1,0 +1,44 @@
+name: Sticker Market v1.3 patch
+
+on:
+  push:
+    paths:
+      - '.github/workflows/sticker-market-v13.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply v1.3
+        run: python3 sticker-market-demo/apply_v13.py
+      - name: Validate v1.3 JavaScript
+        run: |
+          node --check sticker-market-demo/v13.js
+          python3 - <<'PY'
+          from pathlib import Path
+          import re, subprocess, tempfile
+          html=Path('sticker-market-demo/index.html').read_text(encoding='utf-8')
+          assert 'Public Demo v1.3.0' in html
+          assert 'Sticker Market v1.3 — responsive/mobile UX' in html
+          assert 'Sticker Market v1.3 — responsive/search/product/shop/auth UX' in html
+          scripts=re.findall(r'<script[^>]*>(.*?)</script>',html,re.S)
+          for i,s in enumerate(scripts):
+              p=Path(f'/tmp/sm_script_{i}.js');p.write_text(s,encoding='utf-8')
+              subprocess.run(['node','--check',str(p)],check=True)
+          print('validated',len(scripts),'script blocks')
+          PY
+      - name: Commit v1.3
+        run: |
+          if git diff --quiet -- sticker-market-demo/index.html; then
+            echo 'No changes'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sticker-market-demo/index.html
+          git commit -m 'Upgrade Sticker Market demo to v1.3'
+          git push
