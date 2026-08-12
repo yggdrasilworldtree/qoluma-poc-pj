@@ -1,0 +1,32 @@
+name: Sticker Market v1.5 patch
+on:
+  push:
+    paths:
+      - 'sticker-market-demo/v15.js'
+      - 'sticker-market-demo/v15.css'
+      - 'sticker-market-demo/apply_v15.py'
+      - '.github/workflows/sticker-market-v15.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply v1.5
+        run: python sticker-market-demo/apply_v15.py
+      - name: Validate v1.5 JavaScript
+        run: node --check sticker-market-demo/v15.js
+      - name: Validate embedded markers
+        run: |
+          grep -q 'Public Demo v1.5.0' sticker-market-demo/index.html
+          grep -q 'V15_JS_START' sticker-market-demo/index.html
+          grep -q 'V15_CSS_START' sticker-market-demo/index.html
+      - name: Commit v1.5
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sticker-market-demo/index.html
+          git diff --cached --quiet || git commit -m "Update Sticker Market demo to v1.5.0"
+          git push
