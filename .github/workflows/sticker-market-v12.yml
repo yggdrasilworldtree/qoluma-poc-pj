@@ -1,0 +1,51 @@
+name: Sticker Market v1.2 patch
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/sticker-market-v12.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply v1.2
+        shell: python
+        run: |
+          from pathlib import Path
+          import base64, zlib
+          p=Path('sticker-market-demo/index.html')
+          s=p.read_text()
+          encoded=''.join(Path(f'.github/patches/v12-{i}.txt').read_text().strip() for i in (1,2,3))
+          payload=zlib.decompress(base64.b64decode(encoded)).decode()
+          css,js=payload.split('\n/*__JS_SPLIT__*/\n',1)
+          s=s.replace('Public Demo v1.1.0','Public Demo v1.2.0')
+          if 'v1.2 creator shops, analytics' not in s:
+              s=s.replace('</style>',css+'\n</style>')
+          if 'v1.2 creator shop and analytics' not in s:
+              s=s.replace('</script>',js+'\n</script>')
+          p.write_text(s)
+      - name: Validate
+        run: |
+          grep -q 'Public Demo v1.2.0' sticker-market-demo/index.html
+          grep -q 'デザイン提案・投票' sticker-market-demo/index.html
+          grep -q 'ショップ管理' sticker-market-demo/index.html
+          grep -q '販売戦略サマリ' sticker-market-demo/index.html
+          grep -q '詳細分析' sticker-market-demo/index.html
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('sticker-market-demo/index.html').read_text()
+          js=re.search(r'<script>(.*)</script>',s,re.S).group(1)
+          Path('/tmp/app.js').write_text(js)
+          PY
+          node --check /tmp/app.js
+      - name: Commit
+        run: |
+          git config user.name "ygg"
+          git config user.email "tomas.horn0523@gmail.com"
+          git add sticker-market-demo/index.html
+          git commit -m "Sticker Market v1.2 creator shop and analytics UX" || exit 0
+          git push
