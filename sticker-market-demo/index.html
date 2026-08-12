@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ja">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Sticker Market — Public Demo v1.1.0</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Sticker Market — Public Demo v1.2.0</title>
 <style>
 :root{--bg:#fffaf7;--card:#fff;--soft:#f3efeb;--text:#1b1b1d;--muted:#777;--line:#ddd6d1;--accent:#e891a6;--danger:#d94f63;--fs:1}*{box-sizing:border-box}html{font-size:calc(16px*var(--fs))}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;background:var(--bg);color:var(--text);line-height:1.5}button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}.btn{border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 13px;font-weight:800}.accent{background:var(--accent);color:#fff;border-color:var(--accent)}.danger{background:var(--danger);color:#fff;border-color:var(--danger)}.muted{color:var(--muted)}.brand{font-weight:950;font-size:22px}.panel{background:color-mix(in srgb,var(--card) 96%,transparent);border:1px solid var(--line);border-radius:18px;padding:18px}.field{margin:12px 0}.field label{display:block;font-size:12px;font-weight:900;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;background:var(--card);color:var(--text)}.row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}.split{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.rowBtns{display:flex;gap:8px;flex-wrap:wrap}.badge{display:inline-block;padding:4px 7px;border:1px solid var(--line);border-radius:999px;font-size:10px}.hidden{display:none!important}.toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%);z-index:200;background:#151515;color:#fff;padding:10px 14px;border-radius:999px;box-shadow:0 10px 30px #0004}.lp-head,.app-head{position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 16px;background:color-mix(in srgb,var(--bg) 94%,transparent);border-bottom:1px solid var(--line);backdrop-filter:blur(15px)}.lp-main,.app-main{max-width:1180px;margin:auto;padding:22px 16px 100px}.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:center;min-height:460px}.hero h1{font-size:clamp(46px,7vw,80px);line-height:.95;margin:8px 0 18px}.collage{display:grid;grid-template-columns:1fr 1fr;gap:12px}.st{aspect-ratio:1;border:10px solid #fff;border-radius:24px;display:grid;place-items:center;font-size:64px;box-shadow:0 18px 40px #0002}.section{margin:42px 0}.carousel{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none}.carousel::-webkit-scrollbar{display:none}.card{flex:0 0 220px;min-width:220px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);scroll-snap-align:start}.art{aspect-ratio:1;display:grid;place-items:center;font-size:54px;background:linear-gradient(145deg,var(--c),var(--soft))}.pad{padding:12px}.creator-row{display:flex;gap:12px;overflow-x:auto}.creator-card{flex:0 0 230px;border:1px solid var(--line);border-radius:16px;padding:14px;background:var(--card)}.ux-grid,.benefit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.app-head{display:grid;grid-template-columns:auto minmax(160px,1fr) auto}.searchbar{display:flex;border:1px solid var(--line);border-radius:999px;background:var(--soft);overflow:hidden}.searchbar input{border:0;background:none;flex:1;padding:10px 13px}.searchbar button{border:0;background:none;padding:0 12px}.mobile-nav{display:none}.app-card{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card)}.app-art{aspect-ratio:1;display:grid;place-items:center;font-size:48px;background:linear-gradient(145deg,var(--c),var(--soft))}.search-simple{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:8px;align-items:end}.compact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.sub-row{display:grid;grid-template-columns:90px 1fr auto;gap:8px;margin:8px 0}.range-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center}.pager{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0}.pager .current{background:var(--accent);color:#fff}.product{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}.gallery-main{aspect-ratio:1;border:1px solid var(--line);border-radius:20px;display:grid;place-items:center;font-size:clamp(90px,20vw,180px);background:linear-gradient(145deg,var(--gc),var(--soft))}.thumbs{display:flex;gap:8px;overflow-x:auto;margin-top:8px}.thumb{width:70px;height:70px;border:2px solid transparent;border-radius:12px;background:var(--soft);font-size:30px}.thumb.on{border-color:var(--accent)}.tree details{border:1px solid var(--line);border-radius:14px;background:var(--card);margin:9px 0;overflow:hidden}.tree summary{padding:14px;font-weight:900}.treebody{padding:14px;border-top:1px solid var(--line)}.savebar{position:sticky;bottom:78px;z-index:30;display:flex;justify-content:flex-end;gap:8px;background:color-mix(in srgb,var(--card) 95%,transparent);border:1px solid var(--line);border-radius:13px;padding:12px}.theme-grid,.bg-grid,.ai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.theme-card,.bg-card,.bot-card{border:1px solid var(--line);border-radius:15px;padding:12px;background:var(--card);text-align:left}.theme-card.on,.bg-card.on{outline:2px solid var(--accent)}.swatches{display:flex;gap:4px;margin-top:8px}.swatches i{width:24px;height:24px;border-radius:7px;border:1px solid #0002}.background-overlay,.background-tint{position:fixed;inset:0;z-index:-2;pointer-events:none;background-size:cover;background-position:center}.background-tint{z-index:-1;background:var(--bg);opacity:.88}.custom-builder{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}.stage{border:1px solid var(--line);border-radius:18px;min-height:380px;display:grid;place-items:center;background:repeating-linear-gradient(45deg,var(--soft),var(--soft) 15px,var(--card) 15px,var(--card) 30px)}.sticker{width:min(72%,310px);aspect-ratio:1;background:#fff;border:8px solid white;display:grid;place-items:center;overflow:hidden;box-shadow:0 20px 45px #0002}.shape-circle{border-radius:50%}.shape-rounded{border-radius:24%}.shape-star{clip-path:polygon(50% 2%,61% 35%,96% 35%,68% 55%,79% 91%,50% 70%,21% 91%,32% 55%,4% 35%,39% 35%)}.quote-float{position:sticky;bottom:78px;z-index:35;display:flex;justify-content:space-between;gap:8px;align-items:center;padding:11px 12px;background:color-mix(in srgb,var(--card) 96%,transparent);border:1px solid var(--line);border-radius:15px}.sheet{position:fixed;inset:auto 0 0 0;z-index:120;background:var(--card);border-radius:22px 22px 0 0;border:1px solid var(--line);padding:18px;max-height:78vh;overflow:auto}.modal{position:fixed;inset:0;z-index:150;background:#0008;display:grid;place-items:center;padding:18px}.modalbox{width:min(94vw,620px);max-height:88vh;overflow:auto;background:var(--card);border-radius:20px;border:1px solid var(--line);padding:18px}.explain-upload{display:grid;grid-template-columns:1fr 1fr;gap:12px}.upload-card{border:1px solid var(--line);border-radius:15px;padding:14px;background:var(--soft)}.access{display:inline-block;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:900}.access.public{background:#e8f5ff;color:#27628a}.access.private{background:#fff0f3;color:#94394c}.upload-zone{border:2px dashed var(--line);border-radius:14px;padding:16px;background:var(--soft)}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.kpi b{display:block;font-size:28px}.adminmenu{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tablewrap{overflow:auto}.table{width:100%;min-width:760px;border-collapse:collapse}.table th,.table td{padding:10px;border-bottom:1px solid var(--line);text-align:left}.timeline{border-left:2px solid var(--line);padding-left:14px}.timeline div{padding:7px 0}.required{color:#d95062;font-weight:900}.optional{font-size:11px;color:var(--muted)}.signup-section{padding:14px 0;border-top:1px solid var(--line)}.bot-icon{width:46px;height:46px;display:grid;place-items:center;border-radius:13px;background:var(--soft);font-size:24px}.ai-result{white-space:pre-wrap;border:1px solid var(--line);border-radius:13px;background:var(--soft);padding:12px;min-height:80px}.footer{padding:30px 16px 110px;border-top:1px solid var(--line);color:var(--muted)}
 @media(max-width:900px){.hero,.product,.custom-builder{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}.ux-grid,.benefit-grid{grid-template-columns:1fr}.theme-grid,.bg-grid,.ai-grid{grid-template-columns:1fr 1fr}.search-simple{grid-template-columns:1fr 1fr}.search-simple .keyword{grid-column:1/-1}.app-head{grid-template-columns:1fr auto}.searchbar{grid-column:1/-1;grid-row:2}.mobile-nav{position:fixed;display:grid;grid-template-columns:repeat(var(--n),1fr);bottom:0;left:0;right:0;z-index:60;background:color-mix(in srgb,var(--card) 96%,transparent);border-top:1px solid var(--line);padding:7px 2px calc(7px + env(safe-area-inset-bottom))}.mobile-nav button{border:0;background:none;font-size:10px}.mobile-nav b{display:block;font-size:19px}.footer{display:grid}.savebar,.quote-float{bottom:74px}.adminmenu{grid-template-columns:1fr 1fr}.explain-upload{grid-template-columns:1fr}}
@@ -30,6 +30,34 @@
 .tag-section{margin:24px 0}.tag-strip{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:6px}.tag-strip::-webkit-scrollbar{display:none}.tag-chip{flex:0 0 auto;border:1px solid var(--line);background:var(--soft);border-radius:12px;padding:10px 14px;font-weight:800}
 .review-section{margin:34px 0}.review-summary{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--card)}.review-score{font-size:52px;line-height:1;font-weight:500}.ai-review{margin-top:12px;padding:14px;border-radius:14px;background:color-mix(in srgb,var(--accent) 10%,var(--soft));border:1px solid color-mix(in srgb,var(--accent) 24%,var(--line))}.review-card{padding:20px 2px;border-bottom:1px solid var(--line)}.review-card .stars{color:#e9aa34;font-size:18px;font-weight:900}.review-meta{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:13px;flex-wrap:wrap}.review-translate{border:0;background:none;padding:8px 0;color:var(--text);font-weight:800}.product-v11-extra{max-width:920px;margin:0 auto}
 @media(max-width:700px){.market-guide-body{grid-template-columns:1fr}.related-chips{grid-template-columns:1fr 1fr}.review-summary{grid-template-columns:1fr}.seller-card{align-items:flex-start}}@media(max-width:460px){.related-chips{grid-template-columns:1fr}}
+
+
+/* v1.2 creator shops, analytics, responsive and form contrast */
+.grid .card{min-width:0!important;width:100%!important;max-width:100%}
+#res.grid{width:100%;min-width:0;overflow:hidden}
+#res .card h3{overflow-wrap:anywhere}
+.creator-card{cursor:pointer;transition:transform .15s ease,border-color .15s ease}
+.creator-card:active{transform:scale(.985)}
+.shop-hero{border:1px solid var(--line);border-radius:22px;padding:22px;background:linear-gradient(135deg,color-mix(in srgb,var(--shop-accent,var(--accent)) 18%,var(--card)),var(--card));overflow:hidden}
+.shop-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.shop-avatar{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:var(--soft);font-size:34px;flex:0 0 auto}
+.shop-actions{display:flex;gap:8px;flex-wrap:wrap}
+.shop-search{display:flex;gap:8px;margin:18px 0}.shop-search input{flex:1;min-width:0;background:var(--soft);color:var(--text);border:1px solid var(--line);border-radius:999px;padding:12px 15px}
+.proposal-card{border:1px solid var(--line);border-radius:16px;padding:14px;background:var(--card);margin:10px 0}
+.vote-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.vote-btn{border:1px solid var(--line);background:var(--soft);color:var(--text);border-radius:999px;padding:7px 11px}
+.vote-btn.on{border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 28%,transparent)}
+.similar-shops{display:flex;gap:10px;overflow-x:auto}.similar-shop{flex:0 0 210px;border:1px solid var(--line);border-radius:16px;padding:14px;background:var(--card);text-align:left}
+.shop-admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.message-thread{max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:14px;padding:10px;background:var(--soft)}
+.msg{max-width:82%;padding:9px 11px;border-radius:13px;margin:7px 0;background:var(--card);border:1px solid var(--line)}.msg.me{margin-left:auto;background:color-mix(in srgb,var(--accent) 16%,var(--card))}
+.analysis-kpi{cursor:pointer;transition:transform .15s ease,border-color .15s ease}.analysis-kpi:active{transform:scale(.985)}.analysis-kpi:hover{border-color:var(--accent)}
+.strategy-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}.strategy-box{border:1px solid var(--line);border-radius:14px;padding:13px;background:var(--soft)}
+.analysis-report{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.report-card{border:1px solid var(--line);border-radius:16px;padding:16px;background:var(--card)}
+.bar{height:10px;border-radius:999px;background:var(--soft);overflow:hidden}.bar i{display:block;height:100%;background:var(--accent);border-radius:999px}
+.modal textarea,.modal input,.modal select,.sheet textarea,.sheet input,.sheet select{background:var(--soft)!important;color:var(--text)!important;border:1px solid var(--line)!important;border-radius:11px;padding:11px}
+.modal textarea::placeholder,.modal input::placeholder,.sheet textarea::placeholder,.sheet input::placeholder{color:var(--muted)!important;opacity:1}
+@media(max-width:700px){.shop-admin-grid,.analysis-report,.strategy-grid{grid-template-columns:1fr}.shop-head{flex-direction:column}.shop-actions{width:100%}.shop-actions .btn{flex:1}#res.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pager{align-items:stretch}.pager>div{max-width:100%;display:flex;flex-wrap:wrap;gap:6px}.pager input{max-width:70px}}
+@media(max-width:430px){#res.grid{grid-template-columns:1fr}.grid .card{min-width:0!important}.pager{font-size:13px}.pager .btn{padding:8px 9px}}
 
 </style></head>
 <body><div id="bg" class="background-overlay"></div><div id="tint" class="background-tint"></div><div id="root"></div><div id="toast" class="toast hidden"></div><div id="modal" hidden></div>
@@ -94,6 +122,166 @@ const v11OldLP=lp;lp=function(){v11OldLP();const main=document.querySelector('.l
 const v11OldHome=home;home=function(){v11OldHome();const main=document.querySelector('.app-main');if(main&&!main.querySelector('.market-guide'))main.insertAdjacentHTML('beforeend',v11Guide())}
 const v11OldSearch=search;search=function(){v11OldSearch();v11EnhanceSearch()}
 const v11OldProduct=product;product=function(id){v11OldProduct(id);v11EnhanceProduct(id)}
+window.onhashchange=route;route();
+
+
+/* v1.2 creator shop and analytics */
+state.creatorShopData=state.creatorShopData||{};
+function creatorSeed(cid){
+  const c=creators.find(x=>x.id===cid)||creators[0];
+  if(!state.creatorShopData[cid])state.creatorShopData[cid]={
+    profile:{tagline:`${c.genre}を中心に、日常に使いやすいデザインを制作しています。`,announcement:'新作リクエストを受付中です。',accent:'#e891a6',featured:'おすすめ'},
+    interactions:{},
+    proposals:[
+      {id:`${cid}_pr1`,userId:'seed_user_1',author:'Mika',text:`${c.genre}をテーマにした季節限定デザインがほしい`,created:'2026/08/08',votes:{}},
+      {id:`${cid}_pr2`,userId:'seed_user_2',author:'Sora',text:'小さめサイズでも見やすいワンポイントシリーズを作ってほしい',created:'2026/08/09',votes:{}}
+    ]
+  };
+  return state.creatorShopData[cid];
+}
+function currentCreatorId(){return creators.find(c=>c.name===state.user?.name)?.id||'c1'}
+function interaction(cid,uidx){const s=creatorSeed(cid);s.interactions[uidx]=s.interactions[uidx]||{messages:[]};return s.interactions[uidx]}
+function creatorProducts(cid){return products.filter(p=>p.creatorId===cid)}
+function proposalLimit(cid){
+  if(!state.user)return 0;
+  const th=interaction(cid,state.user.id).messages.length;
+  return Math.min(6,2+Math.floor(th/4));
+}
+function intimacyLabel(cid){
+  if(!state.user)return 'ゲスト';
+  const n=interaction(cid,state.user.id).messages.length;
+  return n>=12?'常連':n>=6?'親しい':n>=2?'交流中':'はじめまして';
+}
+function creatorShop(cid){
+  const c=creators.find(x=>x.id===cid);if(!c)return go(state.user?'home':'landing');
+  const sd=creatorSeed(cid),ps=creatorProducts(cid),uidx=state.user?.id,limit=state.user?proposalLimit(cid):0;
+  const used=state.user?sd.proposals.filter(p=>p.userId===state.user.id).length:0;
+  const body=`<button class="btn" onclick="history.back()">← 戻る</button>
+  <section class="shop-hero" style="--shop-accent:${esc(sd.profile.accent)}">
+    <div class="shop-head"><div style="display:flex;gap:14px"><div class="shop-avatar">${ps[0]?.emoji||'🎨'}</div><div><h1 style="margin:0">${esc(c.name)}</h1><p>${esc(sd.profile.tagline)}</p><span class="badge">${esc(c.genre)}</span> <span class="badge">親密度：${intimacyLabel(cid)}</span></div></div>
+    <div class="shop-actions"><button class="btn" id="shopFollow">♡ フォロー</button><button class="btn" id="shopMsg">メッセージ</button><button class="btn accent" id="shopProposal">デザインを提案</button></div></div>
+    <p class="muted" style="margin-bottom:0">${esc(sd.profile.announcement)}</p>
+  </section>
+  <div class="shop-search"><input id="shopQ" placeholder="${esc(c.name)}の商品を検索"><button class="btn" id="shopGo">検索</button></div>
+  <section class="section"><div class="row"><h2 style="margin:0">ショップの商品</h2><span id="shopCount">${ps.length}件</span></div><div id="shopProducts" class="grid">${ps.map(p=>productCard(p)).join('')}</div></section>
+  <section class="section"><div class="row"><div><h2 style="margin:0">デザイン提案・投票</h2><div class="muted">利用者の「作ってほしい」を公開し、みんなで反応できます。</div></div>${state.user?`<span class="badge">あなたの提案 ${used}/${limit}</span>`:''}</div>
+  <div id="proposalList">${sd.proposals.map(p=>proposalHtml(cid,p)).join('')}</div></section>
+  <section class="section"><h2>似ているクリエイター</h2><div class="similar-shops">${creators.filter(x=>x.id!==cid).map(x=>`<button class="similar-shop" onclick="go('shop/${x.id}')"><b>${esc(x.name)}</b><p class="muted">${esc(x.genre)}</p><span>ショップを見る →</span></button>`).join('')}</div></section>`;
+  if(state.user)shell(body);else $('#root').innerHTML=`<header class="public-product-head"><div class="brand" onclick="go('landing')">Sticker Market</div><div class="rowBtns"><button class="btn" onclick="go('login')">ログイン</button><button class="btn accent" onclick="go('signup')">無料登録</button></div></header><main class="public-product-wrap">${body}</main>${legalFooter()}`;
+  const doSearch=()=>{const q=($('#shopQ').value||'').trim().toLowerCase(),arr=ps.filter(p=>(p.name+' '+p.category+' '+p.material+' '+p.shape).toLowerCase().includes(q));$('#shopProducts').innerHTML=arr.map(p=>productCard(p)).join('')||'<div class="panel">該当商品はありません。</div>';$('#shopCount').textContent=arr.length+'件'};
+  $('#shopGo').onclick=doSearch;$('#shopQ').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();doSearch()}};
+  $('#shopFollow').onclick=()=>{if(!state.user){sessionStorage.setItem('afterLogin',`shop/${cid}`);return go('login')}const f=data().follows,i=f.indexOf(cid);if(i>=0)f.splice(i,1);else f.push(cid);save();toast(i>=0?'フォローを解除しました':'フォローしました')};
+  $('#shopMsg').onclick=()=>openCreatorMessage(cid);
+  $('#shopProposal').onclick=()=>openProposal(cid);
+}
+function proposalHtml(cid,p){
+  const votes=p.votes||{},yes=Object.values(votes).filter(v=>v===1).length,no=Object.values(votes).filter(v=>v===-1).length,my=state.user?votes[state.user.id]:0;
+  return `<article class="proposal-card"><div class="row"><div><b>${esc(p.text)}</b><div class="muted">${esc(p.author)} ・ ${esc(p.created)}</div></div><span class="badge">公開提案</span></div><div class="vote-row"><button class="vote-btn ${my===1?'on':''}" onclick="voteProposal('${cid}','${p.id}',1)">👍 いいね ${yes}</button><button class="vote-btn ${my===-1?'on':''}" onclick="voteProposal('${cid}','${p.id}',-1)">👎 反対 ${no}</button><span class="muted">賛同率 ${yes+no?Math.round(yes/(yes+no)*100):'-'}%</span></div></article>`
+}
+function voteProposal(cid,pid,v){
+  if(!state.user){sessionStorage.setItem('afterLogin',`shop/${cid}`);return go('login')}
+  const p=creatorSeed(cid).proposals.find(x=>x.id===pid);p.votes=p.votes||{};p.votes[state.user.id]=p.votes[state.user.id]===v?0:v;save();creatorShop(cid)
+}
+function openCreatorMessage(cid){
+  if(!state.user){sessionStorage.setItem('afterLogin',`shop/${cid}`);return go('login')}
+  const c=creators.find(x=>x.id===cid),it=interaction(cid,state.user.id);
+  modal(`<div class="row"><h2>${esc(c.name)}にメッセージ</h2><button class="btn" onclick="closeModal()">× 閉じる</button></div><div class="message-thread" id="msgThread">${it.messages.map(m=>`<div class="msg ${m.from===state.user.id?'me':''}"><b>${m.from===state.user.id?'あなた':esc(c.name)}</b><br>${esc(m.text)}</div>`).join('')||'<div class="muted">まだメッセージはありません。</div>'}</div><div class="field"><label>メッセージ</label><textarea id="msgText" placeholder="作品について質問・相談できます"></textarea></div><button class="btn accent" id="msgSend">送信</button>`);
+  $('#msgSend').onclick=()=>{const t=$('#msgText').value.trim();if(!t)return;it.messages.push({from:state.user.id,text:t,at:new Date().toISOString()});save();closeModal();toast('メッセージを送りました')}
+}
+function openProposal(cid){
+  if(!state.user){sessionStorage.setItem('afterLogin',`shop/${cid}`);return go('login')}
+  const sd=creatorSeed(cid),limit=proposalLimit(cid),used=sd.proposals.filter(p=>p.userId===state.user.id).length;
+  if(used>=limit)return modal(`<div class="row"><h2>提案上限に達しています</h2><button class="btn" onclick="closeModal()">× 閉じる</button></div><p>現在の上限は ${limit}件です。クリエイターとのメッセージ交流が増えると、提案上限が最大6件まで増えます。</p>`);
+  modal(`<div class="row"><h2>作ってほしいデザインを提案</h2><button class="btn" onclick="closeModal()">× 閉じる</button></div><p class="muted">投稿後はショップ内で公開され、他の利用者が賛成・反対に投票できます。残り ${limit-used}件。</p><textarea id="proposalText" style="width:100%;min-height:120px" placeholder="例：夜空と猫を組み合わせた小さめのステッカーが欲しい"></textarea><button class="btn accent" id="proposalPost" style="margin-top:10px">公開して提案</button>`);
+  $('#proposalPost').onclick=()=>{const t=$('#proposalText').value.trim();if(t.length<5)return toast('提案内容をもう少し詳しく入力してください');sd.proposals.unshift({id:'pr_'+Date.now(),userId:state.user.id,author:state.user.name,text:t,created:new Date().toLocaleDateString('ja-JP'),votes:{}});save();closeModal();creatorShop(cid)}
+}
+function shopAdmin(){
+  if(state.user?.role!=='creator')return go('home');
+  const cid=currentCreatorId(),c=creators.find(x=>x.id===cid),sd=creatorSeed(cid);
+  const threads=Object.entries(sd.interactions).filter(([,x])=>x.messages?.length);
+  shell(`<button class="btn" onclick="go('creator')">← 販売センター</button><div class="row"><div><h1>ショップ管理</h1><p class="muted">利用者に見えるショップの編集・確認・コミュニケーション管理。</p></div><button class="btn accent" onclick="go('shop/${cid}')">公開ショップを確認</button></div>
+  <div class="shop-admin-grid"><section class="panel"><h2>ショップをカスタマイズ</h2><div class="field"><label>ショップ紹介</label><textarea id="shopTagline">${esc(sd.profile.tagline)}</textarea></div><div class="field"><label>お知らせ</label><textarea id="shopAnnouncement">${esc(sd.profile.announcement)}</textarea></div><div class="field"><label>テーマカラー</label><input id="shopAccent" type="color" value="${esc(sd.profile.accent)}"></div><button class="btn accent" id="shopSave">変更を保存</button></section>
+  <section class="panel"><h2>メッセージ</h2>${threads.map(([uidx,x])=>`<div class="row"><div><b>${esc(state.users[uidx]?.name||uidx)}</b><div class="muted">${x.messages.length}件のやり取り</div></div><button class="btn" data-thread="${uidx}">確認・返信</button></div>`).join('')||'<p class="muted">受信メッセージはありません。</p>'}</section></div>
+  <section class="section panel"><h2>公開提案の管理</h2>${sd.proposals.map(p=>`<div class="row"><div><b>${esc(p.text)}</b><div class="muted">${esc(p.author)} / 投票 ${Object.keys(p.votes||{}).length}件</div></div><span class="badge">公開中</span></div>`).join('')}</section>`,false);
+  $('#shopSave').onclick=()=>{sd.profile.tagline=$('#shopTagline').value;sd.profile.announcement=$('#shopAnnouncement').value;sd.profile.accent=$('#shopAccent').value;save();toast('ショップ設定を保存しました')};
+  $$('[data-thread]').forEach(b=>b.onclick=()=>openShopAdminThread(cid,b.dataset.thread))
+}
+function openShopAdminThread(cid,uidx){
+  const c=creators.find(x=>x.id===cid),it=interaction(cid,uidx);
+  modal(`<div class="row"><h2>${esc(state.users[uidx]?.name||uidx)}とのメッセージ</h2><button class="btn" onclick="closeModal()">× 閉じる</button></div><div class="message-thread">${it.messages.map(m=>`<div class="msg ${m.from===state.user.id?'me':''}"><b>${m.from===state.user.id?esc(c.name):esc(state.users[uidx]?.name||'利用者')}</b><br>${esc(m.text)}</div>`).join('')}</div><textarea id="replyText" style="width:100%;min-height:90px;margin-top:10px" placeholder="返信"></textarea><button class="btn accent" id="replySend">返信する</button>`);
+  $('#replySend').onclick=()=>{const t=$('#replyText').value.trim();if(!t)return;it.messages.push({from:state.user.id,text:t,at:new Date().toISOString()});save();closeModal();toast('返信しました')}
+}
+function relatedSmartTerms(p){
+  const map={アート:['アートステッカー','抽象デザイン','イラストステッカー','ギャラリー風'], '動物・ペット':['猫ステッカー','犬ステッカー','ペットステッカー','かわいい動物'],アウトドア:['キャンプステッカー','山ステッカー','自然モチーフ','旅行ステッカー'],かわいい:['かわいいステッカー','パステルステッカー','ワンポイント','ギフト向け'],和風:['和風ステッカー','日本モチーフ','伝統柄','和モダン'],ビジネス:['仕事用ステッカー','ラベル','シンプルデザイン','整理用']};
+  let out=[];
+  if(p){out=[...(map[p.category]||[]),`${p.material} ステッカー`,`${p.shape} ステッカー`,`${p.creator} の作品`]}
+  else{
+    const q=(searchState.q||'').toLowerCase(),cat=searchState.cat;
+    if(cat&&map[cat])out.push(...map[cat]);
+    const keywordRules=[['宇宙',['宇宙ステッカー','星空ステッカー','惑星ステッカー','夜空デザイン']],['星',['星空ステッカー','夜空ステッカー','宇宙デザイン']],['猫',['猫ステッカー','黒猫ステッカー','動物ステッカー']],['花',['花ステッカー','植物ステッカー','ボタニカル']],['キャンプ',['キャンプステッカー','アウトドア','山ステッカー']],['かわいい',['かわいいステッカー','パステル','ワンポイント']]];
+    for(const [k,a] of keywordRules)if(q.includes(k))out.push(...a);
+    if(!out.length)out=['人気ステッカー','新着ステッカー','高評価ステッカー','ギフト向け'];
+  }
+  return [...new Set(out)].slice(0,8)
+}
+v11Terms=relatedSmartTerms;
+v11Quick=function(term){searchState.q=term;searchState.page=1;sessionStorage.setItem('q',term);if(location.hash.startsWith('#/search'))search();else go('search')};
+
+const v12OldShell=shell;shell=function(content,searchOn=true){v12OldShell(content,searchOn);if(searchOn){const q=$('#gq');if(q)q.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();sessionStorage.setItem('q',q.value);go('search')}}}};
+const v12OldSearch=search;search=function(){v12OldSearch();const q=$('#sq');if(q)q.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();$('#sdo')?.click()}}};
+const v12OldLP=lp;lp=function(){v12OldLP();$$('.creator-card').forEach((el,i)=>{const c=creators[i%creators.length];el.setAttribute('role','button');el.onclick=()=>go(`shop/${c.id}`)})};
+const v12OldHome=home;home=function(){v12OldHome();$$('.creator-card').forEach((el,i)=>{const c=creators[i%creators.length];el.onclick=()=>go(`shop/${c.id}`)})};
+const v12OldProduct=product;product=function(id){v12OldProduct(id);const p=products.find(x=>x.id===id),seller=document.querySelector('.seller-card');if(p&&seller&&!seller.querySelector('[data-shop]'))seller.insertAdjacentHTML('beforeend',`<button class="btn accent" data-shop onclick="go('shop/${p.creatorId}')">ショップを見る</button>`)};
+
+function analysisMeta(scope,key){
+ const creator={
+  revenue:{title:'今月売上',value:'¥45,300',summary:'前月比 +12.8%。データ販売が伸長し、夜空系商品の単価改善が寄与。',metrics:[['データ販売','¥27,600',61],['物理シール','¥17,700',39],['前月比','+12.8%',72]],actions:['価格¥480〜¥580の商品群が最も高CVR','上位3商品が売上の58%を占有','新作投入で売上分散を推奨']},
+  orders:{title:'販売件数',value:'32件',summary:'購入者数は27人。5人が複数商品を購入しています。',metrics:[['新規購入','22件',69],['リピート','10件',31],['平均点数','1.19点',55]],actions:['セット販売のテストを推奨','リピーター向け新作通知が有効']},
+  views:{title:'閲覧',value:'1,248',summary:'検索流入が62%、ショップ直接流入が21%。モバイル比率が高いです。',metrics:[['検索','774',62],['ショップ','262',21],['その他','212',17]],actions:['検索タグ「夜空」「星」の露出が強い','商品1枚目画像の改善余地あり']},
+  cvr:{title:'CVR',value:'2.6%',summary:'カテゴリ中央値2.1%を上回っています。商品詳細閲覧→カート投入で離脱があります。',metrics:[['詳細→カート','8.4%',63],['カート→購入','31%',55],['総合CVR','2.6%',66]],actions:['送料表示を商品詳細で早める','レビュー強調で不安軽減']}
+ };
+ const admin={
+  users:{title:'ユーザー',value:'1,248',summary:'今月の新規登録は184人。購入者比率が上昇しています。',metrics:[['購入者','812',65],['クリエイター','121',10],['アクティブ','734',59]],actions:['新規登録→初回購入率を監視','休眠ユーザー再訪施策を検討']},
+  adminOrders:{title:'今月注文',value:'342',summary:'前月比+9.4%。物理注文の比率が増加しています。',metrics:[['デジタル','198',58],['物理','144',42],['正常完了','329',96]],actions:['製造待ちの滞留時間を監視','重複注文率は正常範囲']},
+  pending:{title:'審査待ち',value:'12',summary:'平均待ち時間8.2時間。2件が24時間超過しています。',metrics:[['8時間以内','7件',58],['8〜24時間','3件',25],['24時間超','2件',17]],actions:['24時間超の2件を優先','AI事前審査で短縮余地']},
+  adminRevenue:{title:'今月売上',value:'¥1.2M',summary:'GMVは前月比+11.1%。物理シールの伸びが主因です。',metrics:[['デジタル','¥0.49M',41],['物理','¥0.71M',59],['手数料','¥0.14M',12]],actions:['カテゴリ別粗利を再確認','製造原価率の上昇を監視']}
+ };
+ return (scope==='creator'?creator:admin)[key]
+}
+function analysisPopup(scope,key){
+ const m=analysisMeta(scope,key);if(!m)return;
+ modal(`<div class="row"><div><h2>${m.title}</h2><b style="font-size:30px">${m.value}</b></div><button class="btn" onclick="closeModal()">× 閉じる</button></div><p>${m.summary}</p>${m.metrics.map(x=>`<div class="row"><span>${x[0]}</span><b>${x[1]}</b></div>`).join('')}<div class="rowBtns" style="margin-top:12px"><button class="btn accent" onclick="closeModal();go('${scope==='creator'?'creatoranalytics':'adminanalytics'}/${key}')">詳細表示</button></div>`)
+}
+function analyticsDetail(scope,key){
+ const m=analysisMeta(scope,key);if(!m)return go(scope==='creator'?'creator':'admin');
+ shell(`<button class="btn" onclick="go('${scope==='creator'?'creator':'admin'}')">← 戻る</button><h1>${m.title} 詳細分析</h1><section class="panel"><div class="row"><div><div class="muted">現在値</div><b style="font-size:42px">${m.value}</b></div><span class="badge">更新：本日</span></div><p>${m.summary}</p></section><div class="analysis-report" style="margin-top:14px">${m.metrics.map(x=>`<div class="report-card"><h3>${x[0]}</h3><b style="font-size:28px">${x[1]}</b><div class="bar" style="margin-top:12px"><i style="width:${x[2]}%"></i></div></div>`).join('')}</div><section class="panel" style="margin-top:14px"><h2>分析と推奨アクション</h2>${m.actions.map((a,i)=>`<div class="row"><span>${i+1}. ${a}</span><span class="badge">${i===0?'優先':'参考'}</span></div>`).join('')}<h3>推移</h3><svg viewBox="0 0 600 170" style="width:100%;height:190px"><polyline fill="none" stroke="var(--accent)" stroke-width="5" points="20,145 90,122 160,132 230,95 300,102 370,65 440,72 520,35 580,48"/></svg></section>`)
+}
+function creatorStrategy(){
+ return `<section class="panel"><div class="row"><div><h2 style="margin:0">販売戦略サマリ</h2><p class="muted">直近30日の販売・閲覧・検索傾向から要約</p></div><span class="badge">AI分析デモ</span></div><p><b>総評：</b>夜空・風景系が安定して閲覧を獲得し、¥480〜¥580帯の商品が最も購入につながっています。一方、商品詳細→カートで離脱があるため、価格・送料・利用例の見せ方改善が有効です。</p><div class="strategy-grid"><div class="strategy-box"><b>需要トレンド</b><p>「星空」「夜」「キャンプ」の検索流入が増加。季節デザインとの組み合わせ余地があります。</p></div><div class="strategy-box"><b>価格ポジション</b><p>カテゴリ中央値¥480。主力商品は中央値+8%ですがCVRは高く、値下げ優先度は低めです。</p></div><div class="strategy-box"><b>商品ページ</b><p>レビュー数・利用シーン画像・サイズ比較画像を増やすと不安低減が見込めます。</p></div><div class="strategy-box"><b>次の一手</b><p>①新作2点投入 ②人気タグ再編 ③ショップ提案上位を商品化候補へ ④リピーター向け告知。</p></div></div></section>`
+}
+creatorCenter=function(){
+ if(state.user?.role!=='creator')return go('home');
+ shell(`<div class="rowBtns"><button class="btn accent" onclick="go('ai')">🤖 AIスタジオ</button><button class="btn" onclick="go('shopadmin')">🏪 ショップ管理</button><button class="btn" onclick="go('shop/${currentCreatorId()}')">公開ショップを見る</button></div><h1>販売センター</h1>${creatorStrategy()}<h2>パフォーマンス</h2><div class="kpis"><div class="panel kpi analysis-kpi" onclick="analysisPopup('creator','revenue')"><b>¥45,300</b>今月売上</div><div class="panel kpi analysis-kpi" onclick="analysisPopup('creator','orders')"><b>32</b>販売件数</div><div class="panel kpi analysis-kpi" onclick="analysisPopup('creator','views')"><b>1,248</b>閲覧</div><div class="panel kpi analysis-kpi" onclick="analysisPopup('creator','cvr')"><b>2.6%</b>CVR</div></div><section class="section"><h2>販売を始める</h2><div class="ux-grid"><button class="panel" onclick="sellStep=1;go('sell')"><h3>デザインデータを販売</h3><p>購入者がデータをダウンロード。</p></button><button class="panel" onclick="sellStep=1;go('sell')"><h3>シール商品として販売</h3><p>印刷・配送まで含めて販売。</p></button><button class="panel" onclick="sellStep=1;go('sell')"><h3>両方を販売</h3><p>データとシールを同時販売。</p></button></div></section>`)
+}
+admin=function(){
+ if(state.user?.role!=='admin')return go('home');
+ shell(`<h1>管理者ダッシュボード</h1><div class="kpis"><div class="panel kpi analysis-kpi" onclick="analysisPopup('admin','users')"><b>1,248</b>ユーザー</div><div class="panel kpi analysis-kpi" onclick="analysisPopup('admin','adminOrders')"><b>342</b>今月注文</div><div class="panel kpi analysis-kpi" onclick="analysisPopup('admin','pending')"><b>12</b>審査待ち</div><div class="panel kpi analysis-kpi" onclick="analysisPopup('admin','adminRevenue')"><b>¥1.2M</b>今月売上</div></div><div class="panel" style="margin-top:14px"><h2>運営サマリ</h2><p class="muted">KPIカードをタップすると簡易分析を確認できます。</p><svg viewBox="0 0 600 160" style="width:100%;height:180px"><polyline fill="none" stroke="var(--accent)" stroke-width="5" points="20,140 90,125 160,132 230,80 300,95 370,55 440,70 520,30 580,44"/></svg></div><h2>管理メニュー</h2><div class="adminmenu"><button class="btn" onclick="go('review')">商品審査</button><button class="btn" onclick="go('adminorders')">注文管理</button><button class="btn" onclick="go('users')">ユーザー管理</button><button class="btn" onclick="go('sales')">売上管理</button><button class="btn" onclick="go('bots')">AIボット管理</button></div>`)
+}
+aiStudio=function(){
+ const bots=state.aiBots.filter(b=>b.enabled&&b.audiences.includes(state.user.role));
+ shell(`<h1>AIスタジオ</h1><p class="muted">管理者が公開した専門AIボットを利用できます。</p><div class="ai-grid">${bots.map(b=>`<div class="bot-card"><div class="bot-icon">${b.icon}</div><h3>${b.name}</h3><span class="badge">${b.category}</span><p>${b.description}</p><button class="btn accent" data-run="${b.id}">使う</button></div>`).join('')||'利用可能なAIボットはありません'}</div>`);
+ $$('[data-run]').forEach(x=>x.onclick=()=>{const b=state.aiBots.find(z=>z.id===x.dataset.run);modal(`<div class="row"><h2>${b.icon} ${b.name}</h2><button class="btn" onclick="closeModal()">× 閉じる</button></div><textarea id="bp" style="width:100%;min-height:110px" placeholder="相談内容を入力"></textarea><button class="btn accent" id="br" style="margin-top:10px">実行（デモ）</button><div id="bout" class="ai-result" style="margin-top:10px">結果はここに表示されます。</div>`);$('#br').onclick=()=>{const q=$('#bp').value||'商品を改善したい';$('#bout').textContent=`【${b.name}】\n「${q}」について、商品情報と販売状況をもとに改善案を3件提示します。\n※公開デモのため模擬出力です。`;data().aiHistory.push({botId:b.id,userId:state.user.id,at:new Date().toISOString()});state.aiBotLogs.push({botId:b.id,userId:state.user.id,at:new Date().toISOString(),status:'success'});save()}})
+}
+const v12RouteBase=route;
+route=function(){
+ closeModal();applyTheme();const [p,id]=(location.hash.slice(2)||(state.user?'home':'landing')).split('/');
+ if(!state.user&&!['landing','login','signup','product','shop','search'].includes(p)){requireLogin(p+(id?'/'+id:''));return}
+ if(p==='shop')creatorShop(id);
+ else if(p==='shopadmin')shopAdmin();
+ else if(p==='creatoranalytics')analyticsDetail('creator',id);
+ else if(p==='adminanalytics')analyticsDetail('admin',id);
+ else v12RouteBase();
+}
 window.onhashchange=route;route();
 
 </script></body></html>
