@@ -5,8 +5,10 @@ on:
     branches: [main]
     paths:
       - 'sticker-market-demo/v2.js'
-      - 'sticker-market-demo/apply_v2.py'
       - 'sticker-market-demo/v2.css'
+      - 'sticker-market-demo/v21.js'
+      - 'sticker-market-demo/v21.css'
+      - 'sticker-market-demo/apply_v2.py'
   workflow_dispatch:
 
 permissions:
@@ -29,9 +31,13 @@ jobs:
       - name: Validate build markers
         run: |
           grep -q 'Sticker Market — UI Rebuild v2.0' sticker-market-demo/index.html
+          grep -q 'Sticker Market v2.1' sticker-market-demo/index.html
           grep -q 'LEGAL_FOOTER_V2' sticker-market-demo/index.html
           grep -q 'creator-dashboard' sticker-market-demo/index.html
           grep -q 'checkout/shipping' sticker-market-demo/index.html
+          grep -q 'openHowto' sticker-market-demo/index.html
+          grep -q 'salesMetricModal' sticker-market-demo/index.html
+          grep -q 'enhanceProductGallery' sticker-market-demo/index.html
       - name: Commit generated index
         run: |
           git config user.name 'github-actions[bot]'
@@ -40,6 +46,6 @@ jobs:
           if git diff --cached --quiet; then
             echo 'No generated changes.'
           else
-            git commit -m 'feat: apply third UI rebuild v2'
+            git commit -m 'feat: apply Sticker Market v2.1 interaction fixes'
             git push
           fi
