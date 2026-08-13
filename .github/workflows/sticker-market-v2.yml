@@ -24,8 +24,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Build single HTML
+      - name: Build v2 base HTML
         run: python sticker-market-demo/apply_v2.py
+      - name: Bundle v2.1 interaction patch
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          base = Path('sticker-market-demo')
+          html = (base / 'index.html').read_text(encoding='utf-8')
+          css = (base / 'v21.css').read_text(encoding='utf-8')
+          js = (base / 'v21.js').read_text(encoding='utf-8')
+          html = html.replace('</style>', '\n/* Sticker Market v2.1 bundled patch */\n' + css + '\n</style>', 1)
+          html = html.replace('</script>', '\n/* Sticker Market v2.1 bundled patch */\n' + js + '\n</script>', 1)
+          html = html.replace('<title>Sticker Market — UI Rebuild v2.0</title>', '<title>Sticker Market — UI Rebuild v2.0 / Interaction v2.1</title>')
+          (base / 'index.html').write_text(html, encoding='utf-8')
+          (base / 'v2.built.js').write_text((base / 'v2.js').read_text(encoding='utf-8') + '\n\n' + js, encoding='utf-8')
+          PY
       - name: Validate JavaScript
         run: node --check sticker-market-demo/v2.built.js
       - name: Validate build markers
