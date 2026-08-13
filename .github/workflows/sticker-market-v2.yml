@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths:
+      - '.github/workflows/sticker-market-v2.yml'
       - 'sticker-market-demo/v2.js'
       - 'sticker-market-demo/v2.css'
       - 'sticker-market-demo/v21.js'
