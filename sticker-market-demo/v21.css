@@ -1,0 +1,38 @@
+/* Sticker Market v2.1 — interaction/regression patch. Keeps v2 visual spec. */
+.mobile-nav button span:last-child{white-space:nowrap;word-break:keep-all;line-height:1.15}
+.header-menu-btn{font-size:20px}
+.ai-cats button{white-space:normal;word-break:keep-all;overflow-wrap:normal;min-width:0}
+.ai-card[hidden],.product-card[hidden],.work-row[hidden],.order-card[hidden],.download-card[hidden]{display:none!important}
+.ai-card{position:relative}
+.ai-fav{position:absolute;right:12px;top:12px}
+.ai-empty{grid-column:1/-1}
+.clickable-kpi{width:100%;text-align:left;color:inherit;cursor:pointer}
+.clickable-kpi:hover,.clickable-kpi:focus-visible{border-color:var(--primary)}
+.kpi-hint{display:block;margin-top:7px;color:var(--primary);font-size:11px;font-weight:800}
+.sales-action{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;padding:14px;margin:9px 0}
+.sales-action.done{opacity:.58}
+.sales-action h3{margin:0 0 5px}
+.sales-priority{font-size:11px;font-weight:900;color:var(--primary);margin-bottom:4px}
+.gallery-main{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.gallery-track{width:100%;height:100%;display:flex;overflow:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth}
+.gallery-slide{flex:0 0 100%;width:100%;height:100%;display:grid;place-items:center;scroll-snap-align:start;position:relative;background:var(--surface)}
+.gallery-slide svg{width:100%;height:100%}
+.gallery-slide.usecase{padding:9%}
+.gallery-slide.usecase:after{content:'使用イメージ';position:absolute;left:14px;bottom:14px;background:#17171cdd;color:#fff;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:900}
+.gallery-slide.detail{padding:12%;background:var(--surface-2)}
+.gallery-slide.detail svg{filter:drop-shadow(0 14px 20px #0002)}
+.gallery-arrow{position:absolute;z-index:3;top:50%;transform:translateY(-50%);width:42px;height:42px;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 92%,transparent);border-radius:50%;display:grid;place-items:center;font-size:22px;box-shadow:var(--shadow)}
+.gallery-arrow.prev{left:10px}.gallery-arrow.next{right:10px}
+.gallery-dots button{width:9px;height:9px;border:0;border-radius:50%;background:var(--line);padding:0}
+.gallery-dots button.active{background:var(--primary);transform:scale(1.15)}
+.howto-list{display:grid;gap:9px;margin:14px 0}.howto-step{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start}.howto-step b:first-child{width:30px;height:30px;border-radius:50%;background:var(--primary-2);color:var(--primary);display:grid;place-items:center}
+.creator-apply-status{border-left:4px solid var(--warning)}
+.search-filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.search-filter-grid .field{margin:4px 0}.range-values{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}
+.filter-chip-btn{border:1px solid var(--primary);background:var(--primary-2);color:var(--primary);border-radius:999px;min-height:34px;padding:6px 10px;font-size:12px;font-weight:800}
+.filter-chip-btn .x{margin-left:5px}
+.shop-sort-hint{font-size:11px;color:var(--muted)}
+.shop-savebar{position:sticky;bottom:calc(70px + var(--safe-bottom));z-index:30;background:color-mix(in srgb,var(--surface) 96%,transparent);backdrop-filter:blur(12px);border:1px solid var(--line);padding:10px;border-radius:16px;display:flex;gap:8px;justify-content:flex-end}
+.theme-bg-preview{min-height:170px;border:1px solid var(--line);border-radius:16px;display:grid;place-items:center;background:var(--surface-2);overflow:hidden;position:relative}.theme-bg-preview svg,.theme-bg-preview img{width:100%;height:100%;object-fit:cover}
+.dead-control-audit-note{font-size:11px;color:var(--muted)}
+@media(max-width:640px){.gallery-arrow{display:none}.search-filter-grid{grid-template-columns:1fr 1fr}.sales-action{grid-template-columns:1fr}.sales-action .btn-row{justify-content:flex-start}.ai-cats{grid-template-columns:repeat(2,minmax(0,1fr))}.ai-cats button{font-size:14px;padding:8px 6px}.creator-dashboard-hero+ .creator-shortcuts{grid-template-columns:repeat(2,1fr)}.mobile-nav{--nav-count:4}.sticky-cta{padding-bottom:max(10px,var(--safe-bottom))}}
+@media(max-width:380px){.search-filter-grid{grid-template-columns:1fr}.ai-cats button{font-size:13px}.header-actions .icon-btn{width:42px;height:42px}}
