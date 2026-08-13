@@ -1,0 +1,43 @@
+name: Sticker Market v2 UI Rebuild
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'sticker-market-demo/v2.js'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate JavaScript
+        run: node --check sticker-market-demo/v2.js
+      - name: Build single HTML
+        run: python sticker-market-demo/apply_v2.py
+      - name: Validate build markers
+        run: |
+          grep -q 'Sticker Market — UI Rebuild v2.0' sticker-market-demo/index.html
+          grep -q 'LEGAL_FOOTER_V2' sticker-market-demo/index.html
+          grep -q 'creator-dashboard' sticker-market-demo/index.html
+          grep -q 'checkout/shipping' sticker-market-demo/index.html
+      - name: Commit generated index
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sticker-market-demo/index.html
+          if git diff --cached --quiet; then
+            echo 'No generated changes.'
+          else
+            git commit -m 'feat: apply third UI rebuild v2'
+            git push
+          fi
