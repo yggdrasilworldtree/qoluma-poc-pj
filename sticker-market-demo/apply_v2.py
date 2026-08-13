@@ -12,7 +12,7 @@ js += '\n\n' + (base / 'v212.js').read_text(encoding='utf-8')
 js = js.replace("function shell(content,{title='',back:false,search=false,footer=false,sub='',bell=false,cart=true,noNav=false}={})", "function shell(content,{title='',back=false,search=false,footer=false,sub='',bell=false,cart=true,noNav=false}={})")
 (base / 'v2.built.js').write_text(js, encoding='utf-8')
 html = f'''<!doctype html>
-<html lang="ja">">
+<html lang="ja">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
