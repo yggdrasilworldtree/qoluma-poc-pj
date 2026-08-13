@@ -20,5 +20,28 @@ function aiStudioQuickFilter(value){
  }else empty?.remove();
 }
 
+/* history.replaceState does not fire hashchange/popstate. Always render after replace navigation. */
+go=function(path,{replace=false}={}){
+ const h='#/'+path;
+ if(replace){
+  history.replaceState({},'',h);
+  closeModal();
+  render();
+  return;
+ }
+ if(location.hash===h)render();
+ else location.hash=h;
+};
+
+/* Explicit logout flow: clear session, persist, close modal, then replace with the public landing page. */
+logoutConfirm=function(){
+ confirmAction('ログアウトしますか？','現在のアカウントからログアウトします。ブラウザ内のアカウントデータは保持されます。','ログアウト',()=>{
+  db.session.userId=null;
+  save();
+  closeModal();
+  go('landing',{replace:true});
+ });
+};
+
 /* v2.js performs its first render before the v2.1 overrides are loaded. Re-render once after all patches load. */
 setTimeout(()=>{done();render()},0);
