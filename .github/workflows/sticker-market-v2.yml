@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'sticker-market-demo/v2.js'
+      - 'sticker-market-demo/apply_v2.py'
+      - 'sticker-market-demo/v2.css'
   workflow_dispatch:
 
 permissions:
@@ -20,10 +22,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Validate JavaScript
-        run: node --check sticker-market-demo/v2.js
       - name: Build single HTML
         run: python sticker-market-demo/apply_v2.py
+      - name: Validate JavaScript
+        run: node --check sticker-market-demo/v2.built.js
       - name: Validate build markers
         run: |
           grep -q 'Sticker Market — UI Rebuild v2.0' sticker-market-demo/index.html
