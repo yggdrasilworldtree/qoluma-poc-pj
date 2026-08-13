@@ -9,6 +9,7 @@ on:
       - 'sticker-market-demo/v2.css'
       - 'sticker-market-demo/v21.js'
       - 'sticker-market-demo/v21.css'
+      - 'sticker-market-demo/v211.js'
       - 'sticker-market-demo/apply_v2.py'
   workflow_dispatch:
 
@@ -25,34 +26,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Build v2 base HTML
+      - name: Build single HTML
         run: python sticker-market-demo/apply_v2.py
-      - name: Bundle v2.1 interaction patch
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          base = Path('sticker-market-demo')
-          html = (base / 'index.html').read_text(encoding='utf-8')
-          css = (base / 'v21.css').read_text(encoding='utf-8')
-          js = (base / 'v21.js').read_text(encoding='utf-8')
-          html = html.replace('</style>', '\n/* Sticker Market v2.1 bundled patch */\n' + css + '\n</style>', 1)
-          html = html.replace('</script>', '\n/* Sticker Market v2.1 bundled patch */\n' + js + '\n</script>', 1)
-          html = html.replace('<title>Sticker Market — UI Rebuild v2.0</title>', '<title>Sticker Market — UI Rebuild v2.0 / Interaction v2.1</title>')
-          (base / 'index.html').write_text(html, encoding='utf-8')
-          (base / 'v2.built.js').write_text((base / 'v2.js').read_text(encoding='utf-8') + '\n\n' + js, encoding='utf-8')
-          PY
       - name: Validate JavaScript
         run: node --check sticker-market-demo/v2.built.js
       - name: Validate build markers
         run: |
-          grep -q 'Sticker Market — UI Rebuild v2.0' sticker-market-demo/index.html
+          grep -q 'Sticker Market — UI Rebuild v2.0 / Interaction v2.1.1' sticker-market-demo/index.html
           grep -q 'Sticker Market v2.1' sticker-market-demo/index.html
+          grep -q 'Sticker Market v2.1.1' sticker-market-demo/index.html
           grep -q 'LEGAL_FOOTER_V2' sticker-market-demo/index.html
           grep -q 'creator-dashboard' sticker-market-demo/index.html
           grep -q 'checkout/shipping' sticker-market-demo/index.html
           grep -q 'openHowto' sticker-market-demo/index.html
           grep -q 'salesMetricModal' sticker-market-demo/index.html
           grep -q 'enhanceProductGallery' sticker-market-demo/index.html
+          grep -q 'aiStudioQuickFilter' sticker-market-demo/index.html
       - name: Commit generated index
         run: |
           git config user.name 'github-actions[bot]'
@@ -61,6 +50,6 @@ jobs:
           if git diff --cached --quiet; then
             echo 'No generated changes.'
           else
-            git commit -m 'feat: apply Sticker Market v2.1 interaction fixes'
+            git commit -m 'feat: apply Sticker Market v2.1.1 interaction fixes'
             git push
           fi
