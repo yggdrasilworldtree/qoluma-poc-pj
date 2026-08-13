@@ -1,0 +1,29 @@
+name: Sticker Market v1.6.3 hotfix
+on:
+  push:
+    paths:
+      - 'sticker-market-demo/v163.css'
+      - 'sticker-market-demo/apply_v163.py'
+      - '.github/workflows/sticker-market-v163.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply v1.6.3
+        run: python sticker-market-demo/apply_v163.py
+      - name: Validate sticky help header
+        run: |
+          grep -q 'V163_CSS_START' sticker-market-demo/index.html
+          grep -q 'v163-ai-help-head' sticker-market-demo/index.html
+          grep -q 'AIスタジオの使い方' sticker-market-demo/index.html
+      - name: Commit v1.6.3
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sticker-market-demo/index.html
+          git diff --cached --quiet || git commit -m "fix: keep AI Studio help header visible while scrolling"
+          git push
