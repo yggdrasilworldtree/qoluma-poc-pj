@@ -26,3 +26,4 @@ html = f'''<!doctype html>
 </html>'''
 (base / 'index.html').write_text(html, encoding='utf-8')
 print('built Sticker Market v2 single HTML')
+# Triggered after workflow validation fix.
