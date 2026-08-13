@@ -3,6 +3,9 @@ from pathlib import Path
 base = Path(__file__).resolve().parent
 css = (base / 'v2.css').read_text(encoding='utf-8')
 js = (base / 'v2.js').read_text(encoding='utf-8')
+# Normalize one source typo introduced while converting the legacy shell API.
+js = js.replace("function shell(content,{title='',back:false,search=false,footer=false,sub='',bell=false,cart=true,noNav=false}={})", "function shell(content,{title='',back=false,search=false,footer=false,sub='',bell=false,cart=true,noNav=false}={})")
+(base / 'v2.built.js').write_text(js, encoding='utf-8')
 html = f'''<!doctype html>
 <html lang="ja">
 <head>
