@@ -848,7 +848,7 @@ button,.btn,.my-link,.v16-area,.admin-tabs button,.work-tabs button{text-overflo
   ];
   function openAiHelp(){
     if(typeof modal!=='function')return;
-    modal(`<div class="row"><div><h2 style="margin:0">AIスタジオの使い方</h2><p class="muted" style="margin:4px 0 0">目的に合うAIを選び、提案を確認してから必要な内容だけ適用します。</p></div><button class="btn" onclick="closeModal()" aria-label="ヘルプを閉じる">×</button></div><div class="v162-ai-help-grid">${AI_HELP.map(x=>`<div class="v162-ai-help-card"><b>${esc(x[0])}</b><span class="muted">${esc(x[1])}</span></div>`).join('')}</div><h3>基本の流れ</h3><ol class="v162-ai-help-steps"><li>カテゴリまたは検索から、目的に合うAIを選ぶ</li><li>「使う」をタップし、対象商品または商品登録中の下書きを選ぶ</li><li>テンプレートを選ぶか、相談内容を入力する</li><li>必要なら「現在の商品情報を使う」で商品情報をAIへ渡す</li><li>「実行（デモ）」で提案を見る</li><li>変更前後を確認し、必要な提案だけ適用する</li><li>合わなければ「直前の適用を元に戻す」で戻す</li></ol><div class="v16-confirm-summary"><b>PUBLIC DEMO</b><br>現在のAI出力は模擬処理です。本番の外部AI/API処理ではありません。</div>`);
+    modal(`<div class="row v163-ai-help-head"><div><h2 style="margin:0">AIスタジオの使い方</h2><p class="muted" style="margin:4px 0 0">目的に合うAIを選び、提案を確認してから必要な内容だけ適用します。</p></div><button class="btn" onclick="closeModal()" aria-label="ヘルプを閉じる">×</button></div><div class="v162-ai-help-grid">${AI_HELP.map(x=>`<div class="v162-ai-help-card"><b>${esc(x[0])}</b><span class="muted">${esc(x[1])}</span></div>`).join('')}</div><h3>基本の流れ</h3><ol class="v162-ai-help-steps"><li>カテゴリまたは検索から、目的に合うAIを選ぶ</li><li>「使う」をタップし、対象商品または商品登録中の下書きを選ぶ</li><li>テンプレートを選ぶか、相談内容を入力する</li><li>必要なら「現在の商品情報を使う」で商品情報をAIへ渡す</li><li>「実行（デモ）」で提案を見る</li><li>変更前後を確認し、必要な提案だけ適用する</li><li>合わなければ「直前の適用を元に戻す」で戻す</li></ol><div class="v16-confirm-summary"><b>PUBLIC DEMO</b><br>現在のAI出力は模擬処理です。本番の外部AI/API処理ではありません。</div>`);
   }
   window.v162OpenAiHelp=openAiHelp;
   function enhanceAiStudio(){
@@ -897,5 +897,31 @@ button,.btn,.my-link,.v16-area,.admin-tabs button,.work-tabs button{text-overflo
 })();
 /* V162_HOTFIX_END */
 </script>
+
+
+<style>
+/* V163_CSS_START */
+/* Sticker Market v1.6.3 — AI Studio help modal sticky header */
+.v163-ai-help-head{
+  position:sticky;
+  top:-14px;
+  z-index:8;
+  align-items:flex-start;
+  background:color-mix(in srgb,var(--card) 96%,transparent);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  padding-top:14px;
+  padding-bottom:12px;
+  box-shadow:0 10px 18px -18px #0008;
+}
+.v163-ai-help-head>div:first-child{min-width:0;flex:1}
+.v163-ai-help-head .btn{flex:0 0 auto}
+@media(max-width:560px){
+  .v163-ai-help-head{top:-14px;margin-left:0;margin-right:0}
+  .v163-ai-help-head h2{font-size:clamp(25px,7.3vw,34px);line-height:1.2}
+  .v163-ai-help-head p{line-height:1.55}
+}
+/* V163_CSS_END */
+</style>
 
 </body></html>
