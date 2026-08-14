@@ -1,0 +1,13 @@
+import {test,expect} from '@playwright/test';
+
+async function route(page,path){await page.evaluate(p=>{location.hash='#/'+p},path);await page.waitForTimeout(80);await expect(page.locator('#main')).toBeVisible();await expect(page.locator('body')).not.toContainText('画面を表示できませんでした')}
+async function login(page,email='demo@example.test'){await page.goto('/#/login');await page.locator('#loginEmail').fill(email);await page.locator('#loginPass').fill('demo');await page.getByRole('button',{name:'ログイン',exact:true}).click();await page.waitForTimeout(650)}
+async function noOverflow(page){const x=await page.evaluate(()=>({w:document.documentElement.clientWidth,s:document.documentElement.scrollWidth}));expect(x.s).toBeLessThanOrEqual(x.w+2)}
+
+test('existing buyer/public screens remain reachable',async({page})=>{const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('/#/landing');await expect(page.getByText('Sticker Market',{exact:false}).first()).toBeVisible();await expect(page.locator('.legal-footer')).toBeVisible();await route(page,'search');await route(page,'product/p1');await login(page);for(const p of ['home','search','product/p1','favorites','orders','reviews','mypage','create-sticker']){await route(page,p);await noOverflow(page)}await page.evaluate(()=>{addCart('p1','physical',{qty:10,material:'耐水PET',size:'50mm',shape:'ダイカット'})});await route(page,'cart');await route(page,'checkout/shipping');await expect(page.getByText('配送先を選択')).toBeVisible();expect(errors).toEqual([])});
+
+test('existing creator management remains reachable',async({page})=>{const errors=[];page.on('pageerror',e=>errors.push(e.message));await login(page,'creator@example.test');for(const p of ['creator-dashboard','works','creator-orders','sales','shop-manage','ai-studio']){await route(page,p);await noOverflow(page)}await route(page,'works');await expect(page.getByText(/作品|商品/).first()).toBeVisible();expect(errors).toEqual([])});
+
+test('existing admin moderation and management remain reachable',async({page})=>{const errors=[];page.on('pageerror',e=>errors.push(e.message));await login(page,'admin@example.test');for(const p of ['admin','admin-review','admin-orders','admin-users','admin-menu','admin-moderation','admin-audit','admin-manufacturing','admin-manufacturers']){await route(page,p);await noOverflow(page)}await expect(page.getByText(/商品審査|審査/).first()).toBeVisible();expect(errors).toEqual([])});
+
+test('mobile navigation remains operable at 390px class viewport',async({page})=>{await login(page);await route(page,'home');const nav=page.locator('.mobile-nav');await expect(nav).toBeVisible();for(const b of await nav.locator('button').all()){await expect(b).toBeEnabled()}await noOverflow(page)});
