@@ -1,0 +1,9 @@
+/* Sticker Market Commercial MVP — additive styles only. */
+.sm-card-element{min-height:48px;margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:13px;background:var(--surface)}
+.sm-card-element.StripeElement--focus{border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 15%,transparent)}
+.sm-card-element.StripeElement--invalid{border-color:var(--danger)}
+.sm-payment-disabled{opacity:.58;cursor:not-allowed;filter:saturate(.5)}
+.sm-mvp-env{margin-bottom:16px;font-size:12px}.sm-mvp-env:not(.demo){border-left:4px solid var(--success)}
+.sm-mvp-assets{margin-top:18px}.sm-mvp-assets .detail-list{margin-bottom:14px}
+.legal-document{white-space:normal;line-height:1.8;max-height:65vh;overflow:auto;padding-right:4px}
+@media(max-width:520px){.sm-card-element{padding:12px}.sm-mvp-env{margin-top:2px}}
