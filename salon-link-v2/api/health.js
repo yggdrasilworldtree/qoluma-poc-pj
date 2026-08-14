@@ -29,6 +29,9 @@ module.exports = async function handler(req, res) {
       workSlot: 'workSlots',
       passwordRecovery: 'PASSWORD_RECOVERY',
       recoveryDialog: 'sl-recovery-overlay',
+      verificationFile: 'type="file"',
+      verificationBucket: 'verification-documents',
+      verificationRpc: 'submit_verification_request',
     };
 
     for (const [key, needle] of Object.entries(required)) {
@@ -67,6 +70,13 @@ module.exports = async function handler(req, res) {
       checkedAt: new Date().toISOString(),
       failures,
       checks,
+      lifecycleInjectedByProxy: true,
+      lifecycleRpcs: [
+        'refresh_expirations',
+        'sync_review_deadlines',
+        'sync_archives',
+        'sync_scheduled_notifications',
+      ],
     }));
   } catch (error) {
     res.statusCode = 503;
