@@ -1807,6 +1807,66 @@ async function smMvpSaveVariantCost(id){const el=document.querySelector(`[data-s
 async function smMvpAdminPublishReadiness(productId,refresh=false){const main=$('#main');if(!main||currentUser()?.role!=='admin')return;let sec=main.querySelector('.sm-mvp-admin-publish-readiness');if(refresh&&sec)sec.remove();if(sec)return;try{const [variants,validation]=await Promise.all([smMvpRest(`sm_product_variants?select=id,name,material,size,cost,active&product_id=eq.${encodeURIComponent(productId)}&active=eq.true`),smMvpRpc('sm_validate_product_submission',{p_product_id:productId})]);sec=document.createElement('section');sec.className='section card panel sm-mvp-admin-publish-readiness';const errors=validation.errors||[],warnings=validation.warnings||[],costReady=(variants||[]).length>0&&(variants||[]).every(v=>Number(v.cost)>0);sec.innerHTML=`<h2>製造・公開前確認</h2><p class="muted">既存の商品審査に、MVP公開に必要な製造原価と入稿確認だけを追加しています。</p>${(variants||[]).map(v=>`<div class="s1-inline-row"><div><b>${esc(v.name||v.id)}</b><div class="small muted">${esc(v.material||'')} / ${esc(v.size||'')}</div></div><div class="btn-row"><input data-sm-mvp-variant-cost="${esc(v.id)}" type="number" min="1" value="${Number(v.cost||0)}" style="width:110px" aria-label="製造原価"><button class="btn" onclick="smMvpSaveVariantCost('${v.id}')">原価保存</button></div></div>`).join('')||'<div class="notice demo">有効な物理販売仕様がありません。</div>'}<div class="divider"></div><div class="notice ${validation.ok&&costReady?'':'demo'}"><b>${validation.ok&&costReady?'公開前確認OK':'公開前に確認が必要です'}</b>${errors.length?`<ul>${errors.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}${!costReady?'<div>・物理商品の製造原価をすべて設定してください。</div>':''}${warnings.length?`<div class="small"><b>確認事項</b><ul>${warnings.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}</div>`;main.appendChild(sec)}catch(e){sec=document.createElement('section');sec.className='section card panel sm-mvp-admin-publish-readiness';sec.innerHTML=`<h2>製造・公開前確認</h2><div class="notice demo">確認できません：${esc(e.message||'サーバーエラー')}</div>`;main.appendChild(sec)}}
 const smMvpDeltaReviewBaseEnhance=s1EnhanceCurrentPage;
 s1EnhanceCurrentPage=function(){smMvpDeltaReviewBaseEnhance();const p=routePath().split('?')[0].split('/');if(SM_MVP.live()&&p[0]==='admin-work'&&p[1])smMvpAdminPublishReadiness(p[1])};
+
+/* Sticker Market formal MVP acceptance fixes — must remain last */
+/* Sticker Market formal MVP acceptance fixes — additive, loaded last. */
+const SM_MVP_ACCEPTANCE_FIX_VERSION='1.0.0';
+
+/* Keep the existing modal/UI, but bind STAGING/PRODUCTION submission to a deterministic
+ * server-persist -> route sequence. This avoids full-account rehydrate becoming part of
+ * the user's listing-completion transaction. */
+const smMvpAcceptanceBaseSellWizard=sellWizard;
+sellWizard=function(){
+ const out=smMvpAcceptanceBaseSellWizard();
+ if(!SM_MVP.live())return out;
+ queueMicrotask(()=>{
+  const buttons=[...document.querySelectorAll('#modal .btn-row .btn')];
+  const draft=buttons.find(b=>b.textContent.trim()==='下書き保存');
+  const submit=buttons.find(b=>b.textContent.trim()==='保存して審査申請');
+  if(draft)draft.setAttribute('onclick','smMvpAcceptanceCreateProduct(false)');
+  if(submit)submit.setAttribute('onclick','smMvpAcceptanceCreateProduct(true)');
+ });
+ return out;
+};
+
+async function smMvpAcceptanceCreateProduct(submit){
+ const name=$('#smNewName')?.value.trim(),desc=$('#smNewDesc')?.value.trim();
+ const digital=Number($('#smNewDigital')?.value),physical=Number($('#smNewPhysical')?.value);
+ const sellPhysical=!!$('#smNewPhysicalEnabled')?.checked,rights=!!$('#smNewRights')?.checked;
+ if(!name||!desc||!Number.isFinite(digital)||digital<0||!rights)return toast('商品情報と権利確認を入力してください');
+ const category=$('#smNewCat')?.value||'その他',material=$('#smNewMaterial')?.value||'耐水PET',size=$('#smNewSize')?.value||'50mm',aiUsed=!!$('#smNewAi')?.checked;
+ const pub=$('#smNewPublic')?.files?.[0],digitalFile=$('#smNewDigitalFile')?.files?.[0],printFile=$('#smNewPrint')?.files?.[0];
+ if(!pub)return toast('商品ページ画像が必要です');
+ if(digital>0&&!digitalFile)return toast('デジタル納品データが必要です');
+ if(sellPhysical&&!printFile)return toast('印刷元データが必要です');
+ const u=currentUser();if(!u?.creatorId)return toast('クリエイター権限が必要です');
+ const id=smMvpNewId('product'),variantId=sellPhysical?`${id}_base`:null,now0=new Date().toISOString();
+ busy(submit?'入稿を確認して審査申請しています…':'商品下書きを保存しています…');
+ try{
+  await smMvpRest('sm_products',{method:'POST',body:JSON.stringify({id,creator_id:u.creatorId,name,description:desc,category,status:'draft',digital_price:digital,physical_price:sellPhysical?physical:0,material,shape:'ダイカット',use_cases:[],tags:[],rights:{ownerDeclared:true,aiUsed},metadata:{sell_physical:sellPhysical,art:'type',color:'#ececec'},created_by:u.id}),headers:{Prefer:'return=minimal'}});
+  if(sellPhysical)await smMvpRest('sm_product_variants',{method:'POST',body:JSON.stringify({id:variantId,product_id:id,name:'標準',material,size,shape:'ダイカット',price:physical,active:true,metadata:{}}),headers:{Prefer:'return=minimal'}});
+  const pubAsset=await smMvpUploadAndRegister(pub,'sm-product-public','product_public','product',id);
+  if(digitalFile)await smMvpUploadAndRegister(digitalFile,'sm-product-private','digital_asset','product',id);
+  if(printFile)await smMvpUploadAndRegister(printFile,'sm-product-private','print_source','product',id);
+  if(submit)await smMvpRpc('sm_submit_product_review',{p_product_id:id});
+
+  const local={id,name,creatorId:u.creatorId,category,digital,physical:sellPhysical?physical:0,material,shape:'ダイカット',size,variantId,useCases:[],tags:[],description:desc,art:'type',color:'#ececec',updated:now0,rating:0,favs:0,sales:0,views:0,digitalAssetKey:null,privatePrintKey:null,publicMedia:pubAsset?.publicUrl?[{url:pubAsset.publicUrl}]:[],serverStatus:submit?'reviewing':'draft',rights:{ownerDeclared:true,aiUsed},metadata:{sell_physical:sellPhysical,art:'type',color:'#ececec'}};
+  const existing=products.find(p=>p.id===id);if(existing)Object.assign(existing,local);else products.push(local);
+
+  closeModal();
+  history.pushState({},'',`#/work/${id}`);
+  render();
+  done();
+  toast(submit?'審査申請しました':'下書きを保存しました');
+  setTimeout(()=>smMvpHydrateUser().catch(e=>console.warn('post-listing hydrate failed',e)),0);
+  return id;
+ }catch(e){
+  done();
+  toast(e?.message||'商品を保存できませんでした',3600);
+  return null;
+ }
+}
+
 </script>
 </body>
 </html>
