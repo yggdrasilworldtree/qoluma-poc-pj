@@ -1324,6 +1324,37 @@ render=function(){const path=routePath().split('?')[0];if(path==='admin-creator-
 
 save();setTimeout(()=>{done();render()},0);
 
+
+/* Sticker Market scenario-fit v1.0 — final cross-flow connectors. */
+
+/* Product cards keep their existing markup/behavior and gain an analytics identity only. */
+const s1FinalProductCard=productCard;
+productCard=function(p){return s1FinalProductCard(p).replace('<article class="card product-card">',`<article class="card product-card" data-product-id="${esc(p.id)}">`)};
+
+/* D-03: one additive series index; existing search/category pages remain unchanged. */
+function s1SeriesListPage(){const rows=s1Scenario().series;shell(`<div class="section-head"><div><h1>シリーズ</h1><p>同じテーマの作品をまとめて探せます。</p></div></div><div class="creator-grid">${rows.map(s=>{const ps=products.filter(p=>p.seriesId===s.id&&!p.hidden);return `<button class="card creator-row" onclick="go('series/${s.id}')"><div><h3>${esc(s.name)}</h3><p class="muted">${esc(s.description)}</p><div class="small">${ps.length}作品</div></div><div class="creator-samples">${ps.slice(0,3).map(p=>`<div>${artSvg(p)}</div>`).join('')}</div></button>`}).join('')}</div>`,{title:'シリーズ',back:true,footer:true});}
+function s1EnhanceHomeSeries(){const path=routePath().split('?')[0];if(!['landing','home'].includes(path)||$('#main .s1-series-home'))return;const rows=s1Scenario().series;const sec=document.createElement('section');sec.className='section s1-series-home';sec.innerHTML=`<div class="section-head"><div><span class="eyebrow">SERIES</span><h2>シリーズから探す</h2></div><button class="link-btn" onclick="go('series')">一覧 ›</button></div><div class="h-scroll">${rows.map(s=>`<button class="card creator-mini" onclick="go('series/${s.id}')" style="text-align:left"><h3>${esc(s.name)}</h3><p class="small muted">${esc(s.description)}</p><b>${products.filter(p=>p.seriesId===s.id&&!p.hidden).length}作品</b></button>`).join('')}</div>`;const usage=[...$('#main section')].find(x=>x.textContent.includes('Sticker Marketの使い方'));if(usage)$('#main').insertBefore(sec,usage);else $('#main').appendChild(sec)}
+
+/* Common notification center routes the user back to the related business object. */
+function s1NotificationTarget(n){const r=n.ref||{};if(r.supportCaseId)return`support/${r.supportCaseId}`;if(r.customOrderId)return`custom-order/${r.customOrderId}`;if(r.productId)return`product/${r.productId}`;if(r.orderId)return`order/${encodeURIComponent(r.orderId)}`;if(r.requestId)return'demand-requests';if(r.payoutId)return'payouts';if(r.rightsCaseId&&r.productId)return currentUser()?.role==='creator'?`appeal/${r.productId}`:'admin-rights';if(n.type==='shipping'||n.type==='order')return'orders';if(n.type==='payout')return'payouts';if(n.type==='support')return'support';return null}
+function s1OpenNotification(id){const n=userData()?.notifications?.find(x=>x.id===id);if(!n)return;n.read=true;save();const target=s1NotificationTarget(n);if(target)go(target);else render()}
+notificationsPage=function(){const rows=userData()?.notifications||[];shell(`<div class="section-head"><div><h1>通知</h1><p>${rows.filter(n=>!n.read).length}件の未読</p></div><button class="link-btn" onclick="userData().notifications.forEach(n=>n.read=true);save();render()">すべて既読</button></div>${rows.length?rows.map(n=>{const target=s1NotificationTarget(n);return `<button class="card notice-item ${n.read?'':'unread'}" style="width:100%;text-align:left" onclick="s1OpenNotification('${n.id}')"><span>${n.type==='shipping'?'🚚':n.type==='review'?'★':n.type==='creator'?'✦':n.type==='support'?'💬':n.type==='payout'?'¥':n.type==='demand'?'💡':'🔔'}</span><div><b>${esc(n.text)}</b><div class="small muted">${fmtDate(n.date)}${target?' ・ 詳細を見る':''}</div></div></button>`}).join(''):`<div class="empty"><div class="emoji">🔔</div><h2>通知はありません</h2><p class="muted">注文・発送・メッセージ・新作などのお知らせがここに届きます。</p><button class="btn primary" onclick="go('home')">作品を見る</button></div>`}`,{title:'通知',back:true,bell:false,cart:false});};
+
+/* AI market/improvement outputs reference the shared analytics/demand data, but still require explicit apply. */
+function s1AiProposalText(name,p){const sc=s1Scenario(),zero=sc.analytics.events.filter(e=>e.type==='search'&&e.resultCount===0).length,open=sc.demandRequests.filter(x=>x.status!=='対応済み').length;if(/市場機会|市場分析/.test(name))return`検索0件 ${zero}件、未対応の需要リクエスト ${open}件を確認しました。需要が供給を上回る用途を優先して新作候補を検討してください。`;if(/商品改善|分析/.test(name)&&p){const rate=p.views?((p.sales/p.views)*100).toFixed(1):'0.0';return`${p.name} は閲覧 ${p.views}、お気に入り ${p.favs}、販売 ${p.sales}、概算CVR ${rate}%です。用途説明を冒頭へ移し、検索タグと価格訴求を比較する改善案を提案します。`}if(/タグ|SEO/.test(name)&&p)return`${p.name} のカテゴリ「${p.category}」と用途「${(p.useCases||[]).join('・')}」を基準に、商品名一致を優先するタグ候補を整理します。`;return`${name}の観点では、用途説明を先頭へ移し、商品名・タグを検索意図に合わせて整理する案を提案します。`}
+executeV21Ai=function(name){const btn=$('#aiRunBtn');if(btn)btn.disabled=true;busy('AIを実行しています…');setTimeout(()=>{done();if(btn)btn.disabled=false;const box=$('#aiResult'),p=productBy($('#aiProduct')?.value);if(!box)return;const text=s1AiProposalText(name,p);box.innerHTML=`<b>AIによる提案（デモ）</b><p>${esc(text)}</p><div class="btn-row"><button class="btn" onclick="toast('変更前後を比較表示しました（デモ）')">変更前後を比較</button>${p&&p.creatorId===currentUser()?.creatorId?`<button class="btn primary" onclick="s1ApplyAiSuggestion('${esc(name)}')">確認して商品下書きへ反映</button>`:''}<button class="btn" onclick="toast('提案を適用しませんでした')">適用しない</button></div>`},700)};
+
+/* Make creator application storage safe for accounts created before the scenario patch. */
+const s1FinalApproveCreator=s1ApproveCreator;
+s1ApproveCreator=function(userId){db.creator??={};db.creator.works??={};db.creator.shop??={};db.creator.sales??={};return s1FinalApproveCreator(userId)};
+
+const s1FinalEnhancer=s1EnhanceCurrentPage;
+s1EnhanceCurrentPage=function(){s1FinalEnhancer();s1EnhanceHomeSeries();s1TrackImpressions()};
+const s1FinalRender=render;
+render=function(){if(routePath().split('?')[0]==='series')return s1SeriesListPage();return s1FinalRender()};
+
+setTimeout(()=>{done();render()},0);
+
 </script>
 </body>
 </html>
