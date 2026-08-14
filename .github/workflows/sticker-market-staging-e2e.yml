@@ -82,6 +82,20 @@ jobs:
             if [ -z "${!k:-}" ]; then echo "Missing generated STAGING fixture: $k"; exit 1; fi
           done
 
+      - name: Align Stripe Elements selector for current Stripe.js
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('sticker-market-demo/e2e/staging-mvp.spec.mjs')
+          s=p.read_text()
+          old='iframe[title*="Secure card payment input frame"]'
+          new='iframe[name^="__privateStripeFrame"]'
+          if old not in s:
+              raise SystemExit('expected legacy Stripe selector not found')
+          p.write_text(s.replace(old,new))
+          PY
+
       - name: Validate E2E syntax
         run: node --check sticker-market-demo/e2e/staging-mvp.spec.mjs
 
