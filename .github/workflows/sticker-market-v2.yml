@@ -17,6 +17,7 @@ on:
       - 'sticker-market-demo/scenario_v1_market.js'
       - 'sticker-market-demo/scenario_v1_ops.js'
       - 'sticker-market-demo/scenario_v1_stabilize.js'
+      - 'sticker-market-demo/scenario_v1_final.js'
       - 'sticker-market-demo/scenario_v1.css'
       - 'sticker-market-demo/apply_v2.py'
   workflow_dispatch:
@@ -54,6 +55,8 @@ jobs:
           grep -q 's1ApproveCancellation' sticker-market-demo/index.html
           grep -q 's1AdminCreatorApplications' sticker-market-demo/index.html
           grep -q 's1ApplyAiSuggestion' sticker-market-demo/index.html
+          grep -q 's1NotificationTarget' sticker-market-demo/index.html
+          grep -q 's1SeriesListPage' sticker-market-demo/index.html
           grep -q 'LEGAL_FOOTER_V2' sticker-market-demo/index.html
           grep -q 'creator-dashboard' sticker-market-demo/index.html
           grep -q 'checkout/shipping' sticker-market-demo/index.html
