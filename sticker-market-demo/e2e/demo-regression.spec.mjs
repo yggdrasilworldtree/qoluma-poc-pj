@@ -1,3 +1,4 @@
+// Existing-feature regression after formal MVP differential fixes.
 import {test,expect} from '@playwright/test';
 
 async function route(page,path){await page.evaluate(p=>{location.hash='#/'+p},path);await page.waitForTimeout(100);await expect(page.locator('#main')).toBeVisible();await expect(page.locator('body')).not.toContainText('画面を表示できませんでした')}
