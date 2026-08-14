@@ -22,3 +22,27 @@ smMvpInit=async function(){
  }
  return smMvpHotfixBaseInit();
 };
+
+/* Formal MVP acceptance hotfix:
+ * Once product persistence + review submission succeed, do not make the user wait
+ * for the full account/operations hydrate before entering the existing work detail.
+ * The lightweight catalog merge is sufficient for the work route; the complete
+ * hydrate runs after navigation and remains the server source-of-truth refresh.
+ */
+const smMvpHotfixBaseCreateProduct=smMvpCreateProduct;
+smMvpCreateProduct=async function(submit){
+ if(!SM_MVP.live())return smMvpHotfixBaseCreateProduct(submit);
+ const fullHydrate=smMvpHydrateUser;
+ let fastHydrateUsed=false;
+ smMvpHydrateUser=async function(){
+  fastHydrateUsed=true;
+  await smMvpMergeAccessibleProducts();
+  return currentUser();
+ };
+ try{
+  return await smMvpHotfixBaseCreateProduct(submit);
+ }finally{
+  smMvpHydrateUser=fullHydrate;
+  if(fastHydrateUsed)setTimeout(()=>fullHydrate().catch(e=>console.warn('post-listing hydrate failed',e)),0);
+ }
+};
