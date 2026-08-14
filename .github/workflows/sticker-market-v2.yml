@@ -19,6 +19,13 @@ on:
       - 'sticker-market-demo/scenario_v1_stabilize.js'
       - 'sticker-market-demo/scenario_v1_final.js'
       - 'sticker-market-demo/scenario_v1.css'
+      - 'sticker-market-demo/commercial_mvp_core.js'
+      - 'sticker-market-demo/commercial_mvp_checkout.js'
+      - 'sticker-market-demo/commercial_mvp_ops.js'
+      - 'sticker-market-demo/commercial_mvp_existing_flows.js'
+      - 'sticker-market-demo/commercial_mvp_finalize.js'
+      - 'sticker-market-demo/commercial_mvp.css'
+      - 'sticker-market-demo/commercial_mvp_contract_test.mjs'
       - 'sticker-market-demo/apply_v2.py'
   workflow_dispatch:
 
@@ -37,13 +44,14 @@ jobs:
           node-version: '22'
       - name: Build single HTML
         run: python sticker-market-demo/apply_v2.py
-      - name: Validate JavaScript
+      - name: Validate JavaScript syntax
         run: node --check sticker-market-demo/v2.built.js
+      - name: Validate commercial MVP contracts
+        run: node sticker-market-demo/commercial_mvp_contract_test.mjs
       - name: Validate build markers
         run: |
-          grep -q 'Sticker Market — UI Rebuild v2.0 / Interaction v2.1.1' sticker-market-demo/index.html
-          grep -q 'Sticker Market v2.1' sticker-market-demo/index.html
-          grep -q 'Sticker Market v2.1.1' sticker-market-demo/index.html
+          grep -q 'Sticker Market — Commercial MVP v1.0' sticker-market-demo/index.html
+          grep -q 'sticker-market-commercial-mvp' sticker-market-demo/index.html
           grep -q 'Sticker Market scenario-fit v1.0' sticker-market-demo/index.html
           grep -q 'S1_SCENARIO_VERSION' sticker-market-demo/index.html
           grep -q 's1EnsureManufacturing' sticker-market-demo/index.html
@@ -64,6 +72,9 @@ jobs:
           grep -q 'salesMetricModal' sticker-market-demo/index.html
           grep -q 'enhanceProductGallery' sticker-market-demo/index.html
           grep -q 'aiStudioQuickFilter' sticker-market-demo/index.html
+          grep -q 'SM_MVP_CONFIG' sticker-market-demo/index.html
+          grep -q 'smMvpEnsureCheckout' sticker-market-demo/index.html
+          grep -q 'smMvpUploadAndRegister' sticker-market-demo/index.html
       - name: Commit generated index
         run: |
           git config user.name 'github-actions[bot]'
@@ -72,6 +83,6 @@ jobs:
           if git diff --cached --quiet; then
             echo 'No generated changes.'
           else
-            git commit -m 'feat: build Sticker Market scenario-fit v1.0'
+            git commit -m 'feat: build Sticker Market commercial MVP v1.0'
             git push
           fi
