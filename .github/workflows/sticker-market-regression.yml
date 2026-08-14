@@ -1,0 +1,52 @@
+name: Sticker Market Existing Regression
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sticker-market-regression.yml'
+      - 'sticker-market-demo/v2.js'
+      - 'sticker-market-demo/v2.css'
+      - 'sticker-market-demo/v21.js'
+      - 'sticker-market-demo/v21.css'
+      - 'sticker-market-demo/v211.js'
+      - 'sticker-market-demo/v212.js'
+      - 'sticker-market-demo/v212.css'
+      - 'sticker-market-demo/scenario_v1_*.js'
+      - 'sticker-market-demo/scenario_v1.css'
+      - 'sticker-market-demo/commercial_mvp_*.js'
+      - 'sticker-market-demo/commercial_mvp*.css'
+      - 'sticker-market-demo/e2e/**'
+      - 'sticker-market-demo/apply_v2.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mobile-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build current single HTML
+        run: python sticker-market-demo/apply_v2.py
+      - name: Install Playwright
+        working-directory: sticker-market-demo/e2e
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Start local demo
+        run: |
+          python -m http.server 4173 -d sticker-market-demo >/tmp/sticker-market-http.log 2>&1 &
+          for i in {1..20}; do curl -fsS http://127.0.0.1:4173/ >/dev/null && exit 0; sleep 1; done
+          cat /tmp/sticker-market-http.log
+          exit 1
+      - name: Run existing-feature mobile regression
+        working-directory: sticker-market-demo/e2e
+        env:
+          SM_E2E_BASE_URL: http://127.0.0.1:4173
+        run: npm run regression
