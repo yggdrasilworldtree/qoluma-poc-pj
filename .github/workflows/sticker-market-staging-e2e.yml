@@ -1,0 +1,48 @@
+name: Sticker Market STAGING MVP E2E
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  staging-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: staging
+    env:
+      SM_E2E_BASE_URL: https://sticker-market-vercel-migration.vercel.app
+      SM_STAGING_BUYER_EMAIL: ${{ secrets.SM_STAGING_BUYER_EMAIL }}
+      SM_STAGING_BUYER_PASSWORD: ${{ secrets.SM_STAGING_BUYER_PASSWORD }}
+      SM_STAGING_APPLICANT_EMAIL: ${{ secrets.SM_STAGING_APPLICANT_EMAIL }}
+      SM_STAGING_APPLICANT_PASSWORD: ${{ secrets.SM_STAGING_APPLICANT_PASSWORD }}
+      SM_STAGING_ADMIN_EMAIL: ${{ secrets.SM_STAGING_ADMIN_EMAIL }}
+      SM_STAGING_ADMIN_PASSWORD: ${{ secrets.SM_STAGING_ADMIN_PASSWORD }}
+      SM_STAGING_MANUFACTURER_EMAIL: ${{ secrets.SM_STAGING_MANUFACTURER_EMAIL }}
+      SM_STAGING_MANUFACTURER_PASSWORD: ${{ secrets.SM_STAGING_MANUFACTURER_PASSWORD }}
+      SM_STAGING_PRODUCT_ID: ${{ secrets.SM_STAGING_PRODUCT_ID }}
+      SM_STAGING_MANUFACTURER_ID: ${{ secrets.SM_STAGING_MANUFACTURER_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Preflight STAGING fixtures
+        shell: bash
+        run: |
+          missing=0
+          for k in SM_STAGING_BUYER_EMAIL SM_STAGING_BUYER_PASSWORD SM_STAGING_APPLICANT_EMAIL SM_STAGING_APPLICANT_PASSWORD SM_STAGING_ADMIN_EMAIL SM_STAGING_ADMIN_PASSWORD SM_STAGING_MANUFACTURER_EMAIL SM_STAGING_MANUFACTURER_PASSWORD SM_STAGING_PRODUCT_ID SM_STAGING_MANUFACTURER_ID; do
+            if [ -z "${!k}" ]; then echo "Missing required STAGING secret: $k"; missing=1; fi
+          done
+          if [ "$missing" -ne 0 ]; then exit 1; fi
+      - name: Validate E2E syntax
+        run: node --check sticker-market-demo/e2e/staging-mvp.spec.mjs
+      - name: Install Playwright
+        working-directory: sticker-market-demo/e2e
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Run eight MVP flows against STAGING
+        working-directory: sticker-market-demo/e2e
+        run: npm run staging
