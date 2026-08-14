@@ -19,11 +19,27 @@ jobs:
     env:
       SM_E2E_BASE_URL: https://sticker-market-vercel-migration.vercel.app
       SM_FIXTURE_URL: https://oodalamuvycoajdrdszi.supabase.co/functions/v1/sm-staging-fixtures
+      SM_PUBLIC_CONFIG_URL: https://oodalamuvycoajdrdszi.supabase.co/functions/v1/sm-public-config
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+
+      - name: Validate STAGING Stripe runtime configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          CONFIG="$(curl -fsSL "$SM_PUBLIC_CONFIG_URL")"
+          MODE="$(echo "$CONFIG" | jq -r '.mode // ""')"
+          PAYMENT="$(echo "$CONFIG" | jq -r '.paymentConfigured // false')"
+          API_READY="$(echo "$CONFIG" | jq -r '.publicApiReady // false')"
+          KEY_KIND="$(echo "$CONFIG" | jq -r 'if (.stripePublishableKey // "") | startswith("pk_test_") then "pk_test" elif (.stripePublishableKey // "") | startswith("pk_live_") then "pk_live" else "missing_or_invalid" end')"
+          echo "STAGING runtime: mode=$MODE paymentConfigured=$PAYMENT publicApiReady=$API_READY stripeKeyType=$KEY_KIND"
+          test "$MODE" = "STAGING"
+          test "$PAYMENT" = "true"
+          test "$API_READY" = "true"
+          test "$KEY_KIND" = "pk_test"
 
       - name: Provision isolated STAGING fixtures with GitHub OIDC
         shell: bash
