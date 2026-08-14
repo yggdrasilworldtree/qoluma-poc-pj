@@ -82,17 +82,17 @@ jobs:
             if [ -z "${!k:-}" ]; then echo "Missing generated STAGING fixture: $k"; exit 1; fi
           done
 
-      - name: Align Stripe Elements selector for current Stripe.js
+      - name: Align Stripe Elements frame discovery for current Stripe.js
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
           p=Path('sticker-market-demo/e2e/staging-mvp.spec.mjs')
           s=p.read_text()
-          old='iframe[title*="Secure card payment input frame"]'
-          new='iframe[name^="__privateStripeFrame"]'
+          old='''async function fillStripeCard(page){const frame=page.frameLocator('iframe[title*="Secure card payment input frame"]').first();await frame.locator('input[name="cardnumber"]').fill('4242424242424242');await frame.locator('input[name="exp-date"]').fill('1234');await frame.locator('input[name="cvc"]').fill('123')}'''
+          new='''async function fillStripeCard(page){let cardFrame=null;await expect.poll(async()=>{for(const f of page.frames()){if(await f.locator('input[name="cardnumber"]').count()){cardFrame=f;return true}}return false},{timeout:20000}).toBe(true);await cardFrame.locator('input[name="cardnumber"]').fill('4242424242424242');await cardFrame.locator('input[name="exp-date"]').fill('1234');await cardFrame.locator('input[name="cvc"]').fill('123')}'''
           if old not in s:
-              raise SystemExit('expected legacy Stripe selector not found')
+              raise SystemExit('expected Stripe card helper not found')
           p.write_text(s.replace(old,new))
           PY
 
