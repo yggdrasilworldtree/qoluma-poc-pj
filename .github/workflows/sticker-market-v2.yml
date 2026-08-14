@@ -24,6 +24,7 @@ on:
       - 'sticker-market-demo/commercial_mvp_ops.js'
       - 'sticker-market-demo/commercial_mvp_existing_flows.js'
       - 'sticker-market-demo/commercial_mvp_finalize.js'
+      - 'sticker-market-demo/commercial_mvp_hotfix.js'
       - 'sticker-market-demo/commercial_mvp.css'
       - 'sticker-market-demo/commercial_mvp_contract_test.mjs'
       - 'sticker-market-demo/commercial_mvp_server_contract_test.mjs'
