@@ -5,6 +5,7 @@ SALON LINK v2 is the smartphone-first formal MVP for salon managers, stylists, a
 ## Production URL
 
 - `https://beauty-help-mvp-test.vercel.app/`
+- Health check: `https://beauty-help-mvp-test.vercel.app/api/health`
 
 ## Current production architecture
 
@@ -26,6 +27,22 @@ The production path intentionally avoids the legacy fixed-length Vercel UI loade
 5. The Edge Function decompresses the bundle server-side and returns normal UTF-8 HTML.
 
 Do not restore the previous browser-side Base64/gzip loader or the old `app marker` compatibility path.
+
+## Production health check
+
+`api/health.js` performs a read-only smoke audit of the HTML returned by `salon-link-v2-public`. It does not read user data.
+
+It verifies:
+
+- upstream HTTP status;
+- viewport + Safari Safe Area markers;
+- five-route bottom navigation definition (`ホーム / 日程 / 探す / 連絡 / 設定`);
+- filter/modal scroll support;
+- `window.SalonBackend` and Work Slot UI presence;
+- password recovery UI and `PASSWORD_RECOVERY` handling;
+- syntax of every inline JavaScript block using Node `vm.Script`.
+
+A healthy production deployment returns HTTP 200 and `{ "ok": true }`.
 
 ## Password recovery
 
@@ -75,6 +92,7 @@ Latest Performance Advisor had no WARN/ERROR findings. Remaining messages were I
 ## Deployment files
 
 - `api/index.js` — Vercel server-side HTML proxy
+- `api/health.js` — production HTML/syntax smoke audit
 - `vercel.json` — root rewrite
 - `supabase/functions/salon-link-v2-public/index.ts` — v2 HTML reconstruction and password recovery patch
 
