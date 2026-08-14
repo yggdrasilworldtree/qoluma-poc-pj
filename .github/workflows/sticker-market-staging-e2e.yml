@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Validate STAGING Stripe runtime configuration
+      - name: Inspect STAGING Stripe runtime configuration
         shell: bash
         run: |
           set -euo pipefail
@@ -37,9 +37,16 @@ jobs:
           KEY_KIND="$(echo "$CONFIG" | jq -r 'if (.stripePublishableKey // "") | startswith("pk_test_") then "pk_test" elif (.stripePublishableKey // "") | startswith("pk_live_") then "pk_live" else "missing_or_invalid" end')"
           echo "STAGING runtime: mode=$MODE paymentConfigured=$PAYMENT publicApiReady=$API_READY stripeKeyType=$KEY_KIND"
           test "$MODE" = "STAGING"
-          test "$PAYMENT" = "true"
           test "$API_READY" = "true"
-          test "$KEY_KIND" = "pk_test"
+          if [ "$KEY_KIND" = "pk_live" ]; then
+            echo "Refusing to run STAGING E2E with a live Stripe publishable key" >&2
+            exit 1
+          fi
+          if [ "$PAYMENT" = "true" ] && [ "$KEY_KIND" = "pk_test" ]; then
+            echo "SM_STRIPE_READY=true" >> "$GITHUB_ENV"
+          else
+            echo "SM_STRIPE_READY=false" >> "$GITHUB_ENV"
+          fi
 
       - name: Provision isolated STAGING fixtures with GitHub OIDC
         shell: bash
@@ -99,6 +106,7 @@ jobs:
           done
 
       - name: Align Stripe Elements frame discovery for current Stripe.js
+        if: env.SM_STRIPE_READY == 'true'
         shell: bash
         run: |
           python - <<'PY'
@@ -121,8 +129,21 @@ jobs:
           npm install --no-audit --no-fund
           npx playwright install --with-deps chromium
 
-      - name: Run eight MVP flows against STAGING
+      - name: Run full eight MVP flows against STAGING
+        if: env.SM_STRIPE_READY == 'true'
         working-directory: sticker-market-demo/e2e
         run: npm run staging
+
+      - name: Run payment-independent listing and moderation acceptance
+        if: env.SM_STRIPE_READY != 'true'
+        working-directory: sticker-market-demo/e2e
+        run: npx playwright test staging-mvp.spec.mjs --project=chromium-mobile --grep 'E2E-0[23]'
+
+      - name: Formal release gate - Stripe Test Mode required
+        if: env.SM_STRIPE_READY != 'true'
+        shell: bash
+        run: |
+          echo "STAGING payment acceptance remains blocked: configure STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET and STRIPE_PUBLISHABLE_KEY (pk_test_*) in Supabase Edge Function secrets." >&2
+          exit 1
 
 # one-time push trigger for formal acceptance; removed after successful run
