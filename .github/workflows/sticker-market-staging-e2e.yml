@@ -5,44 +5,88 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   staging-e2e:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 35
     environment: staging
     env:
       SM_E2E_BASE_URL: https://sticker-market-vercel-migration.vercel.app
-      SM_STAGING_BUYER_EMAIL: ${{ secrets.SM_STAGING_BUYER_EMAIL }}
-      SM_STAGING_BUYER_PASSWORD: ${{ secrets.SM_STAGING_BUYER_PASSWORD }}
-      SM_STAGING_APPLICANT_EMAIL: ${{ secrets.SM_STAGING_APPLICANT_EMAIL }}
-      SM_STAGING_APPLICANT_PASSWORD: ${{ secrets.SM_STAGING_APPLICANT_PASSWORD }}
-      SM_STAGING_ADMIN_EMAIL: ${{ secrets.SM_STAGING_ADMIN_EMAIL }}
-      SM_STAGING_ADMIN_PASSWORD: ${{ secrets.SM_STAGING_ADMIN_PASSWORD }}
-      SM_STAGING_MANUFACTURER_EMAIL: ${{ secrets.SM_STAGING_MANUFACTURER_EMAIL }}
-      SM_STAGING_MANUFACTURER_PASSWORD: ${{ secrets.SM_STAGING_MANUFACTURER_PASSWORD }}
-      SM_STAGING_PRODUCT_ID: ${{ secrets.SM_STAGING_PRODUCT_ID }}
-      SM_STAGING_MANUFACTURER_ID: ${{ secrets.SM_STAGING_MANUFACTURER_ID }}
+      SM_FIXTURE_URL: https://oodalamuvycoajdrdszi.supabase.co/functions/v1/sm-staging-fixtures
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Preflight STAGING fixtures
+
+      - name: Provision isolated STAGING fixtures with GitHub OIDC
         shell: bash
         run: |
-          missing=0
+          set -euo pipefail
+          RUN_KEY="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          BUYER_EMAIL="sm-e2e-buyer+${RUN_KEY}@example.test"
+          APPLICANT_EMAIL="sm-e2e-applicant+${RUN_KEY}@example.test"
+          ADMIN_EMAIL="sm-e2e-admin+${RUN_KEY}@example.test"
+          MANUFACTURER_EMAIL="sm-e2e-manufacturer+${RUN_KEY}@example.test"
+          BUYER_PASSWORD="SmE2E-B-$(openssl rand -hex 16)"
+          APPLICANT_PASSWORD="SmE2E-A-$(openssl rand -hex 16)"
+          ADMIN_PASSWORD="SmE2E-D-$(openssl rand -hex 16)"
+          MANUFACTURER_PASSWORD="SmE2E-M-$(openssl rand -hex 16)"
+          echo "::add-mask::$BUYER_PASSWORD"
+          echo "::add-mask::$APPLICANT_PASSWORD"
+          echo "::add-mask::$ADMIN_PASSWORD"
+          echo "::add-mask::$MANUFACTURER_PASSWORD"
+
+          OIDC_TOKEN="$(curl -fsSL -H "Authorization: Bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=sticker-market-staging-fixture" | jq -r '.value')"
+          test -n "$OIDC_TOKEN" && test "$OIDC_TOKEN" != "null"
+
+          BODY="$(jq -n \
+            --arg runId "$RUN_KEY" \
+            --arg buyerEmail "$BUYER_EMAIL" --arg buyerPassword "$BUYER_PASSWORD" \
+            --arg applicantEmail "$APPLICANT_EMAIL" --arg applicantPassword "$APPLICANT_PASSWORD" \
+            --arg adminEmail "$ADMIN_EMAIL" --arg adminPassword "$ADMIN_PASSWORD" \
+            --arg manufacturerEmail "$MANUFACTURER_EMAIL" --arg manufacturerPassword "$MANUFACTURER_PASSWORD" \
+            '{runId:$runId,buyer:{email:$buyerEmail,password:$buyerPassword},applicant:{email:$applicantEmail,password:$applicantPassword},admin:{email:$adminEmail,password:$adminPassword},manufacturer:{email:$manufacturerEmail,password:$manufacturerPassword}}')"
+
+          RESPONSE="$(curl -fsSL -X POST "$SM_FIXTURE_URL" -H "Authorization: Bearer $OIDC_TOKEN" -H 'Content-Type: application/json' --data "$BODY")"
+          echo "$RESPONSE" | jq -e '.ok == true' >/dev/null
+          PRODUCT_ID="$(echo "$RESPONSE" | jq -r '.productId')"
+          MANUFACTURER_ID="$(echo "$RESPONSE" | jq -r '.manufacturerId')"
+          test -n "$PRODUCT_ID" && test "$PRODUCT_ID" != "null"
+          test -n "$MANUFACTURER_ID" && test "$MANUFACTURER_ID" != "null"
+
+          {
+            echo "SM_STAGING_BUYER_EMAIL=$BUYER_EMAIL"
+            echo "SM_STAGING_BUYER_PASSWORD=$BUYER_PASSWORD"
+            echo "SM_STAGING_APPLICANT_EMAIL=$APPLICANT_EMAIL"
+            echo "SM_STAGING_APPLICANT_PASSWORD=$APPLICANT_PASSWORD"
+            echo "SM_STAGING_ADMIN_EMAIL=$ADMIN_EMAIL"
+            echo "SM_STAGING_ADMIN_PASSWORD=$ADMIN_PASSWORD"
+            echo "SM_STAGING_MANUFACTURER_EMAIL=$MANUFACTURER_EMAIL"
+            echo "SM_STAGING_MANUFACTURER_PASSWORD=$MANUFACTURER_PASSWORD"
+            echo "SM_STAGING_PRODUCT_ID=$PRODUCT_ID"
+            echo "SM_STAGING_MANUFACTURER_ID=$MANUFACTURER_ID"
+          } >> "$GITHUB_ENV"
+
+      - name: Preflight STAGING fixture contract
+        shell: bash
+        run: |
+          set -euo pipefail
           for k in SM_STAGING_BUYER_EMAIL SM_STAGING_BUYER_PASSWORD SM_STAGING_APPLICANT_EMAIL SM_STAGING_APPLICANT_PASSWORD SM_STAGING_ADMIN_EMAIL SM_STAGING_ADMIN_PASSWORD SM_STAGING_MANUFACTURER_EMAIL SM_STAGING_MANUFACTURER_PASSWORD SM_STAGING_PRODUCT_ID SM_STAGING_MANUFACTURER_ID; do
-            if [ -z "${!k}" ]; then echo "Missing required STAGING secret: $k"; missing=1; fi
+            if [ -z "${!k:-}" ]; then echo "Missing generated STAGING fixture: $k"; exit 1; fi
           done
-          if [ "$missing" -ne 0 ]; then exit 1; fi
+
       - name: Validate E2E syntax
         run: node --check sticker-market-demo/e2e/staging-mvp.spec.mjs
+
       - name: Install Playwright
         working-directory: sticker-market-demo/e2e
         run: |
           npm install --no-audit --no-fund
           npx playwright install --with-deps chromium
+
       - name: Run eight MVP flows against STAGING
         working-directory: sticker-market-demo/e2e
         run: npm run staging
