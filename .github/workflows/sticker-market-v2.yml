@@ -26,6 +26,7 @@ on:
       - 'sticker-market-demo/commercial_mvp_finalize.js'
       - 'sticker-market-demo/commercial_mvp.css'
       - 'sticker-market-demo/commercial_mvp_contract_test.mjs'
+      - 'sticker-market-demo/commercial_mvp_server_contract_test.mjs'
       - 'sticker-market-demo/apply_v2.py'
   workflow_dispatch:
 
@@ -48,6 +49,8 @@ jobs:
         run: node --check sticker-market-demo/v2.built.js
       - name: Validate commercial MVP contracts
         run: node sticker-market-demo/commercial_mvp_contract_test.mjs
+      - name: Validate deployed server boundaries
+        run: node sticker-market-demo/commercial_mvp_server_contract_test.mjs
       - name: Validate build markers
         run: |
           grep -q 'Sticker Market — Commercial MVP v1.0' sticker-market-demo/index.html
