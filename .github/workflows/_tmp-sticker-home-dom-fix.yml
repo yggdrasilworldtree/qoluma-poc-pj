@@ -1,0 +1,44 @@
+name: Temporary Sticker Home DOM Fix
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/_tmp-sticker-home-dom-fix.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Patch selector misuse
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          files = [
+              Path('sticker-market-demo/scenario_v1_stabilize.js'),
+              Path('sticker-market-demo/scenario_v1_final.js'),
+          ]
+          old = "const usage=[...$('#main section')].find"
+          new = "const usage=$$('#main section').find"
+          changed = 0
+          for p in files:
+              s = p.read_text(encoding='utf-8')
+              n = s.count(old)
+              if n:
+                  p.write_text(s.replace(old, new), encoding='utf-8')
+                  changed += n
+                  print(f'{p}: patched {n}')
+          if changed != 2:
+              raise SystemExit(f'expected 2 selector fixes, got {changed}')
+          PY
+          rm .github/workflows/_tmp-sticker-home-dom-fix.yml
+      - name: Commit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sticker-market-demo/scenario_v1_stabilize.js sticker-market-demo/scenario_v1_final.js .github/workflows/_tmp-sticker-home-dom-fix.yml
+          git commit -m 'fix: use collection selector in home enhancers'
+          git push
