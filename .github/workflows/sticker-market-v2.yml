@@ -10,6 +10,12 @@ on:
       - 'sticker-market-demo/v21.js'
       - 'sticker-market-demo/v21.css'
       - 'sticker-market-demo/v211.js'
+      - 'sticker-market-demo/v212.js'
+      - 'sticker-market-demo/v212.css'
+      - 'sticker-market-demo/scenario_v1_core.js'
+      - 'sticker-market-demo/scenario_v1_market.js'
+      - 'sticker-market-demo/scenario_v1_ops.js'
+      - 'sticker-market-demo/scenario_v1.css'
       - 'sticker-market-demo/apply_v2.py'
   workflow_dispatch:
 
@@ -35,6 +41,14 @@ jobs:
           grep -q 'Sticker Market — UI Rebuild v2.0 / Interaction v2.1.1' sticker-market-demo/index.html
           grep -q 'Sticker Market v2.1' sticker-market-demo/index.html
           grep -q 'Sticker Market v2.1.1' sticker-market-demo/index.html
+          grep -q 'Sticker Market scenario-fit v1.0' sticker-market-demo/index.html
+          grep -q 'S1_SCENARIO_VERSION' sticker-market-demo/index.html
+          grep -q 's1EnsureManufacturing' sticker-market-demo/index.html
+          grep -q 's1DemandRequestsPage' sticker-market-demo/index.html
+          grep -q 's1CustomOrderDetailPage' sticker-market-demo/index.html
+          grep -q 's1SupportDetailPage' sticker-market-demo/index.html
+          grep -q 's1ManufacturerDashboard' sticker-market-demo/index.html
+          grep -q 's1AdminAiAnalysis' sticker-market-demo/index.html
           grep -q 'LEGAL_FOOTER_V2' sticker-market-demo/index.html
           grep -q 'creator-dashboard' sticker-market-demo/index.html
           grep -q 'checkout/shipping' sticker-market-demo/index.html
@@ -50,6 +64,6 @@ jobs:
           if git diff --cached --quiet; then
             echo 'No generated changes.'
           else
-            git commit -m 'feat: apply Sticker Market v2.1.1 interaction fixes'
+            git commit -m 'feat: build Sticker Market scenario-fit v1.0'
             git push
           fi
