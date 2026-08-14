@@ -14,6 +14,7 @@ js += '\n\n' + (base / 'scenario_v1_compat.js').read_text(encoding='utf-8')
 js += '\n\n' + (base / 'scenario_v1_market.js').read_text(encoding='utf-8')
 js += '\n\n' + (base / 'scenario_v1_ops.js').read_text(encoding='utf-8')
 js += '\n\n' + (base / 'scenario_v1_stabilize.js').read_text(encoding='utf-8')
+js += '\n\n' + (base / 'scenario_v1_final.js').read_text(encoding='utf-8')
 # Normalize one source typo introduced while converting the legacy shell API.
 js = js.replace("function shell(content,{title='',back:false,search=false,footer=false,sub='',bell=false,cart=true,noNav=false}={})", "function shell(content,{title='',back=false,search=false,footer=false,sub='',bell=false,cart=true,noNav=false}={})")
 (base / 'v2.built.js').write_text(js, encoding='utf-8')
