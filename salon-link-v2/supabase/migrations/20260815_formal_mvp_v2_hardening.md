@@ -17,6 +17,9 @@ These migrations were applied to Supabase production project `cpmmqqznrqeodlesyf
 | 20260814190850 | `base_review_deadline_on_review_phase_start` |
 | 20260814190942 | `configure_compensation_rounding_rule` |
 | 20260814191038 | `auto_open_review_phase_after_all_payments_received` |
+| 20260814192044 | `allow_safe_availability_lifecycle_transitions` |
+| 20260814192147 | `extend_availability_status_for_withdrawal` |
+| 20260814192225 | `fix_review_deadline_published_at_ambiguity` |
 
 ## What this hardening covers
 
@@ -32,10 +35,15 @@ These migrations were applied to Supabase production project `cpmmqqznrqeodlesyf
 - Review deadline calculated from the start of `review_pending`, not the historical work date.
 - Configurable compensation rounding (`nearest_yen`, `floor_yen`, `ceil_yen`).
 - Automatic `payment_confirmed -> review_pending`, work-group read-only transition, and review notifications after the last worker confirms payment receipt.
+- Availability lifecycle transitions separated from verified user edits so trusted workflow updates can safely move `published -> booked / expired / withdrawn` without permitting field tampering.
+- Availability status CHECK extended with `withdrawn` while retaining the legacy `hidden` status for compatibility.
+- Review deadline publication SQL qualified to `r.published_at` to avoid ambiguous-column failures when joining Work Slots.
 
-## Acceptance test
+## Acceptance tests
 
-Run `../tests/formal_mvp_v2_acceptance.sql` against a non-production connection or through an administrative SQL runner. The test intentionally rolls back all test rows, including temporary `auth.users` records, before returning its assertion result.
+### Main lifecycle test
+
+Run `../tests/formal_mvp_v2_acceptance.sql`.
 
 Latest production execution result:
 
@@ -51,4 +59,36 @@ Latest production execution result:
 }
 ```
 
-Post-test leak check: `0` matching `e2e-%@example.invalid` users remained in `auth.users`.
+### Safety / lifecycle test
+
+Run `../tests/formal_mvp_v2_safety_acceptance.sql`.
+
+Latest production execution result:
+
+```json
+{
+  "duplicate_pending_verification_blocked": true,
+  "withdrawal_closes_pending_application": true,
+  "withdrawal_declines_incoming_offer": true,
+  "withdrawal_closes_published_availability": true,
+  "account_soft_withdrawn": true,
+  "old_work_date_does_not_expire_new_review_phase": true,
+  "review_publishes_after_review_phase_deadline": true,
+  "slot_completes_after_review_deadline": true,
+  "all_passed": true
+}
+```
+
+### Availability booking regression test
+
+A rollback-only production test also confirmed:
+
+```json
+{
+  "participant_created": true,
+  "overlapping_availability_auto_booked": true,
+  "all_passed": true
+}
+```
+
+All acceptance tests intentionally roll back their test rows, including temporary `auth.users` records. Post-test leak checks returned `0` matching `e2e-%@example.invalid` users.
