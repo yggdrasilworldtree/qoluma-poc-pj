@@ -24,6 +24,8 @@ js += '\n\n' + (base / 'commercial_mvp_existing_flows.js').read_text(encoding='u
 js += '\n\n' + (base / 'commercial_mvp_finalize.js').read_text(encoding='utf-8')
 js += '\n\n' + (base / 'commercial_mvp_hotfix.js').read_text(encoding='utf-8')
 js += '\n\n/* Sticker Market MVP formal differential v1.0 */\n' + (base / 'commercial_mvp_delta_v1.js').read_text(encoding='utf-8')
+js += '\n\n' + (base / 'commercial_mvp_delta_v1_cancel.js').read_text(encoding='utf-8')
+js += '\n\n' + (base / 'commercial_mvp_delta_v1_admin.js').read_text(encoding='utf-8')
 # Normalize one source typo introduced while converting the legacy shell API.
 js = js.replace("function shell(content,{title='',back:false,search=false,footer=false,sub='',bell=false,cart=true,noNav=false}={})", "function shell(content,{title='',back=false,search=false,footer=false,sub='',bell=false,cart=true,noNav=false}={})")
 (base / 'v2.built.js').write_text(js, encoding='utf-8')
