@@ -29,6 +29,7 @@ on:
       - 'sticker-market-demo/commercial_mvp_delta_v1_cancel.js'
       - 'sticker-market-demo/commercial_mvp_delta_v1_admin.js'
       - 'sticker-market-demo/commercial_mvp_delta_v1_review.js'
+      - 'sticker-market-demo/commercial_mvp_acceptance_fix.js'
       - 'sticker-market-demo/commercial_mvp.css'
       - 'sticker-market-demo/commercial_mvp_delta_v1.css'
       - 'sticker-market-demo/commercial_mvp_contract_test.mjs'
@@ -70,6 +71,8 @@ jobs:
           grep -q 'sticker-market-commercial-mvp' sticker-market-demo/index.html
           grep -q 'sticker-market-mvp-delta' sticker-market-demo/index.html
           grep -q 'SM_MVP_DELTA_VERSION' sticker-market-demo/index.html
+          grep -q 'SM_MVP_ACCEPTANCE_FIX_VERSION' sticker-market-demo/index.html
+          grep -q 'smMvpAcceptanceCreateProduct' sticker-market-demo/index.html
           grep -q 'Sticker Market scenario-fit v1.0' sticker-market-demo/index.html
           grep -q 'S1_SCENARIO_VERSION' sticker-market-demo/index.html
           grep -q 's1EnsureManufacturing' sticker-market-demo/index.html
