@@ -1,5 +1,5 @@
 /* Sticker Market formal MVP acceptance fixes — additive, loaded last. */
-const SM_MVP_ACCEPTANCE_FIX_VERSION='1.0.1';
+const SM_MVP_ACCEPTANCE_FIX_VERSION='1.0.2';
 
 /* Keep the existing modal/UI, but bind STAGING/PRODUCTION submission to a deterministic
  * server-persist -> route sequence. This avoids full-account rehydrate becoming part of
@@ -70,3 +70,13 @@ render=function(){
  }
  return smMvpAcceptanceBaseRender();
 };
+
+/* The original v2 listeners captured the original render function before v2.1.2 and
+ * commercial routers were layered on. Remove that stale listener and bind the final
+ * router so hash navigation/back-forward always resolves the current route table. */
+if(typeof v212BaseRender==='function'){
+ window.removeEventListener('hashchange',v212BaseRender);
+ window.removeEventListener('popstate',v212BaseRender);
+}
+window.addEventListener('hashchange',render);
+window.addEventListener('popstate',render);
