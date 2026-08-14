@@ -94,3 +94,5 @@ jobs:
       - name: Run eight MVP flows against STAGING
         working-directory: sticker-market-demo/e2e
         run: npm run staging
+
+# one-time push trigger for formal acceptance; removed after successful run
