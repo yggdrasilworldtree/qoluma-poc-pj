@@ -1,0 +1,7 @@
+{
+  "name":"sticker-market-e2e",
+  "private":true,
+  "type":"module",
+  "devDependencies":{"@playwright/test":"1.54.2"},
+  "scripts":{"regression":"playwright test demo-regression.spec.mjs --project=chromium-mobile","staging":"playwright test staging-mvp.spec.mjs --project=chromium-mobile"}
+}
