@@ -27,6 +27,7 @@ js += '\n\n/* Sticker Market MVP formal differential v1.0 */\n' + (base / 'comme
 js += '\n\n' + (base / 'commercial_mvp_delta_v1_cancel.js').read_text(encoding='utf-8')
 js += '\n\n' + (base / 'commercial_mvp_delta_v1_admin.js').read_text(encoding='utf-8')
 js += '\n\n' + (base / 'commercial_mvp_delta_v1_review.js').read_text(encoding='utf-8')
+js += '\n\n/* Sticker Market formal MVP acceptance fixes — must remain last */\n' + (base / 'commercial_mvp_acceptance_fix.js').read_text(encoding='utf-8')
 # Normalize one source typo introduced while converting the legacy shell API.
 js = js.replace("function shell(content,{title='',back:false,search=false,footer=false,sub='',bell=false,cart=true,noNav=false}={})", "function shell(content,{title='',back=false,search=false,footer=false,sub='',bell=false,cart=true,noNav=false}={})")
 (base / 'v2.built.js').write_text(js, encoding='utf-8')
@@ -54,4 +55,4 @@ html = f'''<!doctype html>
 </body>
 </html>'''
 (base / 'index.html').write_text(html, encoding='utf-8')
-print('built Sticker Market v2 + scenario-fit v1.0 + commercial MVP v1.0 + formal delta v1.0 single HTML')
+print('built Sticker Market v2 + scenario-fit v1.0 + commercial MVP v1.0 + formal delta v1.0 + acceptance fixes single HTML')
