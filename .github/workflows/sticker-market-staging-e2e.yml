@@ -139,6 +139,17 @@ jobs:
         working-directory: sticker-market-demo/e2e
         run: npx playwright test staging-mvp.spec.mjs --project=chromium-mobile --grep 'E2E-0[23]'
 
+      - name: Upload Playwright diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sticker-market-staging-e2e-${{ github.run_id }}
+          path: |
+            sticker-market-demo/e2e/test-results
+            sticker-market-demo/e2e/playwright-report
+          if-no-files-found: ignore
+          retention-days: 7
+
       - name: Formal release gate - Stripe Test Mode required
         if: env.SM_STRIPE_READY != 'true'
         shell: bash
@@ -146,4 +157,4 @@ jobs:
           echo "STAGING payment acceptance remains blocked: configure STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET and STRIPE_PUBLISHABLE_KEY (pk_test_*) in Supabase Edge Function secrets." >&2
           exit 1
 
-# one-time push trigger for formal acceptance; route priority verified next
+# one-time push trigger for formal acceptance; diagnostics preserved
