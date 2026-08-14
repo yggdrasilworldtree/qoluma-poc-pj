@@ -61,7 +61,7 @@ function s1MfgStatusFromOrder(order){const s=String(order.status||'');if(/配送
 function s1EnsureManufacturing(order,userId){
  if(!(order.items||[]).some(x=>x.kind==='physical'))return null;
  const sc=s1Scenario();let m=sc.manufacturingOrders.find(x=>x.orderId===order.id);if(m)return m;
- const mf=sc.manufacturers.find(x=>x.active)!;
+ const mf=sc.manufacturers.find(x=>x.active)||sc.manufacturers[0];if(!mf)return null;
  m={id:uid('mfgOrder'),manufacturingOrderId:uid('mfgOrder'),orderId:order.id,userId,manufacturerId:mf.id,status:s1MfgStatusFromOrder(order),createdAt:order.date||now(),updatedAt:now(),inspection:{status:'未実施',note:''},tracking:{carrier:'',number:'',shippedAt:null,deliveredAt:null},reproductionOf:null,history:[{date:now(),status:s1MfgStatusFromOrder(order),note:'既存注文に製造注文を関連付けました。'}]};
  sc.manufacturingOrders.push(m);return m;
 }
