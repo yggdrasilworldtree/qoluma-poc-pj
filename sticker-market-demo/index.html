@@ -1810,7 +1810,7 @@ s1EnhanceCurrentPage=function(){smMvpDeltaReviewBaseEnhance();const p=routePath(
 
 /* Sticker Market formal MVP acceptance fixes — must remain last */
 /* Sticker Market formal MVP acceptance fixes — additive, loaded last. */
-const SM_MVP_ACCEPTANCE_FIX_VERSION='1.0.0';
+const SM_MVP_ACCEPTANCE_FIX_VERSION='1.0.1';
 
 /* Keep the existing modal/UI, but bind STAGING/PRODUCTION submission to a deterministic
  * server-persist -> route sequence. This avoids full-account rehydrate becoming part of
@@ -1866,6 +1866,21 @@ async function smMvpAcceptanceCreateProduct(submit){
   return null;
  }
 }
+
+/* v2.1.2 owns the work-detail routes, but later commercial/scenario render wrappers
+ * can otherwise fall through to their role dashboards. Resolve these two legacy routes
+ * before the final base router, without changing any URL or navigation structure. */
+const smMvpAcceptanceBaseRender=render;
+render=function(){
+ const path=routePath().split('?')[0],seg=path.split('/');
+ if(seg[0]==='work'&&seg[1])return workDetailPage(seg[1]);
+ if(seg[0]==='admin-work'&&seg[1]){
+  const out=adminWorkDetailPage(seg[1]);
+  if(SM_MVP.live()&&typeof smMvpAdminPublishReadiness==='function')setTimeout(()=>smMvpAdminPublishReadiness(seg[1]),0);
+  return out;
+ }
+ return smMvpAcceptanceBaseRender();
+};
 
 </script>
 </body>
