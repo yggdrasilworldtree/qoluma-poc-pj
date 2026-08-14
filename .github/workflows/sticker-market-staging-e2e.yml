@@ -157,4 +157,4 @@ jobs:
           echo "STAGING payment acceptance remains blocked: configure STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET and STRIPE_PUBLISHABLE_KEY (pk_test_*) in Supabase Edge Function secrets." >&2
           exit 1
 
-# one-time push trigger: final router listener acceptance clean
+# one-time push trigger: readiness idempotency acceptance
