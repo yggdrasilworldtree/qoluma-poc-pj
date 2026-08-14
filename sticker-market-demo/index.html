@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#5b3fd2">
+<meta name="sticker-market-scenario-fit" content="v1.0">
 <title>Sticker Market — UI Rebuild v2.0 / Interaction v2.1.1</title>
 <style>
 /* Sticker Market v2 — third UI rebuild */
@@ -96,9 +97,26 @@
 @media(max-width:700px){.work-detail-hero{grid-template-columns:108px minmax(0,1fr);gap:12px;padding:12px}.management-grid{grid-template-columns:1fr}.work-detail-actions{justify-content:stretch}.work-detail-actions .btn{flex:1}.work-row-btn{grid-template-columns:74px minmax(0,1fr) auto}.work-row-btn .work-chevron{grid-column:auto}.work-row-copy .status{margin-top:5px}.work-detail-copy h1{font-size:24px}}
 @media(max-width:390px){.work-detail-hero{grid-template-columns:92px minmax(0,1fr)}.management-tabs button{padding-left:10px;padding-right:10px;font-size:13px}.work-detail-actions{flex-direction:column}.work-detail-actions .btn{width:100%}}
 
+
+/* Sticker Market scenario-fit v1.0 — additive styles only. Existing visual spec remains authoritative. */
+.s1-case-row{width:100%;display:flex;align-items:center;justify-content:space-between;gap:14px;text-align:left;color:inherit;border:1px solid var(--line);background:var(--surface);margin:9px 0;cursor:pointer}.s1-case-row:hover,.s1-case-row:focus-visible{border-color:var(--primary)}
+.s1-case-row>div{min-width:0}.s1-case-row h3{margin:6px 0 2px;overflow-wrap:anywhere}.s1-case-row>span:last-child{font-size:25px;color:var(--muted);flex:0 0 auto}
+.s1-inline-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line)}.s1-inline-row:last-child{border-bottom:0}.s1-inline-row>span,.s1-inline-row>div{min-width:0;overflow-wrap:anywhere}.s1-inline-row>b,.s1-inline-row>small{flex:0 0 auto}
+.s1-progress{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin:18px 0}.s1-progress-step{position:relative;display:grid;justify-items:center;gap:7px;text-align:center;color:var(--muted);min-width:0}.s1-progress-step:before{content:"";position:absolute;top:15px;left:-50%;right:50%;height:2px;background:var(--line);z-index:0}.s1-progress-step:first-child:before{display:none}.s1-progress-step>span{position:relative;z-index:1;width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--line);font-size:12px;font-weight:900}.s1-progress-step>small{font-size:10px;line-height:1.25;word-break:keep-all}.s1-progress-step.done{color:var(--success)}.s1-progress-step.done:before{background:var(--success)}.s1-progress-step.done>span{background:color-mix(in srgb,var(--success) 12%,var(--surface));border-color:var(--success);color:var(--success)}.s1-progress-step.current{color:var(--primary);font-weight:900}.s1-progress-step.current>span{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-2)}
+.s1-zero-search .h-scroll{text-align:left;margin-top:12px}.s1-zero-search .product-card{background:var(--surface)}
+.s1-product-extra .s1-inline-row{margin-top:10px}.s1-creator-actions{margin:12px 0 0}.s1-creator-actions .btn,.s1-creator-actions .link-btn{background:color-mix(in srgb,var(--surface) 94%,transparent)}
+.s1-toggle-grid{display:flex;flex-wrap:wrap;gap:8px}.s1-toggle-grid .chip{min-height:42px}.s1-mypage-link{display:contents}
+.s1-settings-extra{margin-bottom:18px}.s1-rights-card{margin-top:15px}.s1-rights-card .chip{margin:4px 4px 4px 0}.s1-sell-rights{margin-top:12px}
+.s1-sales-detail .kpi-grid,.s1-admin-extra .kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.s1-priority-list{display:grid;gap:10px;margin-top:15px}.s1-priority-list .panel h3{margin:8px 0}.s1-ai-market{margin:8px 0 14px}
+.admin-workbench .s1-case-row{padding:14px}.admin-workbench .s1-case-row h3{font-size:16px}
+@media(max-width:700px){.s1-sales-detail .kpi-grid,.s1-admin-extra .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.s1-inline-row{align-items:flex-start}.s1-progress{gap:2px}.s1-progress-step small{font-size:9px}.s1-progress-step>span{width:28px;height:28px}.s1-progress-step:before{top:13px}.s1-creator-actions{display:grid;grid-template-columns:1fr 1fr}.s1-creator-actions>*{width:100%}}
+@media(max-width:420px){.s1-progress{grid-template-columns:repeat(5,minmax(44px,1fr));overflow-x:auto;padding-bottom:7px}.s1-progress-step small{white-space:nowrap}.s1-case-row{padding:13px}.s1-case-row h3{font-size:15px}.s1-inline-row{font-size:13px}.s1-sales-detail .kpi-grid,.s1-admin-extra .kpi-grid{grid-template-columns:1fr 1fr}.s1-toggle-grid{display:grid;grid-template-columns:1fr 1fr}.s1-toggle-grid .chip{width:100%;justify-content:flex-start}.s1-creator-actions{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.s1-progress-step,.s1-case-row{scroll-behavior:auto;transition:none}}
+
 </style>
 </head>
 <body>
+<!-- Sticker Market scenario-fit v1.0: additive differential implementation -->
 <a class="skip-link" href="#main">本文へ移動</a>
 <div id="app" class="app"></div>
 <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
@@ -748,6 +766,422 @@ render=function(){
 };
 
 ensureAllWorkMeta();
+
+
+/* Sticker Market scenario-fit patch v1.0 — additive core only. */
+
+const S1_SCENARIO_VERSION=1;
+const S1_USE_CASES=['PC・スマホ','手帳','文具','車','屋外','店舗','ギフト'];
+const S1_MFG_FLOW=['注文受付','製造中','検品','発送済み','配送完了'];
+const S1_PAYOUT_FLOW=['未確定','確定','支払予定','支払済み','調整済み'];
+
+function s1Scenario(){db.scenario??={};return db.scenario}
+function s1CreatorUser(creatorId){return db.users.find(u=>u.creatorId===creatorId)||null}
+function s1UserData(userId){db.userData[userId]??=baseUserData();return db.userData[userId]}
+function s1AllOrders(){const rows=[];Object.entries(db.userData||{}).forEach(([userId,d])=>(d.orders||[]).forEach(o=>rows.push({userId,order:o})));return rows}
+function s1FindOrder(id){for(const row of s1AllOrders())if(row.order.id===id||row.order.orderId===id)return row;return null}
+function s1FindManufacturingByOrder(orderId){return (s1Scenario().manufacturingOrders||[]).find(x=>x.orderId===orderId)||null}
+function s1FindManufacturer(id){return (s1Scenario().manufacturers||[]).find(x=>x.id===id)||null}
+function s1Date(v){try{return new Date(v).toLocaleString('ja-JP')}catch(e){return String(v||'—')}}
+function s1StatusClass(v){return /完了|済み|確定|公開|承認|正常/.test(v)?'ok':/差し戻し|停止|返金|不良|取消|却下|高/.test(v)?'danger':/中|待ち|予定|受付|保留|検品/.test(v)?'warn':''}
+function s1ProductCurrentPrice(item){const p=productBy(item.productId);if(!p)return item.price||0;if(item.kind==='digital')return Number(p.digital||0);return Number(p.physical||item.price||0)}
+function s1OrderHasProduct(order,productId){return (order.items||[]).some(x=>x.productId===productId)}
+function s1PurchasedProduct(userId,productId){const d=db.userData[userId];return !!d?.orders?.some(o=>s1OrderHasProduct(o,productId)&&!String(o.status).includes('キャンセル')&&!String(o.status).includes('返金'))}
+
+function s1Notify(userId,type,text,ref={}){
+ const d=s1UserData(userId),cfg=d.settings?.notify||{};
+ if(cfg[type]===false)return;
+ d.notifications??=[];
+ d.notifications.unshift({id:uid('notice'),type,text,ref,read:false,date:now()});
+}
+function s1NotifyCreator(creatorId,type,text,ref={}){const u=s1CreatorUser(creatorId);if(u)s1Notify(u.id,type,text,ref)}
+function s1Track(type,data={}){
+ const sc=s1Scenario();sc.analytics??={events:[]};sc.analytics.events??=[];
+ sc.analytics.events.push({id:uid('event'),type,userId:currentUser()?.id||null,date:now(),...data});
+ if(sc.analytics.events.length>1200)sc.analytics.events=sc.analytics.events.slice(-1200);
+ save();
+}
+function s1Audit(action,before,after,source='scenario-fit'){
+ db.admin.audit??=[];
+ db.admin.audit.unshift({id:uid('audit'),date:now(),userId:currentUser()?.id||'system',action,before,after,source});
+}
+
+function s1UseCasesForProduct(p,i){
+ const text=[p.category,p.use,...(p.tags||[])].filter(Boolean).join(' ');
+ const out=[];
+ if(/PC|スマホ|宇宙|Y2K|文字|ロゴ/.test(text))out.push('PC・スマホ');
+ if(/手帳|花|植物|かわいい|シンプル/.test(text))out.push('手帳','文具');
+ if(/屋外|アウトドア|風景|自然|山|耐水/.test(text))out.push('屋外');
+ if(/店舗|ビジネス|ロゴ|食べ物|カフェ/.test(text))out.push('店舗');
+ if(/ギフト|花|かわいい|動物|ペット/.test(text))out.push('ギフト');
+ if(/車|カー/.test(text))out.push('車');
+ if(!out.length)out.push(S1_USE_CASES[i%S1_USE_CASES.length]);
+ return [...new Set(out)];
+}
+function s1SeriesSeed(){
+ return [
+  {id:'series_nature',name:'風景と夜空コレクション',description:'風景・自然・夜空をテーマにしたシリーズ。'},
+  {id:'series_pet',name:'どうぶつ日和',description:'動物・ペットをテーマにしたシリーズ。'},
+  {id:'series_cafe',name:'喫茶とおやつ',description:'カフェ・食べ物をテーマにしたシリーズ。'}
+ ];
+}
+function s1SeriesForProduct(p){if(/風景|自然|宇宙|夜空/.test(p.category+' '+(p.tags||[]).join(' ')))return'series_nature';if(/動物|ペット|猫|ねこ|うさぎ/.test(p.category+' '+p.name))return'series_pet';if(/食べ物|カフェ|喫茶|コーヒー/.test(p.category+' '+p.name))return'series_cafe';return null}
+
+function s1MfgStatusFromOrder(order){const s=String(order.status||'');if(/配送完了/.test(s))return'配送完了';if(/発送済/.test(s))return'発送済み';if(/検品/.test(s))return'検品';if(/製造/.test(s))return'製造中';return'注文受付'}
+function s1EnsureManufacturing(order,userId){
+ if(!(order.items||[]).some(x=>x.kind==='physical'))return null;
+ const sc=s1Scenario();let m=sc.manufacturingOrders.find(x=>x.orderId===order.id);if(m)return m;
+ const mf=sc.manufacturers.find(x=>x.active)||sc.manufacturers[0];if(!mf)return null;
+ m={id:uid('mfgOrder'),manufacturingOrderId:uid('mfgOrder'),orderId:order.id,userId,manufacturerId:mf.id,status:s1MfgStatusFromOrder(order),createdAt:order.date||now(),updatedAt:now(),inspection:{status:'未実施',note:''},tracking:{carrier:'',number:'',shippedAt:null,deliveredAt:null},reproductionOf:null,history:[{date:now(),status:s1MfgStatusFromOrder(order),note:'既存注文に製造注文を関連付けました。'}]};
+ sc.manufacturingOrders.push(m);return m;
+}
+function s1SyncOrderFromManufacturing(m){
+ const row=s1FindOrder(m.orderId);if(!row)return;
+ const map={'注文受付':'注文確定','製造中':'製造中','検品':'検品中','発送済み':'発送済み','配送完了':'配送完了'};
+ row.order.status=map[m.status]||row.order.status;
+ if(m.tracking?.number){row.order.trackingNumber=m.tracking.number;row.order.carrier=m.tracking.carrier}
+}
+function s1SetManufacturingStatus(id,status,note=''){
+ const m=s1Scenario().manufacturingOrders.find(x=>x.id===id);if(!m||!S1_MFG_FLOW.includes(status))return;
+ const before=m.status,from=S1_MFG_FLOW.indexOf(before),to=S1_MFG_FLOW.indexOf(status);
+ if(to<from&&currentUser()?.role!=='admin'){toast('前の工程には戻せません');return}
+ m.status=status;m.updatedAt=now();m.history.unshift({date:now(),status,note:note||`${status}へ更新`});
+ if(status==='検品')m.inspection.status='確認中';
+ if(status==='発送済み'&&!m.tracking.shippedAt)m.tracking.shippedAt=now();
+ if(status==='配送完了'&&!m.tracking.deliveredAt)m.tracking.deliveredAt=now();
+ s1SyncOrderFromManufacturing(m);s1Audit('製造状態更新',before,status,'製造管理');
+ const row=s1FindOrder(m.orderId);if(row)s1Notify(row.userId,'shipping',`注文 ${m.orderId}：${status}`,{orderId:m.orderId,manufacturingOrderId:m.id});
+ save();render();
+}
+
+function s1EnsureScenario(){
+ const sc=s1Scenario();sc.version=S1_SCENARIO_VERSION;
+ sc.series??=s1SeriesSeed();sc.demandRequests??=[];sc.customOrders??=[];sc.supportCases??=[];sc.reports??=[];sc.rightsCases??=[];sc.manufacturingOrders??=[];sc.manufacturers??=[];sc.payouts??=[];sc.features??=[];sc.riskFlags??=[];sc.analytics??={events:[]};sc.accountClosures??=[];sc.featuredCollections??=[];
+ if(!sc.manufacturers.length)sc.manufacturers.push({id:'mfg_demo_001',name:'Demo Print Works',materials:['耐水PET','上質紙','透明PET','ホログラム'],sizes:['30mm','50mm','70mm','100mm'],baseCost:120,leadDays:5,active:true,defectRate:1.2,onTimeRate:97.8});
+ if(!db.users.some(u=>u.role==='manufacturer')){const mu={id:'user_mfg_001',role:'manufacturer',manufacturerId:'mfg_demo_001',name:'Demo Print Works',email:'mfg@example.test',password:'demo',points:0};db.users.push(mu);db.userData[mu.id]=baseUserData()}
+ products.forEach((p,i)=>{p.useCases??=s1UseCasesForProduct(p,i);p.seriesId??=s1SeriesForProduct(p);p.variants??=[{id:`${p.id}_base`,name:'標準',material:p.material,size:p.size||'50mm',price:p.physical||p.digital}];p.cost??=Math.max(40,Math.round((p.physical||p.digital)*.34));p.feeRate??=.12;p.rights??={ownerDeclared:true,aiUsed:!!p.aiGenerated,evidence:[],warning:null};p.hidden??=false});
+ Object.entries(db.userData||{}).forEach(([uid0,d])=>{d.settings??={};d.settings.notify??={order:true,shipping:true,review:true,creator:true,demand:true,moderation:true,payout:true,support:true};d.savedSearches??=[]});
+ s1AllOrders().forEach(({userId,order})=>s1EnsureManufacturing(order,userId));
+ products.filter(p=>p.creatorId).forEach(p=>{if(!sc.payouts.some(x=>x.productId===p.id))sc.payouts.push({id:uid('payout'),creatorId:p.creatorId,productId:p.id,orderId:null,gross:Math.round((p.sales||0)*(p.digital||0)*.03),cost:Math.round((p.sales||0)*(p.cost||0)*.01),fee:Math.round((p.sales||0)*(p.digital||0)*.003),amount:Math.max(0,Math.round((p.sales||0)*(p.digital||0)*.02)),status:'確定',updatedAt:now()})});
+ if(!sc.features.length)sc.features.push({id:'feature_001',title:'夏のステッカー特集',status:'公開',productIds:products.slice(0,4).map(p=>p.id),updatedAt:now()});
+ save();
+}
+
+/* D-04: reorder uses current catalog values instead of historic prices. */
+reorder=function(id){
+ const row=s1FindOrder(id);if(!row||row.userId!==currentUser()?.id)return;
+ const missing=[];
+ row.order.items.forEach(old=>{const p=productBy(old.productId);if(!p||p.hidden){missing.push(old.productId);return}const fresh={...old,id:uid('cartItem'),cartItemId:uid('cartItem'),price:s1ProductCurrentPrice(old)};userData().cart.push(fresh)});
+ save();s1Track('reorder',{orderId:id});if(missing.length)toast('販売終了商品を除いて現在価格でカートへ追加しました');go('cart');
+};
+
+const s1BaseOrderCard=orderCard;
+orderCard=function(o){
+ const m=s1FindManufacturingByOrder(o.id);const html=s1BaseOrderCard(o);
+ const detail=`<button class="btn primary" onclick="go('order/${encodeURIComponent(o.id)}')">注文詳細</button>`;
+ const manufacturing=m?`<span class="status ${s1StatusClass(m.status)}">製造：${m.status}</span>`:'';
+ return html.replace('<div class="btn-row" style="margin-top:9px">',`${manufacturing}<div class="btn-row" style="margin-top:9px">${detail}`).replace("onclick=\"toast('問い合わせ画面を開きました（デモ）')\"",`onclick="go('support/new?order=${encodeURIComponent(o.id)}')"`);
+};
+
+const s1BaseReviewCard=reviewCard;
+reviewCard=function(r){const html=s1BaseReviewCard(r);return html.replace('</article>',`<div class="btn-row" style="margin-top:8px"><button class="link-btn" onclick="s1HelpfulReview('${r.id}')">役に立った</button><button class="link-btn" onclick="s1ReportOpen('review','${r.id}')">通報</button></div></article>`)};
+function s1HelpfulReview(id){const r=db.global.reviews.find(x=>x.id===id);if(!r)return;r.helpful=(r.helpful||0)+1;save();toast('参考になったを記録しました')}
+
+submitReview=function(id){
+ if(!requireAuth(`review/${id}`,'レビュー投稿にはログインが必要です。'))return;
+ if(!s1PurchasedProduct(currentUser().id,id)){toast('購入済みの商品だけレビューできます');return}
+ const t=$('#reviewText')?.value.trim();if(!t){toast('レビュー本文を入力してください');return}
+ const file=$('.review-form input[type=file]')?.files?.[0];const order=s1UserData(currentUser().id).orders.find(o=>s1OrderHasProduct(o,id));const item=order?.items.find(x=>x.productId===id);
+ db.global.reviews.unshift({id:uid('review'),productId:id,userId:currentUser().id,rating:reviewStars,text:t,date:now(),kind:item?.kind||'physical',verified:true,helpful:0,photoName:file?.name||null,purchaseSpec:item?{material:item.material,size:item.size,shape:item.shape}:null});
+ const p=productBy(id);s1NotifyCreator(p.creatorId,'review',`${p.name} に新しいレビューが届きました`,{productId:id});s1Track('review',{productId:id,rating:reviewStars});save();toast('レビューを投稿しました');go('product/'+id);
+};
+
+const s1BaseViewProduct=viewProduct;
+viewProduct=function(id){s1Track('product_view',{productId:id});return s1BaseViewProduct(id)};
+const s1BaseToggleFav=toggleFav;
+toggleFav=function(id){const before=!!userData()?.favorites?.includes(id);const out=s1BaseToggleFav(id);if(currentUser())s1Track(before?'favorite_remove':'favorite_add',{productId:id});return out};
+const s1BaseAddCart=addCart;
+addCart=function(id,kind,opt={}){s1Track('cart_add',{productId:id,kind});return s1BaseAddCart(id,kind,opt)};
+
+const s1BaseRoleHome=roleHome;
+roleHome=function(u){return u?.role==='manufacturer'?'manufacturer-dashboard':s1BaseRoleHome(u)};
+const s1BaseNav=nav;
+nav=function(){
+ const u=currentUser();if(u?.role!=='manufacturer')return s1BaseNav();
+ const p=routePath().split('?')[0],items=[['manufacturer-dashboard','⌂','製造トップ'],['manufacturer-orders','▤','製造注文'],['notifications','🔔','通知'],['mypage','♙','マイページ']];
+ return `<nav class="mobile-nav" style="--nav-count:${items.length}" aria-label="製造事業者ナビ">${items.map(i=>`<button class="${p===i[0]||p.startsWith(i[0]+'/')?'active':''}" onclick="go('${i[0]}')"><span>${i[1]}</span><span>${i[2]}</span></button>`).join('')}</nav>`;
+};
+
+/* New-publish notifications extend current approval; existing approval remains source of truth. */
+if(typeof adminWorkDecision==='function'){
+ const s1BaseAdminWorkDecision=adminWorkDecision;
+ adminWorkDecision=function(id,status){
+  const p=productBy(id),was=ensureWorkMeta(p).status;const result=s1BaseAdminWorkDecision(id,status);
+  if(status==='公開中'&&was!=='公開中'){
+   Object.entries(db.userData||{}).forEach(([userId,d])=>{if((d.follows||[]).includes(p.creatorId))s1Notify(userId,'creator',`${creatorBy(p.creatorId).name} の新作「${p.name}」が公開されました`,{productId:id,creatorId:p.creatorId})});
+   s1Track('product_publish',{productId:id,creatorId:p.creatorId});save();
+  }
+  return result;
+ };
+}
+
+s1EnsureScenario();
+
+/* Sticker Market scenario-fit patch v1.0 — market circulation and buyer flows. */
+
+function s1SearchParams(){return new URLSearchParams(routePath().split('?')[1]||'')}
+function s1SearchUrl(sp){const q=sp.toString();return 'search'+(q?'?'+q:'')}
+function s1SetSearch(k,v){const sp=s1SearchParams();if(v)sp.set(k,v);else sp.delete(k);sp.set('page','1');go(s1SearchUrl(sp))}
+function s1RelaxSearch(){const sp=s1SearchParams();['material','shape','size','use','min','max','excludeAi'].forEach(k=>sp.delete(k));sp.set('page','1');go(s1SearchUrl(sp))}
+function s1TrackSearchOnce(key,count){const k=`s1_search_${key}_${count}`;if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,'1');s1Track('search',{query:key,resultCount:count})}
+
+/* D-01 / D-07: preserve existing search and extend only with use-case and zero-result actions. */
+searchPage=function(){
+ const sp=s1SearchParams(),keyword=sp.get('q')||'',cat=sp.get('category')||'',material=sp.get('material')||'',shape=sp.get('shape')||'',size=sp.get('size')||'',useCase=sp.get('use')||'',min=Number(sp.get('min')||0),max=Number(sp.get('max')||5000),excludeAi=sp.get('excludeAi')==='1',sort=sp.get('sort')||'relevance';
+ const savedCols=currentUser()?Number(userData()?.settings?.columns||2):Number(localStorage.getItem('sm20_guest_cols')||2),cols=clamp(savedCols,1,3);
+ let list=products.filter(p=>!p.hidden).map(p=>[p,score(p,keyword)]).filter(([p,s])=>(!keyword||s>0)&&(!cat||p.category===cat)&&(!material||p.material===material)&&(!shape||p.shape===shape)&&(!size||p.size===size)&&(!useCase||(p.useCases||[]).includes(useCase))&&p.digital>=min&&p.digital<=max&&(!excludeAi||!p.aiGenerated));
+ if(sort==='popular')list.sort((a,b)=>b[0].sales-a[0].sales);else if(sort==='rating')list.sort((a,b)=>b[0].rating-a[0].rating);else if(sort==='new')list.sort((a,b)=>String(b[0].updated).localeCompare(String(a[0].updated)));else list.sort((a,b)=>b[1]-a[1]);
+ list=list.map(x=>x[0]);s1TrackSearchOnce([keyword,cat,material,shape,size,useCase,min,max,excludeAi,sort].join('|'),list.length);
+ const pageSize=Number(sp.get('pageSize')||6),pages=Math.max(1,Math.ceil(list.length/pageSize)),page=clamp(Number(sp.get('page')||1),1,pages),shown=list.slice((page-1)*pageSize,page*pageSize);
+ const chips=[['q',keyword],['category',cat],['material',material],['shape',shape],['size',size],['use',useCase],['excludeAi',excludeAi?'AI生成除外':'']].filter(x=>x[1]);
+ const rel=v21Related(keyword,cat,list.length?list:products.filter(p=>!p.hidden));
+ const zeroRelated=products.filter(p=>!p.hidden).sort((a,b)=>{const aa=(a.tags||[]).filter(t=>keyword&&keyword.includes(t)).length,bb=(b.tags||[]).filter(t=>keyword&&keyword.includes(t)).length;return bb-aa||b.rating-a.rating}).slice(0,4);
+ shell(`<div class="section-head"><div><h1>検索結果</h1><p>${list.length}件の作品</p></div><button class="btn" onclick="filterSheet()">⚙ 絞り込み</button></div><div class="toolbar"><div class="filter-chips">${chips.map(([k,v])=>`<button class="filter-chip-btn" onclick="removeSearchParam('${k}')">${esc(v)} <span class="x">×</span></button>`).join('')}${chips.length?`<button class="link-btn" onclick="go('search')">すべてクリア</button>`:''}</div><div class="btn-row"><select class="btn" onchange="searchSet('sort',this.value)"><option value="relevance" ${sort==='relevance'?'selected':''}>関連順</option><option value="popular" ${sort==='popular'?'selected':''}>人気順</option><option value="rating" ${sort==='rating'?'selected':''}>評価順</option><option value="new" ${sort==='new'?'selected':''}>新着順</option></select><div class="segmented" aria-label="表示列数"><button class="${cols===1?'active':''}" onclick="setCols(1)">1列</button><button class="${cols===2?'active':''}" onclick="setCols(2)">2列</button><button class="${cols===3?'active':''}" onclick="setCols(3)">3列</button></div></div></div>${shown.length?`<div id="searchGrid" class="product-grid" data-cols="${cols}" style="--cols:${cols}">${shown.map(productCard).join('')}</div><div class="toolbar"><div class="pager" style="flex:1"><button class="btn" ${page<=1?'disabled':''} onclick="searchPageMove(${page-1})">‹ 前へ</button><div class="center">${Array.from({length:pages},(_,i)=>i+1).slice(Math.max(0,page-2),Math.max(0,page-2)+5).map(n=>`<button class="page-dot ${n===page?'active':''}" onclick="searchPageMove(${n})">${n}</button>`).join('')}</div><button class="btn" ${page>=pages?'disabled':''} onclick="searchPageMove(${page+1})">次へ ›</button></div><label class="small">表示件数 <select class="btn" onchange="searchSet('pageSize',this.value);searchSet('page','1')"><option ${pageSize===6?'selected':''}>6</option><option ${pageSize===12?'selected':''}>12</option><option ${pageSize===24?'selected':''}>24</option></select></label></div>`:`<div class="empty s1-zero-search"><div class="emoji">🔎</div><h2>該当する作品がありません</h2><p class="muted">条件を緩めるか、欲しい作品をクリエイターへ需要として届けられます。</p><div class="btn-row" style="justify-content:center"><button class="btn primary" onclick="s1RelaxSearch()">条件を緩める</button><button class="btn" onclick="s1DemandModal('${esc(keyword)}','${esc(useCase)}')">リクエストする</button></div>${zeroRelated.length?`<div class="section"><h3>近い候補</h3><div class="h-scroll">${zeroRelated.map(productCard).join('')}</div></div>`:''}</div>`}<section class="section"><h2>関連する検索をもっと見る</h2><div class="btn-row">${rel.map(x=>`<button class="chip" onclick="go('search?q=${encodeURIComponent(x)}')">${esc(x)}</button>`).join('')}</div></section>`,{title:'検索結果',back:true,search:true,footer:true});
+};
+
+filterSheet=function(){
+ const sp=s1SearchParams(),mn=Number(sp.get('min')||0),mx=Number(sp.get('max')||5000);
+ showSheet(`<div class="section-head"><h2>絞り込み</h2><button class="icon-btn" onclick="closeModal()">×</button></div><div class="search-filter-grid"><div class="field"><label>カテゴリ</label><select id="fCat"><option value="">指定なし</option>${CATEGORIES.map(c=>`<option ${sp.get('category')===c[0]?'selected':''}>${c[0]}</option>`).join('')}</select></div><div class="field"><label>用途</label><select id="fUse"><option value="">指定なし</option>${S1_USE_CASES.map(v=>`<option ${sp.get('use')===v?'selected':''}>${v}</option>`).join('')}</select></div><div class="field"><label>素材</label><select id="fMat"><option value="">指定なし</option>${['耐水PET','上質紙','透明PET','ホログラム'].map(v=>`<option ${sp.get('material')===v?'selected':''}>${v}</option>`).join('')}</select></div><div class="field"><label>形状</label><select id="fShape"><option value="">指定なし</option>${['ダイカット','円形','角丸','スクエア'].map(v=>`<option ${sp.get('shape')===v?'selected':''}>${v}</option>`).join('')}</select></div><div class="field"><label>サイズ</label><select id="fSize"><option value="">指定なし</option>${['30mm','50mm','70mm','100mm'].map(v=>`<option ${sp.get('size')===v?'selected':''}>${v}</option>`).join('')}</select></div></div><div class="field"><label>価格帯</label><div class="range-values"><span id="fMinLabel">${yen(mn)}</span><span>〜</span><span id="fMaxLabel">${yen(mx)}${mx>=5000?'+':''}</span></div><input id="fMin" type="range" min="0" max="5000" step="100" value="${mn}" oninput="v21SyncRange()"><input id="fMax" type="range" min="0" max="5000" step="100" value="${mx}" oninput="v21SyncRange()"></div><label class="chip"><input id="fAi" type="checkbox" ${sp.get('excludeAi')==='1'?'checked':''}> AI生成作品を除外</label><div class="btn-row" style="margin-top:18px"><button class="btn" onclick="closeModal();go('search')">条件をクリア</button><button class="btn primary" onclick="applyV21Filters()">絞り込む</button></div>`);
+};
+applyV21Filters=function(){const sp=s1SearchParams();[['category',$('#fCat').value],['use',$('#fUse').value],['material',$('#fMat').value],['shape',$('#fShape').value],['size',$('#fSize').value],['min',$('#fMin').value],['max',$('#fMax').value]].forEach(([k,v])=>{if(v&&!(k==='min'&&v==='0')&&!(k==='max'&&v==='5000'))sp.set(k,v);else sp.delete(k)});if($('#fAi').checked)sp.set('excludeAi','1');else sp.delete('excludeAi');sp.set('page','1');closeModal();go(s1SearchUrl(sp))};
+
+/* D-03: product series keeps favorites separate and adds collection navigation. */
+function s1SeriesPage(id){
+ const s=s1Scenario().series.find(x=>x.id===id);if(!s)return go('search');const list=products.filter(p=>p.seriesId===id&&!p.hidden);
+ shell(`<div class="section-head"><div><span class="eyebrow">SERIES</span><h1>${esc(s.name)}</h1><p>${esc(s.description)}</p></div></div>${list.length?`<div class="product-grid" style="--cols:2">${list.map(productCard).join('')}</div>`:`<div class="empty"><h2>シリーズ作品を準備中です</h2></div>`}`,{title:'シリーズ',back:true,footer:true});
+}
+function s1EnhanceProductPage(id){
+ const main=$('#main');if(!main||main.querySelector('.s1-product-extra'))return;const p=productBy(id);if(!p)return;const s=s1Scenario().series.find(x=>x.id===p.seriesId);
+ const sec=document.createElement('section');sec.className='section card panel s1-product-extra';sec.innerHTML=`<div class="section-head"><div><h2>この作品について</h2><p>用途・シリーズ・権利情報</p></div></div><div class="btn-row">${(p.useCases||[]).map(x=>`<button class="chip" onclick="go('search?use=${encodeURIComponent(x)}')">${esc(x)}</button>`).join('')}</div>${s?`<div class="s1-inline-row"><div><b>シリーズ：${esc(s.name)}</b><div class="small muted">${esc(s.description)}</div></div><button class="btn" onclick="go('series/${s.id}')">シリーズを見る</button></div>`:''}<div class="s1-inline-row"><div><b>権利・AI利用</b><div class="small muted">権利申告 ${p.rights?.ownerDeclared?'済み':'未確認'} ・ AI利用 ${p.rights?.aiUsed?'あり':'なし'}</div></div><button class="link-btn" onclick="s1ReportOpen('product','${p.id}')">商品を通報</button></div>`;
+ const footer=main.querySelector('.legal-footer');main.insertBefore(sec,footer||null);
+}
+function s1EnhanceCreatorPage(id){
+ const main=$('#main');if(!main||main.querySelector('.s1-creator-actions'))return;const cover=main.querySelector('.shop-cover');if(!cover)return;
+ const box=document.createElement('div');box.className='s1-creator-actions btn-row';box.innerHTML=`<button class="btn" onclick="go('custom-order/new/${id}')">オーダーメイド相談</button><button class="link-btn" onclick="s1ReportOpen('creator','${id}')">クリエイターを通報</button>`;cover.appendChild(box);
+}
+
+/* D-07: unmet demand request loop. */
+function s1DemandModal(keyword='',useCase=''){
+ if(!requireAuth(routePath(),'需要リクエストを登録するにはログインが必要です。'))return;
+ showModal(`<div class="section-head"><h2>欲しいデザインをリクエスト</h2><button class="icon-btn" onclick="closeModal()">×</button></div><p class="muted">検索で見つからなかった希望を、個人情報を含めずクリエイターへ共有します。</p><div class="field"><label>希望デザイン</label><input id="drTitle" value="${esc(keyword)}" placeholder="例：防水の柴犬ステッカー"></div><div class="search-filter-grid"><div class="field"><label>サイズ</label><select id="drSize"><option>指定なし</option><option>30mm</option><option>50mm</option><option>70mm</option><option>100mm</option></select></div><div class="field"><label>素材</label><select id="drMat"><option>指定なし</option><option>耐水PET</option><option>上質紙</option><option>透明PET</option><option>ホログラム</option></select></div><div class="field"><label>用途</label><select id="drUse"><option>${useCase||'指定なし'}</option>${S1_USE_CASES.filter(x=>x!==useCase).map(x=>`<option>${x}</option>`).join('')}</select></div></div><div class="field"><label>参考情報（任意）</label><textarea id="drRef" placeholder="色、雰囲気、使う場所など"></textarea></div><button class="btn primary full" onclick="s1SubmitDemand()">リクエストを登録</button>`);
+}
+function s1SubmitDemand(){
+ const title=$('#drTitle').value.trim();if(!title){toast('希望デザインを入力してください');return}
+ const r={id:uid('demand'),requestId:uid('demand'),userId:currentUser().id,title,size:$('#drSize').value,material:$('#drMat').value,useCase:$('#drUse').value,reference:$('#drRef').value.trim(),status:'募集中',linkedProductId:null,date:now()};s1Scenario().demandRequests.unshift(r);s1Track('demand_request',{requestId:r.id,query:title});save();closeModal();toast('需要リクエストを登録しました');go('demand-requests');
+}
+function s1DemandRequestsPage(){
+ const mine=s1Scenario().demandRequests.filter(x=>x.userId===currentUser()?.id);
+ shell(`<div class="section-head"><div><h1>需要リクエスト</h1><p>欲しい作品の対応状況を確認できます。</p></div><button class="btn primary" onclick="s1DemandModal()">＋ リクエスト</button></div>${mine.length?mine.map(r=>`<article class="card panel" style="margin:9px 0"><div class="section-head"><div><span class="status ${s1StatusClass(r.status)}">${r.status}</span><h3>${esc(r.title)}</h3></div></div><div class="small muted">${esc(r.useCase)} ・ ${esc(r.material)} ・ ${esc(r.size)}</div>${r.linkedProductId?`<div class="notice" style="margin-top:10px">対応商品が公開されました。<button class="link-btn" onclick="go('product/${r.linkedProductId}')">商品を見る ›</button></div>`:''}</article>`).join(''):`<div class="empty"><div class="emoji">💡</div><h2>リクエストはまだありません</h2><p class="muted">検索で見つからない作品があれば需要として登録できます。</p><button class="btn primary" onclick="go('search')">商品を探す</button></div>`}`,{title:'需要リクエスト',back:true});
+}
+function s1CreatorDemandPage(){
+ if(currentUser()?.role!=='creator')return go('home');const rows=s1Scenario().demandRequests.filter(x=>x.status!=='対応済み');
+ shell(`<div class="section-head"><div><h1>需要一覧</h1><p>購入者から集まった未充足需要です。</p></div></div>${rows.length?rows.map(r=>`<article class="card panel" style="margin:9px 0"><span class="status">${r.status}</span><h3>${esc(r.title)}</h3><div class="small muted">用途 ${esc(r.useCase)} ・ 素材 ${esc(r.material)} ・ サイズ ${esc(r.size)}</div><p>${esc(r.reference||'参考情報なし')}</p><button class="btn primary" onclick="s1LinkDemandModal('${r.id}')">自分の商品で対応</button></article>`).join(''):`<div class="empty"><h2>未対応の需要はありません</h2></div>`}`,{title:'需要一覧',back:true,bell:true,cart:false});
+}
+function s1LinkDemandModal(id){const own=products.filter(p=>p.creatorId===currentUser()?.creatorId&&!p.hidden);showModal(`<div class="section-head"><h2>対応商品を紐付け</h2><button class="icon-btn" onclick="closeModal()">×</button></div><div class="field"><label>公開済み商品</label><select id="demandProduct">${own.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('')}</select></div><button class="btn primary" onclick="s1LinkDemand('${id}')">紐付けて通知</button>`)}
+function s1LinkDemand(id){const r=s1Scenario().demandRequests.find(x=>x.id===id),pid=$('#demandProduct').value;if(!r||!pid)return;r.linkedProductId=pid;r.status='対応済み';r.respondedAt=now();s1Notify(r.userId,'demand',`リクエスト「${r.title}」に対応する商品が公開されました`,{requestId:id,productId:pid});save();closeModal();toast('購入者へ通知しました');render()}
+
+/* D-08: custom order is a separate case until approval, then reuses the existing cart/checkout. */
+function s1CustomOrdersPage(){
+ const u=currentUser();if(!u)return go('login');let rows=s1Scenario().customOrders.filter(x=>x.userId===u.id);if(u.role==='creator')rows=s1Scenario().customOrders.filter(x=>x.creatorId===u.creatorId);
+ shell(`<div class="section-head"><div><h1>オーダーメイド</h1><p>依頼から承認までを案件単位で管理します。</p></div></div>${rows.length?rows.map(x=>`<button class="card panel s1-case-row" onclick="go('custom-order/${x.id}')"><div><span class="status ${s1StatusClass(x.status)}">${x.status}</span><h3>${esc(x.title)}</h3><div class="small muted">${esc(creatorBy(x.creatorId).name)} ・ 希望 ${yen(x.budget)}</div></div><span>›</span></button>`).join(''):`<div class="empty"><div class="emoji">🎨</div><h2>オーダーメイド案件はありません</h2><button class="btn primary" onclick="go('creators')">クリエイターを探す</button></div>`}`,{title:'オーダーメイド',back:true,bell:true});
+}
+function s1CustomOrderNewPage(creatorId){
+ const c=creatorBy(creatorId);if(!c)return go('creators');if(!requireAuth(`custom-order/new/${creatorId}`,'オーダーメイドを依頼するにはログインが必要です。'))return;
+ shell(`<h1>${esc(c.name)}へ依頼</h1><div class="notice">通常商品とは別の案件として進行し、作品承認後の決済だけ既存Checkoutへ接続します。</div><div class="field"><label>依頼タイトル</label><input id="coTitle" placeholder="例：愛犬をモチーフにしたステッカー"></div><div class="field"><label>希望内容</label><textarea id="coBody"></textarea></div><div class="search-filter-grid"><div class="field"><label>希望用途</label><select id="coUse">${S1_USE_CASES.map(x=>`<option>${x}</option>`).join('')}</select></div><div class="field"><label>希望予算</label><select id="coBudget"><option value="500">〜500円</option><option value="1000">〜1,000円</option><option value="3000">〜3,000円</option><option value="5000">〜5,000円</option></select></div></div><button class="btn primary full" onclick="s1CreateCustomOrder('${creatorId}')">依頼する</button>`,{title:'オーダーメイド依頼',back:true,cart:false});
+}
+function s1CreateCustomOrder(creatorId){const title=$('#coTitle').value.trim(),body=$('#coBody').value.trim();if(!title||!body){toast('タイトルと希望内容を入力してください');return}const x={id:uid('customOrder'),caseId:uid('customOrder'),userId:currentUser().id,creatorId,title,body,useCase:$('#coUse').value,budget:Number($('#coBudget').value),status:'依頼',date:now(),updatedAt:now(),messages:[],draftNote:'',revisionCount:0,approvedProductId:null};s1Scenario().customOrders.unshift(x);s1NotifyCreator(creatorId,'order',`新しいオーダーメイド依頼「${title}」が届きました`,{customOrderId:x.id});save();go(`custom-order/${x.id}`)}
+function s1CanAccessCustom(x){const u=currentUser();return !!u&&(u.role==='admin'||x.userId===u.id||(u.role==='creator'&&x.creatorId===u.creatorId))}
+function s1CustomOrderDetailPage(id){
+ const x=s1Scenario().customOrders.find(v=>v.id===id);if(!x||!s1CanAccessCustom(x))return go('custom-orders');const u=currentUser(),isCreator=u.role==='creator'&&u.creatorId===x.creatorId,isBuyer=x.userId===u.id;
+ shell(`<div class="section-head"><div><span class="status ${s1StatusClass(x.status)}">${x.status}</span><h1>${esc(x.title)}</h1><p>${esc(creatorBy(x.creatorId).name)}とのオーダーメイド案件</p></div></div><div class="management-grid"><div><div class="card panel"><h2>依頼内容</h2><p>${esc(x.body)}</p><div class="detail-list"><div><span>用途</span><b>${esc(x.useCase)}</b></div><div><span>希望予算</span><b>${yen(x.budget)}</b></div><div><span>修正回数</span><b>${x.revisionCount}</b></div></div>${x.draftNote?`<div class="notice" style="margin-top:12px"><b>現在の初稿・提案</b><p>${esc(x.draftNote)}</p></div>`:''}<div class="btn-row" style="margin-top:14px">${isCreator&&x.status==='依頼'?`<button class="btn primary" onclick="s1CustomTransition('${id}','受注')">受注する</button>`:''}${isCreator&&['受注','制作中','修正'].includes(x.status)?`<button class="btn" onclick="s1CustomDraftModal('${id}')">初稿を提出</button>`:''}${isBuyer&&x.status==='初稿'?`<button class="btn" onclick="s1CustomTransition('${id}','修正')">修正を依頼</button><button class="btn primary" onclick="s1ApproveCustomOrder('${id}')">承認して購入へ</button>`:''}</div></div></div><div><div class="card panel"><h2>メッセージ</h2><div class="message-thread">${x.messages.length?x.messages.map(m=>`<div class="message-bubble ${m.userId===u.id?'mine':'admin'}"><b>${esc(m.sender)}</b><p>${esc(m.text)}</p><small>${s1Date(m.date)}</small></div>`).join(''):'<p class="muted">案件について確認したい内容を送れます。</p>'}</div><div class="field"><textarea id="coMsg" placeholder="メッセージ"></textarea></div><button class="btn primary full" onclick="s1CustomSendMessage('${id}')">送信</button></div></div></div>`,{title:'オーダーメイド詳細',back:true,bell:true,cart:false});
+}
+function s1CustomTransition(id,status){const x=s1Scenario().customOrders.find(v=>v.id===id);if(!x||!s1CanAccessCustom(x))return;const before=x.status;x.status=status;x.updatedAt=now();if(status==='受注')x.status='制作中';if(status==='修正')x.revisionCount++;s1Audit('オーダーメイド状態更新',before,x.status,'オーダーメイド');s1Notify(x.userId,'order',`オーダーメイド「${x.title}」：${x.status}`,{customOrderId:id});s1NotifyCreator(x.creatorId,'order',`オーダーメイド「${x.title}」：${x.status}`,{customOrderId:id});save();render()}
+function s1CustomDraftModal(id){showModal(`<div class="section-head"><h2>初稿を提出</h2><button class="icon-btn" onclick="closeModal()">×</button></div><div class="field"><label>初稿・制作内容</label><textarea id="coDraft" placeholder="デザインの方向性、修正ポイントなど"></textarea></div><div class="field"><label>参考画像（任意）</label><input type="file" accept="image/*"></div><button class="btn primary" onclick="s1SubmitCustomDraft('${id}')">購入者へ提出</button>`)}
+function s1SubmitCustomDraft(id){const x=s1Scenario().customOrders.find(v=>v.id===id),t=$('#coDraft').value.trim();if(!x||!t)return toast('初稿内容を入力してください');x.draftNote=t;x.status='初稿';x.updatedAt=now();s1Notify(x.userId,'order',`オーダーメイド「${x.title}」の初稿が届きました`,{customOrderId:id});save();closeModal();render()}
+function s1CustomSendMessage(id){const x=s1Scenario().customOrders.find(v=>v.id===id),t=$('#coMsg').value.trim();if(!x||!t)return;x.messages.push({id:uid('message'),userId:currentUser().id,sender:currentUser().name,text:t,date:now()});const target=currentUser().id===x.userId?s1CreatorUser(x.creatorId)?.id:x.userId;if(target)s1Notify(target,'support',`オーダーメイド「${x.title}」に新しいメッセージ`,{customOrderId:id});save();render()}
+function s1ApproveCustomOrder(id){
+ const x=s1Scenario().customOrders.find(v=>v.id===id);if(!x||x.userId!==currentUser()?.id)return;let p=products.find(p=>p.privateCustomOrderId===id);
+ if(!p){const src=products.find(p=>p.creatorId===x.creatorId)||products[0];p={...src,id:uid('customProduct'),name:`オーダーメイド：${x.title}`,description:x.body,digital:x.budget,physical:x.budget,price:x.budget,sales:0,favs:0,views:0,rating:0,updated:new Date().toISOString().slice(0,10),hidden:true,privateCustomOrderId:id,tags:[...(src.tags||[]),'オーダーメイド']};products.push(p)}
+ x.status='承認';x.approvedProductId=p.id;x.updatedAt=now();save();addCart(p.id,'digital',{license:'personal'});
+}
+
+/* D-09 / D-10: support cases remain linked to the original order. */
+const S1_SUPPORT_TYPES=['キャンセル','製造後キャンセル相談','発送遅延','未着','印刷不良','破損','誤配送','返金'];
+function s1SupportNewPage(){
+ const sp=new URLSearchParams(routePath().split('?')[1]||''),orderId=sp.get('order')||'',o=s1FindOrder(orderId)?.order;
+ if(!currentUser())return go('login');
+ shell(`<h1>注文について問い合わせ</h1><div class="notice">注文情報は自動で紐付きます。注文番号や商品情報の再入力は不要です。</div><div class="field"><label>対象注文</label><select id="supOrder">${userData().orders.map(x=>`<option value="${x.id}" ${x.id===orderId?'selected':''}>${x.id} ・ ${yen(x.total)}</option>`).join('')}</select></div><div class="field"><label>問い合わせ種類</label><select id="supType">${S1_SUPPORT_TYPES.map(x=>`<option>${x}</option>`).join('')}</select></div><div class="field"><label>状況</label><textarea id="supBody" placeholder="現在の状況を教えてください"></textarea></div><div class="field"><label>写真・資料（任意）</label><input id="supFile" type="file" accept="image/*,.pdf"></div><button class="btn primary full" onclick="s1CreateSupport()">問い合わせを開始</button>`,{title:'問い合わせ',back:true,cart:false});
+}
+function s1CreateSupport(){const orderId=$('#supOrder').value,type=$('#supType').value,body=$('#supBody').value.trim();if(!orderId||!body){toast('注文と状況を確認してください');return}const x={id:uid('support'),caseId:uid('support'),orderId,userId:currentUser().id,type,body,status:'受付',date:now(),updatedAt:now(),attachment:$('#supFile').files?.[0]?.name||null,messages:[],resolution:null,remanufacturingOrderId:null,refundAmount:0};s1Scenario().supportCases.unshift(x);s1Notify('user_admin_001','support',`新しい${type}問い合わせ：${orderId}`,{supportCaseId:x.id,orderId});save();go(`support/${x.id}`)}
+function s1SupportListPage(){const u=currentUser();if(!u)return go('login');let rows=s1Scenario().supportCases.filter(x=>x.userId===u.id);if(u.role==='admin')rows=s1Scenario().supportCases;shell(`<div class="section-head"><div><h1>問い合わせ・トラブル</h1><p>注文に紐付くサポート案件です。</p></div></div>${rows.length?rows.map(x=>`<button class="card panel s1-case-row" onclick="go('support/${x.id}')"><div><span class="status ${s1StatusClass(x.status)}">${x.status}</span><h3>${esc(x.type)}</h3><div class="small muted">${esc(x.orderId)} ・ ${s1Date(x.date)}</div></div><span>›</span></button>`).join(''):`<div class="empty"><h2>問い合わせはありません</h2><button class="btn primary" onclick="go('orders')">注文履歴を見る</button></div>`}`,{title:'問い合わせ',back:true,bell:true});
+}
+function s1SupportDetailPage(id){const x=s1Scenario().supportCases.find(v=>v.id===id),u=currentUser();if(!x||!u||(u.role!=='admin'&&x.userId!==u.id))return go('support');const row=s1FindOrder(x.orderId),m=s1FindManufacturingByOrder(x.orderId);shell(`<div class="section-head"><div><span class="status ${s1StatusClass(x.status)}">${x.status}</span><h1>${esc(x.type)}</h1><p>${esc(x.orderId)}</p></div></div><div class="management-grid"><div><div class="card panel"><h2>申告内容</h2><p>${esc(x.body)}</p>${x.attachment?`<div class="status">添付：${esc(x.attachment)}</div>`:''}<div class="detail-list"><div><span>注文状態</span><b>${esc(row?.order.status||'—')}</b></div><div><span>製造状態</span><b>${esc(m?.status||'対象外')}</b></div><div><span>解決内容</span><b>${esc(x.resolution||'対応中')}</b></div></div>${u.role==='admin'?`<div class="btn-row" style="margin-top:14px"><button class="btn" onclick="s1SupportResolve('${id}','回答済み')">回答済みにする</button>${['印刷不良','破損','誤配送'].includes(x.type)?`<button class="btn primary" onclick="s1CreateRemanufacture('${id}')">再製造を手配</button>`:''}<button class="btn danger" onclick="s1SupportRefund('${id}')">返金処理</button></div>`:''}</div></div><div><div class="card panel"><h2>サポートメッセージ</h2><div class="message-thread">${x.messages.map(m=>`<div class="message-bubble ${m.userId===u.id?'mine':'admin'}"><b>${esc(m.sender)}</b><p>${esc(m.text)}</p><small>${s1Date(m.date)}</small></div>`).join('')}</div><div class="field"><textarea id="supMsg"></textarea></div><button class="btn primary full" onclick="s1SupportMessage('${id}')">送信</button></div></div></div>`,{title:'問い合わせ詳細',back:true,bell:true,cart:false});}
+function s1SupportMessage(id){const x=s1Scenario().supportCases.find(v=>v.id===id),t=$('#supMsg').value.trim();if(!x||!t)return;x.messages.push({id:uid('message'),userId:currentUser().id,sender:currentUser().role==='admin'?'Sticker Market運営':currentUser().name,text:t,date:now()});x.updatedAt=now();const target=currentUser().role==='admin'?x.userId:'user_admin_001';s1Notify(target,'support',`問い合わせ ${x.orderId} に新しい返信があります`,{supportCaseId:id});save();render()}
+function s1SupportResolve(id,status){const x=s1Scenario().supportCases.find(v=>v.id===id);if(!x)return;x.status=status;x.resolution='運営回答済み';x.updatedAt=now();s1Notify(x.userId,'support',`問い合わせ ${x.orderId} が更新されました：${status}`,{supportCaseId:id});save();render()}
+function s1CreateRemanufacture(id){const x=s1Scenario().supportCases.find(v=>v.id===id),orig=s1FindManufacturingByOrder(x?.orderId);if(!x||!orig)return toast('製造注文が見つかりません');const m={...orig,id:uid('mfgOrder'),manufacturingOrderId:uid('mfgOrder'),status:'注文受付',createdAt:now(),updatedAt:now(),reproductionOf:orig.id,history:[{date:now(),status:'注文受付',note:`サポート案件 ${x.id} から再製造`}],inspection:{status:'未実施',note:''},tracking:{carrier:'',number:'',shippedAt:null,deliveredAt:null}};s1Scenario().manufacturingOrders.push(m);x.remanufacturingOrderId=m.id;x.status='再製造手配済み';x.resolution='元注文の売上を維持したまま再製造注文を作成';s1Notify(x.userId,'support',`注文 ${x.orderId} の再製造を手配しました`,{supportCaseId:id,manufacturingOrderId:m.id});save();render()}
+function s1SupportRefund(id){const x=s1Scenario().supportCases.find(v=>v.id===id),row=s1FindOrder(x?.orderId);if(!x||!row)return;confirmAction('返金処理を記録しますか？','公開デモでは実送金せず、注文と報酬の調整状態を記録します。','返金を記録',()=>{x.status='返金済み';x.refundAmount=row.order.total;x.resolution=`${yen(row.order.total)}を返金記録`;row.order.status='返金済み';s1Scenario().payouts.filter(p=>p.orderId===row.order.id).forEach(p=>p.status='調整済み');s1Notify(x.userId,'support',`注文 ${x.orderId} の返金処理を記録しました`,{supportCaseId:id});save();render()})}
+
+/* D-11: common report mechanism. */
+function s1ReportOpen(type,targetId){if(!requireAuth(routePath(),'通報を送信するにはログインが必要です。'))return;const names={product:'商品',creator:'クリエイター',user:'ユーザー',review:'レビュー'};showModal(`<div class="section-head"><h2>${names[type]||type}を通報</h2><button class="icon-btn" onclick="closeModal()">×</button></div><div class="field"><label>理由</label><select id="repReason"><option>権利侵害の疑い</option><option>迷惑・スパム</option><option>不適切な内容</option><option>誤解を招く表示</option><option>その他</option></select></div><div class="field"><label>詳細（任意）</label><textarea id="repBody"></textarea></div><button class="btn danger" onclick="s1SubmitReport('${type}','${targetId}')">通報する</button>`)}
+function s1SubmitReport(type,targetId){const r={id:uid('report'),reportId:uid('report'),reporterId:currentUser().id,targetType:type,targetId,reason:$('#repReason').value,body:$('#repBody').value.trim(),status:'確認待ち',date:now(),history:[]};s1Scenario().reports.unshift(r);s1Notify('user_admin_001','moderation',`${type}への新しい通報：${r.reason}`,{reportId:r.id});save();closeModal();toast('通報を受け付けました')}
+
+
+/* Sticker Market scenario-fit patch v1.0 — creator, manufacturing, admin and lifecycle operations. */
+
+function s1CreatePayoutsForOrder(order){
+ const sc=s1Scenario();(order.items||[]).forEach(item=>{const p=productBy(item.productId);if(!p?.creatorId||sc.payouts.some(x=>x.orderId===order.id&&x.productId===p.id))return;const gross=item.price*item.qty,cost=item.kind==='physical'?(p.cost||0)*item.qty:0,fee=Math.round(gross*(p.feeRate||.12)),amount=Math.max(0,gross-cost-fee);sc.payouts.push({id:uid('payout'),creatorId:p.creatorId,productId:p.id,orderId:order.id,gross,cost,fee,amount,status:item.kind==='physical'?'未確定':'確定',updatedAt:now()});s1NotifyCreator(p.creatorId,'payout',`${p.name} が販売されました。報酬予定 ${yen(amount)}`,{orderId:order.id,productId:p.id})})
+}
+if(typeof placeOrder==='function'){
+ const s1BasePlaceOrder=placeOrder;
+ placeOrder=function(){
+  const d=userData(),before=d.orders.length,address=d.addresses.find(x=>x.default)||d.addresses[0],snapshot=address?{...address}:null;
+  s1BasePlaceOrder();
+  setTimeout(()=>{const fresh=userData()?.orders?.[0];if(!fresh||userData().orders.length<=before)return;fresh.shippingAddress??=snapshot;s1EnsureManufacturing(fresh,currentUser().id);s1CreatePayoutsForOrder(fresh);s1Track('purchase',{orderId:fresh.id,total:fresh.total});save()},1000);
+ };
+}
+
+/* D-05 / D-15: buyer order detail is the single view over order + manufacturing + support + review. */
+function s1OrderDetailPage(id){
+ const row=s1FindOrder(id),u=currentUser();if(!row||!u||(u.role!=='admin'&&row.userId!==u.id))return go('orders');const o=row.order,m=s1FindManufacturingByOrder(o.id),physical=o.items.some(x=>x.kind==='physical'),progress=m?S1_MFG_FLOW.indexOf(m.status):-1,addr=o.shippingAddress||s1UserData(row.userId).addresses?.find(x=>x.default)||s1UserData(row.userId).addresses?.[0];const cases=s1Scenario().supportCases.filter(x=>x.orderId===o.id);
+ shell(`<div class="section-head"><div><span class="status ${s1StatusClass(o.status)}">${esc(o.status)}</span><h1>${esc(o.id)}</h1><p>${fmtDate(o.date)} ・ ${yen(o.total)}</p></div></div>${physical?`<section class="card panel"><h2>製造・配送状況</h2><div class="s1-progress">${S1_MFG_FLOW.map((s,i)=>`<div class="s1-progress-step ${i<=progress?'done':''} ${i===progress?'current':''}"><span>${i<progress?'✓':i+1}</span><small>${s}</small></div>`).join('')}</div>${m?.tracking?.number?`<div class="notice"><b>${esc(m.tracking.carrier||'配送会社')}</b> ${esc(m.tracking.number)}</div>`:''}${m?.status==='発送済み'&&row.userId===u.id?`<button class="btn primary" onclick="s1BuyerReceived('${m.id}')">受け取りを完了する</button>`:''}</section>`:''}<section class="section"><h2>注文商品</h2>${o.items.map(x=>{const p=productBy(x.productId);return `<article class="card cart-item"><div class="cart-thumb">${p?artSvg(p):''}</div><div><b>${esc(p?.name||'商品')}</b><div class="small muted">${x.kind==='digital'?'デジタル':'物理シール'} ・ 数量 ${x.qty}</div><div>${yen(x.price*x.qty)}</div></div><div class="btn-row">${p?`<button class="btn" onclick="go('product/${p.id}')">商品を見る</button>`:''}${s1PurchasedProduct(row.userId,x.productId)?`<button class="btn" onclick="go('review/${x.productId}')">レビュー</button>`:''}</div></article>`}).join('')}</section><section class="section card panel"><h2>配送・支払い情報</h2>${addr?`<div class="detail-list"><div><span>お届け先</span><b>${esc(addr.name)}</b></div><div><span>住所</span><b>〒${esc(addr.zip)} ${esc(addr.address)}</b></div></div>`:'<p class="muted">デジタル商品のため配送先はありません。</p>'}<div class="btn-row" style="margin-top:14px"><button class="btn" onclick="reorder('${o.id}')">現在価格で再購入</button><button class="btn" onclick="go('support/new?order=${encodeURIComponent(o.id)}')">この注文について問い合わせ</button>${o.items.some(x=>x.kind==='digital')?`<button class="btn" onclick="go('downloads')">購入データ</button>`:''}</div></section>${cases.length?`<section class="section"><h2>この注文の問い合わせ</h2>${cases.map(x=>`<button class="card panel s1-case-row" onclick="go('support/${x.id}')"><div><b>${esc(x.type)}</b><div class="small muted">${x.status}</div></div><span>›</span></button>`).join('')}</section>`:''}`,{title:'注文詳細',back:true,bell:true,footer:true});
+}
+function s1BuyerReceived(mfgId){const m=s1FindManufacturingByOrder(s1Scenario().manufacturingOrders.find(x=>x.id===mfgId)?.orderId);if(!m)return;s1SetManufacturingStatus(m.id,'配送完了','購入者が受取完了を確認');const row=s1FindOrder(m.orderId);if(row){row.order.items.forEach(x=>{const p=productBy(x.productId);if(p)s1Notify(row.userId,'review',`${p.name} のレビューを投稿できます`,{productId:p.id,orderId:row.order.id})});s1Scenario().payouts.filter(x=>x.orderId===row.order.id&&x.status==='未確定').forEach(x=>{x.status='確定';x.updatedAt=now();s1NotifyCreator(x.creatorId,'payout',`注文 ${row.order.id} の報酬が確定しました`,{orderId:row.order.id})});save()}}
+
+/* D-04 notification settings and D-24 account closure are added to existing settings/mypage, never replacing them. */
+function s1EnhanceSettingsPage(){
+ const main=$('#main');if(!main||main.querySelector('.s1-settings-extra')||!currentUser())return;const cfg=userData().settings.notify||{};const box=document.createElement('section');box.className='section card panel s1-settings-extra';box.innerHTML=`<h2>通知設定</h2><p class="muted">既存通知センターに届くカテゴリを選択します。</p><div class="s1-toggle-grid">${[['order','注文・決済'],['shipping','製造・発送'],['review','レビュー'],['creator','フォロー中の新作'],['demand','需要リクエスト'],['support','問い合わせ・返金'],['payout','報酬'],['moderation','審査・権利']].map(([k,n])=>`<label class="chip"><input class="s1NotifyToggle" data-key="${k}" type="checkbox" ${cfg[k]!==false?'checked':''}> ${n}</label>`).join('')}</div><button class="btn primary" style="margin-top:12px" onclick="s1SaveNotifySettings()">通知設定を保存</button><div class="divider"></div><h2>アカウント</h2><button class="btn danger" onclick="go('account-close')">退会条件を確認</button>`;main.appendChild(box);
+}
+function s1SaveNotifySettings(){const cfg=userData().settings.notify||={};$$('.s1NotifyToggle').forEach(x=>cfg[x.dataset.key]=x.checked);save();toast('通知設定を保存しました')}
+function s1EnhanceMyPage(){const list=$('#main .menu-list');if(!list||list.querySelector('.s1-mypage-link'))return;const logout=[...list.querySelectorAll('.menu-row')].find(x=>x.textContent.includes('ログアウト'));const wrap=document.createElement('div');wrap.className='s1-mypage-link';wrap.innerHTML=`<button class="menu-row" onclick="go('demand-requests')"><span>需要リクエスト</span><span>›</span></button><button class="menu-row" onclick="go('custom-orders')"><span>オーダーメイド</span><span>›</span></button><button class="menu-row" onclick="go('support')"><span>問い合わせ・トラブル</span><span>›</span></button>`;if(logout)list.insertBefore(wrap,logout);else list.appendChild(wrap)}
+
+function s1AccountClosePage(){
+ const u=currentUser();if(!u)return go('login');const d=userData(),sc=s1Scenario(),incomplete=d.orders.filter(o=>!/(配送完了|ダウンロード可能|キャンセル|返金済み)/.test(o.status)),support=sc.supportCases.filter(x=>x.userId===u.id&&!/(回答済み|解決|返金済み|再製造手配済み)/.test(x.status)),custom=sc.customOrders.filter(x=>x.userId===u.id&&!/(承認|完成|見送り|キャンセル)/.test(x.status)),publicWorks=u.role==='creator'?products.filter(p=>p.creatorId===u.creatorId&&ensureWorkMeta(p).status==='公開中'):[],unpaid=u.role==='creator'?sc.payouts.filter(p=>p.creatorId===u.creatorId&&!['支払済み','調整済み'].includes(p.status)):[];const blockers=[['未完了注文',incomplete.length],['未解決問い合わせ',support.length],['未処理オーダーメイド',custom.length],['公開商品',publicWorks.length],['未確定・未払い報酬',unpaid.length]].filter(x=>x[1]);
+ shell(`<h1>退会条件の確認</h1><p class="muted">取引・返金・報酬を残したままアカウントを終了しないための確認です。</p>${blockers.length?`<div class="notice demo"><b>現在は退会できません。</b><div class="detail-list" style="margin-top:10px">${blockers.map(x=>`<div><span>${x[0]}</span><b>${x[1]}件</b></div>`).join('')}</div></div><div class="btn-row" style="margin-top:14px"><button class="btn" onclick="go('orders')">注文を確認</button><button class="btn" onclick="go('support')">問い合わせを確認</button>${u.role==='creator'?`<button class="btn" onclick="go('works')">商品を確認</button><button class="btn" onclick="go('payouts')">報酬を確認</button>`:''}</div>`:`<div class="card panel"><h2>退会可能です</h2><p>退会後も法令・取引記録として必要なデータは本番システムの保持方針に従います。公開デモではアカウント状態を「退会」に変更します。</p><button class="btn danger" onclick="s1CloseAccount()">退会する</button></div>`}`,{title:'退会',back:true,cart:false});
+}
+function s1CloseAccount(){confirmAction('アカウントを退会しますか？','この操作後は同じデモアカウントでログインできなくなります。','退会する',()=>{const u=currentUser();u.status='closed';s1Audit('アカウント退会','active','closed','アカウント設定');db.session.userId=null;save();go('landing',{replace:true})})}
+const s1BaseLoginDo=loginDo;
+loginDo=function(){const e=$('#loginEmail').value.trim(),u=db.users.find(x=>x.email===e);if(u?.status==='closed'||u?.status==='suspended'){toast('このアカウントは現在利用できません');return}s1BaseLoginDo()};
+
+/* D-12 / D-13 creator rights declaration and submission validation. */
+function s1EnhanceWorkDetail(){
+ const path=routePath(),seg=path.split('?')[0].split('/');if(seg[0]!=='work'||!seg[1])return;const tab=parseQuery().tab||'overview',p=productBy(seg[1]);if(!p)return;const main=$('#main');if(main.querySelector('.s1-rights-card'))return;
+ if(tab==='edit'){
+  const form=main.querySelector('.work-edit-form');if(!form)return;const r=p.rights||{};const box=document.createElement('div');box.className='card panel s1-rights-card';box.innerHTML=`<h2>権利・入稿確認</h2><p class="muted">既存商品情報に追加する審査項目です。商品登録フロー自体は変更しません。</p><label class="chip"><input id="s1RightsOwner" type="checkbox" ${r.ownerDeclared?'checked':''}> 自分が権利を保有、または販売許諾を得ています</label><label class="chip"><input id="s1RightsAi" type="checkbox" ${r.aiUsed?'checked':''}> AIを制作に利用しました</label><div class="field"><label>権利証明資料（必要時）</label><input id="s1RightsEvidence" type="file" accept="image/*,.pdf"></div><div class="field"><label>公開用画像 / 入稿データの再チェック</label><input id="s1SubmissionFile" type="file" accept=".png,.jpg,.jpeg,.svg,.pdf,.zip" onchange="s1ValidateSubmission(this,'s1SubmissionResult')"><div id="s1SubmissionResult" class="small muted">ファイルを選ぶと形式・容量・画像品質を確認します。</div></div><button class="btn" onclick="s1SaveRights('${p.id}')">権利情報を保存</button>`;form.appendChild(box);
+ }
+ if(tab==='review'){
+  const sec=document.createElement('section');sec.className='section card panel s1-rights-card';sec.innerHTML=`<h2>権利申告</h2><div class="detail-list"><div><span>権利保有・許諾</span><b>${p.rights?.ownerDeclared?'申告済み':'未申告'}</b></div><div><span>AI利用</span><b>${p.rights?.aiUsed?'あり':'なし'}</b></div><div><span>警告</span><b>${esc(p.rights?.warning||'なし')}</b></div></div>${p.rights?.warning?`<button class="btn" onclick="go('appeal/${p.id}')">異議申立て</button>`:''}`;main.appendChild(sec);
+ }
+}
+function s1SaveRights(id){const p=productBy(id);if(!p)return;p.rights??={};p.rights.ownerDeclared=$('#s1RightsOwner').checked;p.rights.aiUsed=$('#s1RightsAi').checked;const f=$('#s1RightsEvidence').files?.[0];if(f)p.rights.evidence=[...(p.rights.evidence||[]),f.name];save();toast('権利情報を保存しました')}
+function s1ValidateSubmission(input,targetId){const out=$('#'+targetId),f=input.files?.[0];if(!out||!f)return;const ext=(f.name.split('.').pop()||'').toLowerCase(),okExt=['png','jpg','jpeg','svg','pdf','zip'].includes(ext),okSize=f.size<=20*1024*1024,issues=[];if(!okExt)issues.push('未対応形式');if(!okSize)issues.push('20MBを超えています');if(f.name.includes('..')||/[\\/]/.test(f.name))issues.push('ファイル名を変更してください');out.className=`small ${issues.length?'no':'yes'}`;out.textContent=issues.length?`要修正：${issues.join(' / ')}`:`基本チェックOK：${f.name} / ${(f.size/1024/1024).toFixed(2)}MB`;if(okExt&&okSize&&/^image\//.test(f.type)){const img=new Image(),url=URL.createObjectURL(f);img.onload=()=>{if(img.width<600||img.height<600){out.className='small no';out.textContent+=` / 解像度 ${img.width}×${img.height}px：印刷用途には小さい可能性があります`}else out.textContent+=` / 解像度 ${img.width}×${img.height}px`;URL.revokeObjectURL(url)};img.src=url}}
+if(typeof sellWizard==='function'){
+ const s1BaseSellWizard=sellWizard;
+ sellWizard=function(){s1BaseSellWizard();setTimeout(()=>{$$('#modal input[type=file]').forEach((input,i)=>{if(input.dataset.s1)return;input.dataset.s1='1';const result=document.createElement('div');result.id=`s1SellFileResult${i}`;result.className='small muted';result.textContent='選択後に入稿基本チェックを行います。';input.insertAdjacentElement('afterend',result);input.addEventListener('change',()=>s1ValidateSubmission(input,result.id))});const card=$('#modal .modal-card');if(card&&!card.querySelector('.s1-sell-rights')){const d=document.createElement('div');d.className='notice s1-sell-rights';d.innerHTML='<b>出品前の権利確認</b><br>第三者の著作物・商標等を無断使用していないこと、AI利用の有無を審査時に申告してください。';card.appendChild(d)}},0)};
+}
+function s1AppealPage(productId){const p=productBy(productId);if(!p||currentUser()?.role!=='creator'||p.creatorId!==currentUser().creatorId)return go('works');const existing=s1Scenario().rightsCases.filter(x=>x.productId===productId);shell(`<h1>権利警告・異議申立て</h1><div class="notice"><b>現在の警告：</b>${esc(p.rights?.warning||'警告はありません')}</div><div class="field"><label>異議申立て内容</label><textarea id="appealBody" placeholder="権利保有・許諾の根拠、修正内容など"></textarea></div><div class="field"><label>証明資料</label><input id="appealFile" type="file" accept="image/*,.pdf"></div><button class="btn primary" onclick="s1SubmitAppeal('${productId}')">異議申立てを送信</button>${existing.length?`<section class="section"><h2>履歴</h2>${existing.map(x=>`<div class="card panel"><span class="status">${x.status}</span><p>${esc(x.body)}</p><div class="small muted">${s1Date(x.date)}</div></div>`).join('')}</section>`:''}`,{title:'異議申立て',back:true,cart:false});}
+function s1SubmitAppeal(productId){const body=$('#appealBody').value.trim();if(!body)return toast('申立て内容を入力してください');const x={id:uid('rightsCase'),productId,creatorId:currentUser().creatorId,type:'異議申立て',body,evidence:$('#appealFile').files?.[0]?.name||null,status:'確認待ち',date:now(),history:[]};s1Scenario().rightsCases.unshift(x);s1Notify('user_admin_001','moderation',`${productBy(productId).name} の異議申立てが届きました`,{rightsCaseId:x.id,productId});save();toast('異議申立てを送信しました');go(`work/${productId}?tab=review`)}
+
+/* D-14 / D-15 / D-16: extend current AI and analytics without bypassing existing product forms. */
+function s1EnhanceAiStudio(){const main=$('#main');if(!main||main.querySelector('.s1-ai-market'))return;const intro=main.querySelector('.notice.demo');if(!intro)return;const b=document.createElement('div');b.className='notice s1-ai-market';b.innerHTML=`<b>需要・市場データを使う</b><br>AIは提案だけを作成し、既存商品フォームへの反映は必ず確認後に行います。 <button class="link-btn" onclick="go('creator-demand')">需要一覧を見る ›</button>`;intro.insertAdjacentElement('afterend',b)}
+if(typeof V21_AI_BOTS!=='undefined'){
+ [['bot_idea','💡','商品アイデアAI','商品制作','未充足需要やカテゴリ傾向から企画案を提案します。'],['bot_market','🧭','市場機会AI','分析','検索需要と供給の差から市場機会を整理します。'],['bot_improve','🛠️','商品改善AI','分析','閲覧・お気に入り・CVRから改善候補を提案します。']].forEach(([id,icon,name,category,desc])=>{if(!V21_AI_BOTS.some(x=>x.id===id))V21_AI_BOTS.push({id,icon,name,category,desc})});
+}
+function s1EnhanceSalesPage(){const main=$('#main');if(!main||main.querySelector('.s1-sales-detail')||currentUser()?.role!=='creator')return;const ps=products.filter(p=>p.creatorId===currentUser().creatorId),views=ps.reduce((a,p)=>a+(p.views||0),0),favs=ps.reduce((a,p)=>a+(p.favs||0),0),sales=ps.reduce((a,p)=>a+(p.sales||0),0),cost=Math.round(ps.reduce((a,p)=>a+(p.cost||0)*(p.sales||0),0)*.01),fees=Math.round(ps.reduce((a,p)=>a+(p.digital||0)*(p.sales||0)*(p.feeRate||.12),0)*.02),payout=s1Scenario().payouts.filter(x=>x.creatorId===currentUser().creatorId).reduce((a,x)=>a+x.amount,0);const sec=document.createElement('section');sec.className='section card panel s1-sales-detail';sec.innerHTML=`<div class="section-head"><div><h2>販売分析の補完指標</h2><p>既存売上分析に不足分だけ追加しています。</p></div><button class="link-btn" onclick="go('payouts')">報酬管理 ›</button></div><div class="kpi-grid"><div class="card kpi"><span>商品閲覧</span><b>${views.toLocaleString()}</b></div><div class="card kpi"><span>お気に入り</span><b>${favs.toLocaleString()}</b></div><div class="card kpi"><span>販売数</span><b>${sales.toLocaleString()}</b></div><div class="card kpi"><span>購入率</span><b>${views?((sales/views)*100).toFixed(1):'0.0'}%</b></div></div><div class="detail-list" style="margin-top:14px"><div><span>検索流入（デモ計測）</span><b>${s1Scenario().analytics.events.filter(e=>e.type==='search').length}</b></div><div><span>製造原価概算</span><b>${yen(cost)}</b></div><div><span>手数料概算</span><b>${yen(fees)}</b></div><div><span>報酬合計</span><b>${yen(payout)}</b></div></div><h3>バリエーション別</h3>${ps.slice(0,3).map(p=>`<div class="s1-inline-row"><span>${esc(p.name)} / ${esc(p.variants?.[0]?.material||p.material)} / ${esc(p.variants?.[0]?.size||p.size)}</span><b>${p.sales||0}件</b></div>`).join('')}`;main.appendChild(sec)}
+function s1PayoutsPage(){if(currentUser()?.role!=='creator')return go('home');const rows=s1Scenario().payouts.filter(x=>x.creatorId===currentUser().creatorId),sum=rows.reduce((a,x)=>a+x.amount,0);shell(`<div class="section-head"><div><h1>報酬管理</h1><p>売上・原価・手数料とクリエイター報酬を分けて確認します。</p></div></div><div class="card panel"><div class="quote-row quote-total"><span>報酬合計</span><b>${yen(sum)}</b></div></div><section class="section">${rows.map(x=>{const p=productBy(x.productId);return `<article class="card panel" style="margin:9px 0"><div class="section-head"><div><b>${esc(p?.name||x.productId)}</b><div class="small muted">${x.orderId||'集計分'}</div></div><span class="status ${s1StatusClass(x.status)}">${x.status}</span></div><div class="detail-list"><div><span>売上</span><b>${yen(x.gross)}</b></div><div><span>製造原価</span><b>-${yen(x.cost)}</b></div><div><span>手数料</span><b>-${yen(x.fee)}</b></div><div><span>報酬</span><b>${yen(x.amount)}</b></div></div></article>`}).join('')}</section>`,{title:'報酬管理',back:true,bell:true,cart:false});}
+
+function s1EnhanceCreatorMenuSheet(){const list=$('#modal .menu-list');if(!list||list.querySelector('.s1-creator-extra'))return;const d=document.createElement('div');d.className='s1-creator-extra';d.innerHTML=`<button class="menu-row" onclick="closeModal();go('creator-demand')"><span>需要一覧</span><span>›</span></button><button class="menu-row" onclick="closeModal();go('custom-orders')"><span>オーダーメイド案件</span><span>›</span></button><button class="menu-row" onclick="closeModal();go('payouts')"><span>報酬管理</span><span>›</span></button>`;list.appendChild(d)}
+if(typeof creatorMenuSheet==='function'){const s1BaseCreatorMenuSheet=creatorMenuSheet;creatorMenuSheet=function(){s1BaseCreatorMenuSheet();setTimeout(s1EnhanceCreatorMenuSheet,0)}}
+
+/* D-17 / D-18 manufacturing actor and related operations. */
+function s1ManufacturerDashboard(){const u=currentUser();if(u?.role!=='manufacturer')return go('home');const rows=s1Scenario().manufacturingOrders.filter(x=>x.manufacturerId===u.manufacturerId),pending=rows.filter(x=>x.status!=='配送完了').length,defect=s1FindManufacturer(u.manufacturerId)?.defectRate||0;shell(`<div class="section-head"><div><h1>製造ダッシュボード</h1><p>既存注文に関連付く製造注文だけを管理します。</p></div></div><div class="kpi-grid"><div class="card kpi"><span>製造注文</span><b>${rows.length}</b></div><div class="card kpi"><span>未完了</span><b>${pending}</b></div><div class="card kpi"><span>不良率</span><b>${defect}%</b></div><div class="card kpi"><span>納期遵守率</span><b>${s1FindManufacturer(u.manufacturerId)?.onTimeRate||0}%</b></div></div><section class="section"><button class="btn primary" onclick="go('manufacturer-orders')">製造注文を確認</button></section>`,{title:'製造トップ',bell:true,cart:false});}
+function s1ManufacturerOrdersPage(){const u=currentUser();if(u?.role!=='manufacturer')return go('home');const rows=s1Scenario().manufacturingOrders.filter(x=>x.manufacturerId===u.manufacturerId);shell(`<div class="section-head"><div><h1>製造注文</h1><p>注文→製造→検品→発送を同じ正本状態で更新します。</p></div></div>${rows.map(m=>`<button class="card panel s1-case-row" onclick="go('manufacturer-order/${m.id}')"><div><span class="status ${s1StatusClass(m.status)}">${m.status}</span><h3>${esc(m.orderId)}</h3><div class="small muted">更新 ${s1Date(m.updatedAt)}</div></div><span>›</span></button>`).join('')}`,{title:'製造注文',bell:true,cart:false});}
+function s1ManufacturerOrderPage(id){const u=currentUser(),m=s1Scenario().manufacturingOrders.find(x=>x.id===id);if(!m||!(u?.role==='admin'||(u?.role==='manufacturer'&&m.manufacturerId===u.manufacturerId)))return go(roleHome(u));const row=s1FindOrder(m.orderId);shell(`<div class="section-head"><div><span class="status ${s1StatusClass(m.status)}">${m.status}</span><h1>${esc(m.orderId)}</h1><p>製造注文 ${esc(m.id)}</p></div></div><div class="card panel"><h2>印刷仕様</h2>${row?.order.items.filter(x=>x.kind==='physical').map(x=>{const p=productBy(x.productId);return `<div class="s1-inline-row"><span>${esc(p?.name||x.productId)} / ${esc(x.material||p?.material)} / ${esc(x.size||'50mm')} / ${esc(x.shape||p?.shape)}</span><b>${x.qty}枚</b></div>`}).join('')||'<p>物理商品なし</p>'}</div><section class="section card panel"><h2>工程更新</h2><div class="btn-row">${S1_MFG_FLOW.map(s=>`<button class="btn ${m.status===s?'primary':''}" onclick="s1SetManufacturingStatus('${m.id}','${s}')">${s}</button>`).join('')}</div><div class="field"><label>検品メモ</label><textarea id="mfgInspect">${esc(m.inspection.note||'')}</textarea></div><div class="search-filter-grid"><div class="field"><label>配送会社</label><input id="mfgCarrier" value="${esc(m.tracking.carrier||'')}"></div><div class="field"><label>追跡番号</label><input id="mfgTracking" value="${esc(m.tracking.number||'')}"></div></div><button class="btn primary" onclick="s1SaveManufacturingDetail('${m.id}')">製造情報を保存</button></section><section class="section card panel"><h2>履歴</h2>${m.history.map(h=>`<div class="s1-inline-row"><span>${esc(h.status)}<div class="small muted">${esc(h.note||'')}</div></span><small>${s1Date(h.date)}</small></div>`).join('')}</section>`,{title:'製造注文詳細',back:true,bell:true,cart:false});}
+function s1SaveManufacturingDetail(id){const m=s1Scenario().manufacturingOrders.find(x=>x.id===id);if(!m)return;m.inspection.note=$('#mfgInspect').value.trim();m.tracking.carrier=$('#mfgCarrier').value.trim();m.tracking.number=$('#mfgTracking').value.trim();if(m.status==='検品'&&m.inspection.note)m.inspection.status='完了';m.updatedAt=now();s1SyncOrderFromManufacturing(m);save();toast('製造情報を保存しました')}
+
+/* Admin scenario additions preserve existing workbench and add only missing business areas. */
+function s1AdminManufacturing(){if(currentUser()?.role!=='admin')return go('home');const rows=s1Scenario().manufacturingOrders;adminWorkbench('製造・発送管理',`${rows.map(m=>{const mf=s1FindManufacturer(m.manufacturerId);return `<button class="card panel s1-case-row" onclick="go('manufacturer-order/${m.id}')"><div><span class="status ${s1StatusClass(m.status)}">${m.status}</span><h3>${esc(m.orderId)}</h3><div class="small muted">${esc(mf?.name||'未割当')} ・ ${s1Date(m.updatedAt)}</div></div><span>›</span></button>`}).join('')}`,'admin-manufacturing')}
+function s1AdminManufacturers(){if(currentUser()?.role!=='admin')return go('home');const rows=s1Scenario().manufacturers;adminWorkbench('製造事業者管理',`<div class="section-head"><p>工場固有仕様は既存注文へ書き込まず、製造事業者マスタで管理します。</p><button class="btn primary" onclick="s1ManufacturerModal()">＋ 製造事業者</button></div>${rows.map(m=>`<article class="card panel" style="margin:9px 0"><div class="section-head"><div><h3>${esc(m.name)}</h3><span class="status ${m.active?'ok':'danger'}">${m.active?'稼働中':'停止'}</span></div><button class="btn" onclick="s1ManufacturerModal('${m.id}')">編集</button></div><div class="detail-list"><div><span>対応素材</span><b>${m.materials.join('、')}</b></div><div><span>対応サイズ</span><b>${m.sizes.join('、')}</b></div><div><span>基準原価</span><b>${yen(m.baseCost)}</b></div><div><span>標準納期</span><b>${m.leadDays}日</b></div><div><span>不良率</span><b>${m.defectRate}%</b></div><div><span>納期遵守率</span><b>${m.onTimeRate}%</b></div></div></article>`).join('')}`,'admin-manufacturers')}
+function s1ManufacturerModal(id=''){const m=s1FindManufacturer(id)||{id:uid('manufacturer'),name:'',materials:['耐水PET'],sizes:['50mm'],baseCost:100,leadDays:5,active:true,defectRate:0,onTimeRate:100};showModal(`<div class="section-head"><h2>製造事業者</h2><button class="icon-btn" onclick="closeModal()">×</button></div><div class="field"><label>会社名</label><input id="mfName" value="${esc(m.name)}"></div><div class="field"><label>対応素材（カンマ区切り）</label><input id="mfMaterials" value="${esc(m.materials.join(','))}"></div><div class="field"><label>対応サイズ（カンマ区切り）</label><input id="mfSizes" value="${esc(m.sizes.join(','))}"></div><div class="search-filter-grid"><div class="field"><label>基準原価</label><input id="mfCost" type="number" value="${m.baseCost}"></div><div class="field"><label>標準納期（日）</label><input id="mfLead" type="number" value="${m.leadDays}"></div></div><label class="chip"><input id="mfActive" type="checkbox" ${m.active?'checked':''}> 稼働中</label><button class="btn primary" onclick="s1SaveManufacturer('${id}')">保存</button>`)}
+function s1SaveManufacturer(id){const sc=s1Scenario(),old=s1FindManufacturer(id),v={id:old?.id||uid('manufacturer'),name:$('#mfName').value.trim(),materials:$('#mfMaterials').value.split(',').map(x=>x.trim()).filter(Boolean),sizes:$('#mfSizes').value.split(',').map(x=>x.trim()).filter(Boolean),baseCost:Number($('#mfCost').value),leadDays:Number($('#mfLead').value),active:$('#mfActive').checked,defectRate:old?.defectRate||0,onTimeRate:old?.onTimeRate||100};if(!v.name)return toast('会社名を入力してください');if(old)Object.assign(old,v);else sc.manufacturers.push(v);save();closeModal();render()}
+
+moderation=function(){if(currentUser()?.role!=='admin')return go('home');const rows=s1Scenario().reports;adminWorkbench('通報・モデレーション',`<div class="notice">商品・クリエイター・ユーザー・レビューを共通キューで管理します。</div>${rows.length?rows.map(r=>`<article class="card panel" style="margin:9px 0"><div class="section-head"><div><span class="status ${s1StatusClass(r.status)}">${r.status}</span><h3>${esc(r.targetType)} / ${esc(r.targetId)}</h3></div><small>${s1Date(r.date)}</small></div><p><b>${esc(r.reason)}</b> ${esc(r.body||'')}</p><div class="btn-row"><button class="btn" onclick="s1ModerationAction('${r.id}','確認済み')">問題なし</button><button class="btn danger" onclick="s1ModerationAction('${r.id}','非表示')">非表示・停止</button></div></article>`).join(''):`<div class="empty"><h2>確認待ちの通報はありません</h2></div>`}`,'admin-moderation')}
+function s1ModerationAction(id,status){const r=s1Scenario().reports.find(x=>x.id===id);if(!r)return;const before=r.status;r.status=status;r.updatedAt=now();if(status==='非表示'&&r.targetType==='product'){const p=productBy(r.targetId);if(p){p.rights.warning='通報調査により一時停止';const meta=typeof ensureWorkMeta==='function'?ensureWorkMeta(p):null;if(meta)meta.status='非公開'}}s1Audit('通報対応',before,status,'通報管理');save();render()}
+function s1AdminSupport(){if(currentUser()?.role!=='admin')return go('home');const rows=s1Scenario().supportCases;adminWorkbench('問い合わせ・返金管理',`${rows.length?rows.map(x=>`<button class="card panel s1-case-row" onclick="go('support/${x.id}')"><div><span class="status ${s1StatusClass(x.status)}">${x.status}</span><h3>${esc(x.type)}</h3><div class="small muted">${esc(x.orderId)} ・ ${s1Date(x.updatedAt)}</div></div><span>›</span></button>`).join(''):'<div class="empty"><h2>未処理案件はありません</h2></div>'}`,'admin-support')}
+function s1AdminDemand(){if(currentUser()?.role!=='admin')return go('home');const rows=s1Scenario().demandRequests,open=rows.filter(x=>x.status!=='対応済み');const grouped={};open.forEach(x=>{const k=x.useCase||'指定なし';grouped[k]=(grouped[k]||0)+1});adminWorkbench('需要・供給分析',`<div class="kpi-grid"><div class="card kpi"><span>需要リクエスト</span><b>${rows.length}</b></div><div class="card kpi"><span>未対応</span><b>${open.length}</b></div><div class="card kpi"><span>検索0件</span><b>${s1Scenario().analytics.events.filter(e=>e.type==='search'&&e.resultCount===0).length}</b></div><div class="card kpi"><span>対応済み</span><b>${rows.length-open.length}</b></div></div><section class="section card panel"><h2>用途別の未充足需要</h2>${Object.entries(grouped).map(([k,v])=>`<div class="s1-inline-row"><span>${esc(k)}</span><b>${v}件</b></div>`).join('')||'<p>未充足需要はありません。</p>'}</section>`,'admin-demand')}
+function s1AdminRights(){if(currentUser()?.role!=='admin')return go('home');const cases=s1Scenario().rightsCases,flagged=products.filter(p=>p.rights?.warning);adminWorkbench('権利管理・異議申立て',`<section class="card panel"><h2>権利警告中の商品</h2>${flagged.map(p=>`<div class="s1-inline-row"><div><b>${esc(p.name)}</b><div class="small muted">${esc(p.rights.warning)}</div></div><button class="btn" onclick="go('admin-work/${p.id}')">商品審査</button></div>`).join('')||'<p>対象なし</p>'}</section><section class="section"><h2>異議申立て</h2>${cases.map(x=>`<article class="card panel"><span class="status">${x.status}</span><h3>${esc(productBy(x.productId)?.name||x.productId)}</h3><p>${esc(x.body)}</p><div class="btn-row"><button class="btn primary" onclick="s1RightsDecision('${x.id}','承認')">承認</button><button class="btn danger" onclick="s1RightsDecision('${x.id}','却下')">却下</button></div></article>`).join('')||'<div class="empty"><h3>申立てはありません</h3></div>'}</section>`,'admin-rights')}
+function s1RightsDecision(id,status){const x=s1Scenario().rightsCases.find(v=>v.id===id);if(!x)return;x.status=status;x.updatedAt=now();const p=productBy(x.productId);if(status==='承認'&&p)p.rights.warning=null;s1NotifyCreator(x.creatorId,'moderation',`${p?.name||'商品'} の異議申立て：${status}`,{rightsCaseId:id,productId:x.productId});s1Audit('権利異議申立て', '確認待ち',status,'権利管理');save();render()}
+function s1AdminPayouts(){if(currentUser()?.role!=='admin')return go('home');const rows=s1Scenario().payouts;adminWorkbench('クリエイター報酬管理',`${rows.map(x=>`<article class="card panel" style="margin:9px 0"><div class="section-head"><div><b>${esc(creatorBy(x.creatorId)?.name||x.creatorId)}</b><div class="small muted">${x.orderId||'集計'} / ${esc(productBy(x.productId)?.name||x.productId)}</div></div><span class="status ${s1StatusClass(x.status)}">${x.status}</span></div><div class="quote-row"><span>報酬</span><b>${yen(x.amount)}</b></div><div class="btn-row"><button class="btn" onclick="s1PayoutStatus('${x.id}','支払予定')">支払予定</button><button class="btn primary" onclick="s1PayoutStatus('${x.id}','支払済み')">支払済み</button></div></article>`).join('')}`,'admin-payouts')}
+function s1PayoutStatus(id,status){const x=s1Scenario().payouts.find(v=>v.id===id);if(!x)return;const before=x.status;x.status=status;x.updatedAt=now();s1NotifyCreator(x.creatorId,'payout',`報酬 ${yen(x.amount)}：${status}`,{payoutId:id});s1Audit('報酬状態更新',before,status,'報酬管理');save();render()}
+function s1AdminAiAnalysis(){if(currentUser()?.role!=='admin')return go('home');const sc=s1Scenario(),searches=sc.analytics.events.filter(e=>e.type==='search'),zeros=searches.filter(e=>e.resultCount===0),support=sc.supportCases.filter(x=>!/(回答済み|返金済み|再製造手配済み)/.test(x.status));adminWorkbench('AI運営分析',`<div class="notice demo">AI分析は公開デモの模擬提案です。運営判断やシステム変更は自動実行しません。</div><div class="s1-priority-list"><div class="card panel"><span class="status danger">異常</span><h3>未充足検索 ${zeros.length}件</h3><p>検索0件が継続しているキーワードを需要リクエストと照合してください。</p><button class="btn" onclick="go('admin-demand')">需要分析へ</button></div><div class="card panel"><span class="status warn">要確認</span><h3>未解決サポート ${support.length}件</h3><p>発送遅延・不良・返金の滞留を優先して確認してください。</p><button class="btn" onclick="go('admin-support')">サポートへ</button></div><div class="card panel"><span class="status">改善候補</span><h3>カテゴリ供給の偏り</h3><p>需要が増えている用途に対し、クリエイター向け企画案を提示できます。</p></div></div>`,'admin-ai-analysis')}
+function s1AdminFeatures(){if(currentUser()?.role!=='admin')return go('home');const rows=s1Scenario().features;adminWorkbench('特集・販促管理',`<div class="section-head"><p>既存ホームの特集表示は維持し、運営編集機能だけを追加します。</p><button class="btn primary" onclick="s1FeatureModal()">＋ 特集</button></div>${rows.map(x=>`<article class="card panel"><div class="section-head"><div><span class="status ${s1StatusClass(x.status)}">${x.status}</span><h3>${esc(x.title)}</h3></div><button class="btn" onclick="s1FeatureModal('${x.id}')">編集</button></div><p>${x.productIds.length}商品を掲載</p></article>`).join('')}`,'admin-features')}
+function s1FeatureModal(id=''){const x=s1Scenario().features.find(v=>v.id===id)||{id:uid('feature'),title:'',status:'下書き',productIds:[]};showModal(`<div class="section-head"><h2>特集編集</h2><button class="icon-btn" onclick="closeModal()">×</button></div><div class="field"><label>特集名</label><input id="ftTitle" value="${esc(x.title)}"></div><div class="field"><label>状態</label><select id="ftStatus"><option ${x.status==='下書き'?'selected':''}>下書き</option><option ${x.status==='公開'?'selected':''}>公開</option><option ${x.status==='停止'?'selected':''}>停止</option></select></div><div class="field"><label>掲載商品</label><div class="option-grid">${products.filter(p=>!p.hidden).slice(0,12).map(p=>`<label class="chip"><input class="ftProduct" type="checkbox" value="${p.id}" ${x.productIds.includes(p.id)?'checked':''}>${esc(p.name)}</label>`).join('')}</div></div><button class="btn primary" onclick="s1SaveFeature('${id}')">保存</button>`)}
+function s1SaveFeature(id){const rows=s1Scenario().features,x=rows.find(v=>v.id===id),v={id:x?.id||uid('feature'),title:$('#ftTitle').value.trim(),status:$('#ftStatus').value,productIds:$$('.ftProduct:checked').map(n=>n.value),updatedAt:now()};if(!v.title)return toast('特集名を入力してください');if(x)Object.assign(x,v);else rows.push(v);save();closeModal();render()}
+function s1AdminRisks(){if(currentUser()?.role!=='admin')return go('home');const sc=s1Scenario();if(!sc.riskFlags.length)sc.riskFlags.push({id:'risk_demo_1',targetType:'order',targetId:s1AllOrders()[0]?.order.id||'ORD-DEMO',reason:'短時間の決済再試行',level:'中',status:'検出',date:now()});adminWorkbench('不正利用・リスク管理',`${sc.riskFlags.map(x=>`<article class="card panel"><div class="section-head"><div><span class="status ${x.level==='高'?'danger':'warn'}">リスク ${x.level}</span><h3>${esc(x.targetType)} / ${esc(x.targetId)}</h3></div><span>${esc(x.status)}</span></div><p>${esc(x.reason)}</p><div class="btn-row"><button class="btn" onclick="s1RiskDecision('${x.id}','正常復帰')">正常</button><button class="btn danger" onclick="s1RiskDecision('${x.id}','制限')">制限</button></div></article>`).join('')}`,'admin-risks')}
+function s1RiskDecision(id,status){const x=s1Scenario().riskFlags.find(v=>v.id===id);if(!x)return;const before=x.status;x.status=status;x.updatedAt=now();s1Audit('リスク判定',before,status,'不正利用管理');save();render()}
+
+function s1EnhanceAdminPage(){const main=$('#main');if(!main||main.querySelector('.s1-admin-extra')||currentUser()?.role!=='admin')return;const sc=s1Scenario(),orders=s1AllOrders().map(x=>x.order),gmv=orders.reduce((a,o)=>a+(o.total||0),0),refund=orders.filter(o=>String(o.status).includes('返金')).length,cancel=orders.filter(o=>String(o.status).includes('キャンセル')).length,mfg=sc.manufacturingOrders,defects=sc.supportCases.filter(x=>['印刷不良','破損','誤配送'].includes(x.type)).length;const sec=document.createElement('section');sec.className='section s1-admin-extra';sec.innerHTML=`<div class="section-head"><div><h2>追加KPI</h2><p>既存ダッシュボードに不足するシナリオ指標だけを追加。</p></div></div><div class="kpi-grid"><div class="card kpi"><span>GMV</span><b>${yen(gmv)}</b></div><div class="card kpi"><span>購入転換率</span><b>2.9%</b></div><div class="card kpi"><span>リピート率</span><b>18.4%</b></div><div class="card kpi"><span>キャンセル率</span><b>${orders.length?((cancel/orders.length)*100).toFixed(1):'0.0'}%</b></div><div class="card kpi"><span>返金率</span><b>${orders.length?((refund/orders.length)*100).toFixed(1):'0.0'}%</b></div><div class="card kpi"><span>不良率</span><b>${mfg.length?((defects/mfg.length)*100).toFixed(1):'0.0'}%</b></div></div><div class="btn-row" style="margin-top:14px"><button class="btn" onclick="go('admin-manufacturing')">製造・発送</button><button class="btn" onclick="go('admin-support')">問い合わせ・返金</button><button class="btn" onclick="go('admin-demand')">需要分析</button><button class="btn" onclick="go('admin-ai-analysis')">AI運営分析</button></div>`;main.appendChild(sec)}
+function s1EnhanceAdminMenu(){const main=$('#main');if(!main||main.querySelector('.s1-admin-menu-extra')||currentUser()?.role!=='admin')return;const sec=document.createElement('section');sec.className='section card panel s1-admin-menu-extra';sec.innerHTML=`<h2>シナリオ補完業務</h2><div class="btn-row"><button class="btn" onclick="go('admin-manufacturing')">製造・発送管理</button><button class="btn" onclick="go('admin-manufacturers')">製造事業者管理</button><button class="btn" onclick="go('admin-support')">問い合わせ・返金</button><button class="btn" onclick="go('admin-demand')">需要・供給分析</button><button class="btn" onclick="go('admin-rights')">権利・異議申立て</button><button class="btn" onclick="go('admin-payouts')">報酬管理</button><button class="btn" onclick="go('admin-ai-analysis')">AI運営分析</button><button class="btn" onclick="go('admin-features')">特集管理</button><button class="btn" onclick="go('admin-risks')">不正利用管理</button></div>`;main.appendChild(sec)}
+
+/* Central post-render enhancer: additive DOM only. */
+function s1EnhanceCurrentPage(){
+ const path=routePath().split('?')[0],seg=path.split('/');
+ if(seg[0]==='product'&&seg[1])s1EnhanceProductPage(seg[1]);
+ if(seg[0]==='creator'&&seg[1])s1EnhanceCreatorPage(seg[1]);
+ if(seg[0]==='work'&&seg[1])s1EnhanceWorkDetail();
+ if(path==='settings')s1EnhanceSettingsPage();
+ if(path==='mypage')s1EnhanceMyPage();
+ if(path==='ai-studio')s1EnhanceAiStudio();
+ if(path==='sales')s1EnhanceSalesPage();
+ if(path==='admin')s1EnhanceAdminPage();
+ if(path==='admin-menu')s1EnhanceAdminMenu();
+}
+const s1BaseShell=shell;
+shell=function(content,opts={}){s1BaseShell(content,opts);setTimeout(s1EnhanceCurrentPage,0)};
+
+/* Route layer only adds new paths; all existing URLs continue through the prior renderer. */
+const s1BaseRender=render;
+render=function(){
+ const raw=routePath(),path=raw.split('?')[0],seg=path.split('/');
+ if(seg[0]==='series'&&seg[1])return s1SeriesPage(seg[1]);
+ if(path==='demand-requests')return currentUser()?s1DemandRequestsPage():go('login');
+ if(path==='creator-demand')return s1CreatorDemandPage();
+ if(path==='custom-orders')return s1CustomOrdersPage();
+ if(seg[0]==='custom-order'&&seg[1]==='new'&&seg[2])return s1CustomOrderNewPage(seg[2]);
+ if(seg[0]==='custom-order'&&seg[1])return s1CustomOrderDetailPage(seg[1]);
+ if(path==='support')return s1SupportListPage();
+ if(path==='support/new')return s1SupportNewPage();
+ if(seg[0]==='support'&&seg[1])return s1SupportDetailPage(seg[1]);
+ if(seg[0]==='order'&&seg[1])return s1OrderDetailPage(decodeURIComponent(seg.slice(1).join('/')));
+ if(seg[0]==='appeal'&&seg[1])return s1AppealPage(seg[1]);
+ if(path==='account-close')return s1AccountClosePage();
+ if(path==='payouts')return s1PayoutsPage();
+ if(path==='manufacturer-dashboard')return s1ManufacturerDashboard();
+ if(path==='manufacturer-orders')return s1ManufacturerOrdersPage();
+ if(seg[0]==='manufacturer-order'&&seg[1])return s1ManufacturerOrderPage(seg[1]);
+ if(path==='admin-manufacturing')return s1AdminManufacturing();
+ if(path==='admin-manufacturers')return s1AdminManufacturers();
+ if(path==='admin-support')return s1AdminSupport();
+ if(path==='admin-demand')return s1AdminDemand();
+ if(path==='admin-rights')return s1AdminRights();
+ if(path==='admin-payouts')return s1AdminPayouts();
+ if(path==='admin-ai-analysis')return s1AdminAiAnalysis();
+ if(path==='admin-features')return s1AdminFeatures();
+ if(path==='admin-risks')return s1AdminRisks();
+ return s1BaseRender();
+};
+
+/* Ensure all existing and newly-created orders remain synchronized at load. */
+s1EnsureScenario();s1AllOrders().forEach(({userId,order})=>{const m=s1EnsureManufacturing(order,userId);if(m)s1SyncOrderFromManufacturing(m)});save();setTimeout(()=>{done();render()},0);
 
 </script>
 </body>
