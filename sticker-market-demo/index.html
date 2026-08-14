@@ -1617,6 +1617,13 @@ smMvpHydrateUser=async function(){const u=await smMvpFinalHydrateUser();if(u&&SM
 const smMvpFinalShell=shell;
 shell=function(content,opts={}){smMvpFinalShell(content,opts);if(SM_MVP.live()&&!$('#main .sm-mvp-env')){const b=document.createElement('div');b.className=`notice sm-mvp-env ${SM_MVP.mode==='PRODUCTION'?'':'demo'}`;b.innerHTML=`<b>${SM_MVP.mode}</b> — 注文・商品・権限・製造・返金・報酬はサーバー正本。AI等のMVP対象外機能は引き続きデモ表示です。`;$('#main')?.prepend(b)}};
 
+
+/* Sticker Market Commercial MVP hotfix — Supabase REST public bearer boundary. */
+smMvpHeaders=function(auth=false,extra={}){
+ const token=auth&&SM_MVP.auth?.access_token?SM_MVP.auth.access_token:SM_MVP_CONFIG.anonKey;
+ return {apikey:SM_MVP_CONFIG.anonKey,Authorization:`Bearer ${token}`,...extra};
+};
+
 </script>
 </body>
 </html>
