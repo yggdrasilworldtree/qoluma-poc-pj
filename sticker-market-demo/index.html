@@ -1668,7 +1668,7 @@ smMvpInit=async function(){
 };
 
 /* Formal MVP acceptance: server persistence/review submission is the completion point.
- * Build the one local work record synchronously, navigate, then refresh all server state in background. */
+ * Register the minimal local product and route immediately; nonessential UI metadata and full hydrate follow. */
 const smMvpHotfixBaseCreateProduct=smMvpCreateProduct;
 smMvpCreateProduct=async function(submit){
  if(!SM_MVP.live())return smMvpHotfixBaseCreateProduct(submit);
@@ -1688,8 +1688,11 @@ smMvpCreateProduct=async function(submit){
 
   const now=new Date().toISOString(),local={id,name,creatorId:currentUser().creatorId,category,digital,physical:sellPhysical?physical:0,material,shape:'ダイカット',size,variantId:sellPhysical?`${id}_base`:null,useCases:[],tags:[],description:desc,art:'type',color:'#ececec',updated:now,rating:0,favs:0,sales:0,views:0,digitalAssetKey:null,privatePrintKey:null,publicMedia:pubAsset?.publicUrl?[{url:pubAsset.publicUrl}]:[],serverStatus:submit?'reviewing':'draft',rights:{ownerDeclared:true,aiUsed},metadata:{sell_physical:!!sellPhysical,art:'type',color:'#ececec'}};
   const existing=products.find(x=>x.id===id);if(existing)Object.assign(existing,local);else products.push(local);
-  if(typeof ensureWorkMeta==='function'){const m=ensureWorkMeta(local);m.status=submit?'審査中':'下書き';m.updatedAt=now;m.sellPhysical=!!sellPhysical}
-  done();closeModal();toast(submit?'審査申請しました':'下書きを保存しました');go(`work/${id}`);
+
+  /* URL transition is mandatory and precedes optional metadata/render helpers. */
+  go(`work/${id}`);
+  done();closeModal();toast(submit?'審査申請しました':'下書きを保存しました');
+  try{if(typeof ensureWorkMeta==='function'){const m=ensureWorkMeta(local);m.status=submit?'審査中':'下書き';m.updatedAt=now;m.sellPhysical=!!sellPhysical}}catch(e){console.warn('work metadata enrichment failed',e)}
   setTimeout(()=>smMvpHydrateUser().catch(e=>console.warn('post-listing full hydrate failed',e)),0);
  }catch(e){done();toast(e.message||'商品を保存できませんでした',3500)}
 };
