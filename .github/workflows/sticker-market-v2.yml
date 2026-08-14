@@ -25,9 +25,16 @@ on:
       - 'sticker-market-demo/commercial_mvp_existing_flows.js'
       - 'sticker-market-demo/commercial_mvp_finalize.js'
       - 'sticker-market-demo/commercial_mvp_hotfix.js'
+      - 'sticker-market-demo/commercial_mvp_delta_v1.js'
+      - 'sticker-market-demo/commercial_mvp_delta_v1_cancel.js'
+      - 'sticker-market-demo/commercial_mvp_delta_v1_admin.js'
+      - 'sticker-market-demo/commercial_mvp_delta_v1_review.js'
       - 'sticker-market-demo/commercial_mvp.css'
+      - 'sticker-market-demo/commercial_mvp_delta_v1.css'
       - 'sticker-market-demo/commercial_mvp_contract_test.mjs'
+      - 'sticker-market-demo/commercial_mvp_delta_contract_test.mjs'
       - 'sticker-market-demo/commercial_mvp_server_contract_test.mjs'
+      - 'sticker-market-demo/e2e/**'
       - 'sticker-market-demo/apply_v2.py'
   workflow_dispatch:
 
@@ -47,15 +54,22 @@ jobs:
       - name: Build single HTML
         run: python sticker-market-demo/apply_v2.py
       - name: Validate JavaScript syntax
-        run: node --check sticker-market-demo/v2.built.js
+        run: |
+          node --check sticker-market-demo/v2.built.js
+          node --check sticker-market-demo/e2e/demo-regression.spec.mjs
+          node --check sticker-market-demo/e2e/staging-mvp.spec.mjs
       - name: Validate commercial MVP contracts
-        run: node sticker-market-demo/commercial_mvp_contract_test.mjs
+        run: |
+          node sticker-market-demo/commercial_mvp_contract_test.mjs
+          node sticker-market-demo/commercial_mvp_delta_contract_test.mjs
       - name: Validate deployed server boundaries
         run: node sticker-market-demo/commercial_mvp_server_contract_test.mjs
       - name: Validate build markers
         run: |
           grep -q 'Sticker Market — Commercial MVP v1.0' sticker-market-demo/index.html
           grep -q 'sticker-market-commercial-mvp' sticker-market-demo/index.html
+          grep -q 'sticker-market-mvp-delta' sticker-market-demo/index.html
+          grep -q 'SM_MVP_DELTA_VERSION' sticker-market-demo/index.html
           grep -q 'Sticker Market scenario-fit v1.0' sticker-market-demo/index.html
           grep -q 'S1_SCENARIO_VERSION' sticker-market-demo/index.html
           grep -q 's1EnsureManufacturing' sticker-market-demo/index.html
@@ -79,6 +93,9 @@ jobs:
           grep -q 'SM_MVP_CONFIG' sticker-market-demo/index.html
           grep -q 'smMvpEnsureCheckout' sticker-market-demo/index.html
           grep -q 'smMvpUploadAndRegister' sticker-market-demo/index.html
+          grep -q 'smMvpOpenUnableModal' sticker-market-demo/index.html
+          grep -q 'smMvpSubmitManufacturingRevision' sticker-market-demo/index.html
+          grep -q 'smMvpCompleteOrder' sticker-market-demo/index.html
       - name: Commit generated index
         run: |
           git config user.name 'github-actions[bot]'
