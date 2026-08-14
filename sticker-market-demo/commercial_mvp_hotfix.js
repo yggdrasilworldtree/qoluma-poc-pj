@@ -43,26 +43,35 @@ smMvpInit=async function(){
  return smMvpHotfixBaseInit();
 };
 
-/* Formal MVP acceptance hotfix:
- * Once product persistence + review submission succeed, do not make the user wait
- * for the full account/operations hydrate before entering the existing work detail.
- * The lightweight catalog merge is sufficient for the work route; the complete
- * hydrate runs after navigation and remains the server source-of-truth refresh.
- */
+/* Retained compatibility wrapper for previously deployed call sites. */
 const smMvpHotfixBaseCreateProduct=smMvpCreateProduct;
 smMvpCreateProduct=async function(submit){
  if(!SM_MVP.live())return smMvpHotfixBaseCreateProduct(submit);
  const fullHydrate=smMvpHydrateUser;
  let fastHydrateUsed=false;
- smMvpHydrateUser=async function(){
-  fastHydrateUsed=true;
-  await smMvpMergeAccessibleProducts();
-  return currentUser();
- };
+ smMvpHydrateUser=async function(){fastHydrateUsed=true;await smMvpMergeAccessibleProducts();return currentUser()};
+ try{return await smMvpHotfixBaseCreateProduct(submit)}finally{smMvpHydrateUser=fullHydrate;if(fastHydrateUsed)setTimeout(()=>fullHydrate().catch(e=>console.warn('post-listing hydrate failed',e)),0)}
+};
+
+/* Formal acceptance: the server write is the completion point for listing submission.
+ * Navigate after the persisted product is merged; full account hydration is background work. */
+const smMvpAcceptanceFallbackCreateProduct=smMvpCreateProduct;
+smMvpCreateProduct=async function(submit){
+ if(!SM_MVP.live())return smMvpAcceptanceFallbackCreateProduct(submit);
+ const name=$('#smNewName')?.value.trim(),desc=$('#smNewDesc')?.value.trim(),digital=Number($('#smNewDigital')?.value),physical=Number($('#smNewPhysical')?.value),sellPhysical=$('#smNewPhysicalEnabled')?.checked,rights=$('#smNewRights')?.checked;
+ if(!name||!desc||!Number.isFinite(digital)||digital<0||!rights)return toast('商品情報と権利確認を入力してください');
+ const pub=$('#smNewPublic')?.files?.[0],digitalFile=$('#smNewDigitalFile')?.files?.[0],printFile=$('#smNewPrint')?.files?.[0];
+ if(!pub)return toast('商品ページ画像が必要です');if(digital>0&&!digitalFile)return toast('デジタル納品データが必要です');if(sellPhysical&&!printFile)return toast('印刷元データが必要です');
+ busy('商品下書きを保存しています…');const id=smMvpNewId('product');
  try{
-  return await smMvpHotfixBaseCreateProduct(submit);
- }finally{
-  smMvpHydrateUser=fullHydrate;
-  if(fastHydrateUsed)setTimeout(()=>fullHydrate().catch(e=>console.warn('post-listing hydrate failed',e)),0);
- }
+  await smMvpRest('sm_products',{method:'POST',body:JSON.stringify({id,creator_id:currentUser().creatorId,name,description:desc,category:$('#smNewCat').value,status:'draft',digital_price:digital,physical_price:sellPhysical?physical:0,material:$('#smNewMaterial').value,shape:'ダイカット',use_cases:[],tags:[],rights:{ownerDeclared:true,aiUsed:$('#smNewAi').checked},metadata:{sell_physical:!!sellPhysical,art:'type',color:'#ececec'},created_by:currentUser().id}),headers:{Prefer:'return=minimal'}});
+  if(sellPhysical)await smMvpRest('sm_product_variants',{method:'POST',body:JSON.stringify({id:`${id}_base`,product_id:id,name:'標準',material:$('#smNewMaterial').value,size:$('#smNewSize').value,shape:'ダイカット',price:physical,active:true,metadata:{}}),headers:{Prefer:'return=minimal'}});
+  await smMvpUploadAndRegister(pub,'sm-product-public','product_public','product',id);
+  if(digitalFile)await smMvpUploadAndRegister(digitalFile,'sm-product-private','digital_asset','product',id);
+  if(printFile)await smMvpUploadAndRegister(printFile,'sm-product-private','print_source','product',id);
+  if(submit)await smMvpRpc('sm_submit_product_review',{p_product_id:id});
+  await smMvpMergeAccessibleProducts();
+  done();closeModal();toast(submit?'審査申請しました':'下書きを保存しました');go(`work/${id}`);
+  setTimeout(()=>smMvpHydrateUser().catch(e=>console.warn('post-listing full hydrate failed',e)),0);
+ }catch(e){done();toast(e.message||'商品を保存できませんでした',3500)}
 };
