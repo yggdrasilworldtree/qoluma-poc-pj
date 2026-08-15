@@ -1,0 +1,114 @@
+name: Sticker Market Formal Matrix Refresh
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sticker-market-matrix-refresh.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refresh verified acceptance results
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('sticker-market-demo/MVP_FORMAL_ACCEPTANCE_MATRIX.md')
+          s=p.read_text()
+          replacements={
+          "| FLOW-01 | 一般ユーザー→Creator申請→承認→商品登録→入稿→審査→公開 | ○ | STAGING実ブラウザ E2E-02 / E2E-03 PASS。受入Run 31836345016。 |":"| FLOW-01 | 一般ユーザー→Creator申請→承認→商品登録→入稿→審査→公開 | ○ | STAGING実ブラウザ E2E-02 / E2E-03 PASS。最新受入Run 31865067990。 |",
+          "| FLOW-03 | Order→ManufacturingOrder→割当→製造→検品→発送→受取 | △ | 実装済み。実決済起点のE2E-04/05はStripe Test Mode待ち。 |":"| FLOW-03 | Order→ManufacturingOrder→割当→製造→検品→発送→受取 | ○ | STAGING E2E-04 / E2E-05 PASS。支払済みfixtureは本番同等のsm_finalize_paid_checkoutを通して生成。Run 31865067990。 |",
+          "| FLOW-04 | 売上予定→配送完了→報酬確定→支払予定→支払済み | △ | DB/RPC実装済み。配送完了でphysical payout確定。実決済起点のE2E-05最終受入待ち。 |":"| FLOW-04 | 売上予定→配送完了→報酬確定→支払予定→支払済み | ○ | E2E-05でphysical payout confirmed、PAYOUT-01でconfirmed→scheduled→paidをCreator/Admin両視点でPASS。Run 31865067990。 |",
+          "| FLOW-05 | 不良等→運営→再製造/返金→案件完了 | △ | 再製造/Refund実装済み。E2E-07/08はStripe Test Mode待ち。 |":"| FLOW-05 | 不良等→運営→再製造/返金→案件完了 | △ | 再製造・再発送・案件完了はE2E-07 PASS。Stripe Test Refundを含むE2E-08のみ資格情報待ち。 |",
+          "| FLOW-06 | 製造不能→保留→修正→再確認→製造再開 | △ | unable/revision_requested/印刷元履歴実装済み。E2E-06はStripe Test Mode待ち。 |":"| FLOW-06 | 製造不能→保留→修正→再確認→製造再開 | ○ | STAGING E2E-06 PASS。Creatorは正規RPC経由でrevision requestを確認し、修正版提出→製造再開まで完走。Run 31865067990。 |",
+          "| E2E-02 | Creator申請/出品 | ○ | STAGING Chromium Mobile PASS。Run 31836345016。 |":"| E2E-02 | Creator申請/出品 | ○ | STAGING Chromium Mobile PASS。最新Run 31865067990。 |",
+          "| E2E-03 | 商品審査/公開 | ○ | STAGING Chromium Mobile PASS。原価設定→server承認→buyer公開確認。Run 31836345016。 |":"| E2E-03 | 商品審査/公開 | ○ | STAGING Chromium Mobile PASS。原価設定→server承認→buyer公開確認。最新Run 31865067990。 |",
+          "| E2E-04 | 製造/検品/発送 | △ | Playwright実装済み。実決済起点のOrder生成待ち。 |":"| E2E-04 | 製造/検品/発送 | ○ | STAGING実ブラウザPASS。自動割当→製造→検品→発送準備→発送。Run 31865067990。 |",
+          "| E2E-05 | 配送/受取/報酬確定 | △ | Playwright実装済み。実決済起点のE2E待ち。 |":"| E2E-05 | 配送/受取/報酬確定 | ○ | STAGING実ブラウザPASS。購入者受取→取引完了→physical payout confirmed。Run 31865067990。 |",
+          "| E2E-06 | 製造不能/修正版/再開 | △ | Playwright実装済み。実決済起点のE2E待ち。 |":"| E2E-06 | 製造不能/修正版/再開 | ○ | STAGING実ブラウザPASS。保留→修正依頼→修正版→製造再開。Run 31865067990。 |",
+          "| E2E-07 | 不良/再製造/再発送 | △ | Playwright実装済み。実決済起点のE2E待ち。 |":"| E2E-07 | 不良/再製造/再発送 | ○ | STAGING実ブラウザPASS。写真申告→再製造→再発送→案件完了。Run 31865067990。 |",
+          "| REG-01 | LP/Home/Search/Product等既存Buyer回帰 | ○ | demo-regression.spec.mjs成功済み。 |":"| REG-01 | LP/Home/Search/Product等既存Buyer回帰 | ○ | Chromium / iPhone WebKit / Android Chromiumの3環境でPASS。Run 31864915463。 |",
+          "| REG-02 | Creator商品/注文/売上/AI等回帰 | ○ | demo-regression.spec.mjs成功済み。 |":"| REG-02 | Creator商品/注文/売上/AI等回帰 | ○ | Chromium / iPhone WebKit / Android Chromiumの3環境でPASS。Run 31864915463。 |",
+          "| REG-03 | Admin審査/注文/User/監査/製造等回帰 | ○ | demo-regression.spec.mjs成功済み。 |":"| REG-03 | Admin審査/注文/User/監査/製造等回帰 | ○ | Chromium / iPhone WebKit / Android Chromiumの3環境でPASS。Run 31864915463。 |",
+          "| REG-04 | 390px mobile navigation / horizontal overflow | ○ | Chromium mobile regression成功済み。 |":"| REG-04 | 390px mobile navigation / horizontal overflow | ○ | Chromium / iPhone WebKit / Android Chromiumの3環境でPASS。Run 31864915463。 |\n| REG-04A | iPhone Safari相当 WebKit自動回帰 | ○ | Playwright iPhone 13 + WebKitでBuyer/Creator/Admin/390px導線をPASS。実機ではない。Run 31864915463。 |\n| REG-04B | Android Chrome相当 Chromium自動回帰 | ○ | Playwright Pixel 5 + ChromiumでBuyer/Creator/Admin/390px導線をPASS。実機ではない。Run 31864915463。 |",
+          "| REL-03 | 製造 | △ | コード成立。実決済起点E2E待ち。 |":"| REL-03 | 製造 | ○ | E2E-04 PASS。STAGINGサーバー正本で製造割当から発送まで完走。 |",
+          "| REL-04 | 配送 | △ | コード成立。実決済起点E2E待ち。 |":"| REL-04 | 配送 | ○ | E2E-05 PASS。受取・取引完了まで完走。 |",
+          "| REL-05 | 報酬 | △ | コード成立。配送完了→確定→scheduled/paidのSTAGING受入待ち。 |":"| REL-05 | 報酬 | ○ | E2E-05 + PAYOUT-01 PASS。confirmed→scheduled→paidをSTAGINGで実確認。 |",
+          "| REL-06 | トラブル復旧 | △ | コード成立。E2E-06/07/08待ち。 |":"| REL-06 | トラブル復旧 | △ | E2E-06/07はPASS。残件はStripe Test Refundを含むE2E-08のみ。 |",
+          "| REL-07 | 既存回帰 | ○ | DEMO自動回帰成功。 |":"| REL-07 | 既存回帰 | ○ | 3 mobile browser-engine projectsで12/12 PASS。Run 31864915463。 |",
+          "| REL-10 | 正式MVP総合 | △ | 商品販売フローは正式受入済み。残リリースゲートはStripe Test全取引E2Eと実機確認。 |":"| REL-10 | 正式MVP総合 | △ | 非決済業務フローと報酬は正式受入済み。残リリースゲートはStripe Test E2E-01/08とiPhone/Android物理実機確認。 |",
+          "1. Supabase Edge Function SecretsへStripe **Test Mode**の `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` / `STRIPE_PUBLISHABLE_KEY (pk_test_*)` を設定。\n2. STAGING Workflowを手動実行しE2E-01〜08を全件完走。\n3. 失敗があれば当該差分だけ修正し再実走。\n4. iPhone Safari実機で主要購入/Creator/Admin操作を確認。\n5. Android Chrome実機で主要購入/Creator/Admin操作を確認。\n6. 上記完了後、REL-02〜06 / E2E-01,04〜08 / REG-05,06を○へ更新し、REL-10を○にする。":"1. Supabase Edge Function SecretsへStripe **Test Mode**の `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` / `STRIPE_PUBLISHABLE_KEY (pk_test_*)` を設定。\n2. STAGING Workflowを実行し、未受入のE2E-01 / E2E-08を含む全8フローをStripe Test Modeで完走。\n3. iPhone Safari物理実機で主要購入/Creator/Admin操作を確認。\n4. Android Chrome物理実機で主要購入/Creator/Admin操作を確認。\n5. 上記完了後、MVP-17-03 / E2E-01 / E2E-08 / REG-05 / REG-06 / REL-02 / REL-06 / REL-09 / REL-10を○へ更新する。"
+          }
+          for old,new in replacements.items():
+            if old not in s:
+              raise SystemExit(f'matrix source changed; missing: {old}')
+            s=s.replace(old,new,1)
+
+          anchor="""9. **STAGING fixtureの安全な自動生成**
+   - 固定パスワードSecrets依存を廃止。
+   - GitHub Actions OIDCをSupabase Edge Functionで検証し、workflow_dispatch / exact repo / main / staging environment限定でrun単位テストユーザー・工場・商品を生成。
+   - 実ユーザーへadmin/manufacturer権限を付与しない。
+"""
+          extra="""
+10. **製造担当の発送入力が再描画で消える競合**
+   - 旧: live-modeのバックグラウンド同期でcarrier/tracking入力DOMが再生成され、発送RPCへnullが渡る場合があった。
+   - 修正: ManufacturingOrder単位の一時draftをDOM外へ保持し、再描画後も復元。E2E-04で発送完了を確認。
+
+11. **Support E2EのcaseId誤取得**
+   - 旧テスト: `#/support/new`も`/support/`を含むため遷移完了と誤判定し、caseId=`new`を取得していた。
+   - 修正: `#/support/{実ID}`へ遷移するまで待機する受入条件へ変更。アプリRouterの不具合ではないことを切り分け、E2E-07 PASS。
+
+12. **モバイルbrowser-engine回帰の拡張**
+   - Chromium mobileだけでなくiPhone 13 + WebKit、Pixel 5 + ChromiumをCIへ追加。
+   - Buyer / Creator / Admin / 390px navigationの12テストを全件PASS。物理実機受入とは区別する。
+"""
+          if extra.strip() not in s:
+            if anchor not in s: raise SystemExit('acceptance-fix anchor missing')
+            s=s.replace(anchor,anchor+extra,1)
+
+          old_evidence="""### STAGING 商品販売フロー
+
+- GitHub Actions Run: `31836345016`
+- E2E-02: PASS（23.4s）
+- E2E-03: PASS（10.4s）
+- 合計: `2 passed (34.5s)`
+- Workflow全体がfailureなのは、最後の正式リリースゲートがStripe Test Mode未設定を意図的に検知したため。
+"""
+          new_evidence="""### STAGING 非決済業務フロー + 報酬ライフサイクル
+
+- GitHub Actions Run: `31865067990`
+- E2E-02〜07: `6 passed (2.4m)`
+- PAYOUT-01: `1 passed (23.7s)`
+- E2E-04/05/06/07で利用する支払済み物理注文は、GitHub OIDCで隔離fixtureを生成し、本番同等の`sm_finalize_paid_checkout`を通してOrder / ManufacturingOrder / Payoutを確定する。
+- Workflow全体がfailureなのはテスト失敗ではなく、最後の正式リリースゲートが`paymentConfigured=false`を意図的に検知したため。
+
+### 既存機能モバイルbrowser-engine回帰
+
+- GitHub Actions Run: `31864915463`
+- Chromium Mobile: 4/4 PASS
+- iPhone 13 + WebKit: 4/4 PASS
+- Pixel 5 + Chromium: 4/4 PASS
+- 合計: `12 passed (43.7s)`
+- これはbrowser-engine/viewport自動回帰であり、REG-05/06の物理実機受入を代替しない。
+"""
+          if old_evidence not in s: raise SystemExit('old evidence block missing')
+          s=s.replace(old_evidence,new_evidence,1)
+          p.write_text(s)
+          PY
+      - name: Commit refreshed matrix
+        shell: bash
+        run: |
+          if git diff --quiet -- sticker-market-demo/MVP_FORMAL_ACCEPTANCE_MATRIX.md; then
+            echo 'No matrix change'; exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add sticker-market-demo/MVP_FORMAL_ACCEPTANCE_MATRIX.md
+          git commit -m 'docs: refresh formal MVP acceptance evidence'
+          git push origin HEAD:main
