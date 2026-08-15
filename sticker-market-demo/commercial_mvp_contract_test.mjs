@@ -3,7 +3,8 @@ const html=fs.readFileSync(new URL('./index.html',import.meta.url),'utf8');
 const js=fs.readFileSync(new URL('./v2.built.js',import.meta.url),'utf8');
 const must=[
  'sticker-market-commercial-mvp','Sticker Market Commercial MVP v1.0','SM_MVP_CONFIG','sm-checkout','sm-refund','sm-private-file','sm-file-register',
- 'checkout/shipping','checkout/payment','checkout/confirm','LEGAL_FOOTER_V2','s1DemandRequestsPage','s1CustomOrderDetailPage','s1ManufacturerDashboard','s1AdminCreatorApplications'
+ 'checkout/shipping','checkout/payment','checkout/confirm','LEGAL_FOOTER_V2','s1DemandRequestsPage','s1CustomOrderDetailPage','s1ManufacturerDashboard','s1AdminCreatorApplications',
+ 'profileEditPage','profileImageChanged','profile-social-grid','sm-profile-avatar','sm-profile-public','profile_handle','social_links','adminSectionSelect','admin-creator-apps','admin-ai-analysis'
 ];
 for(const x of must)if(!html.includes(x)&&!js.includes(x))throw new Error(`missing build contract marker: ${x}`);
 if(/sk_(live|test)_[A-Za-z0-9]/.test(html))throw new Error('Stripe secret key leaked into browser build');
