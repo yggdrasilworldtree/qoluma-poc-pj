@@ -154,7 +154,9 @@ jobs:
           PY
 
       - name: Validate E2E syntax
-        run: node --check sticker-market-demo/e2e/staging-mvp.spec.mjs
+        run: |
+          node --check sticker-market-demo/e2e/staging-mvp.spec.mjs
+          node --check sticker-market-demo/e2e/staging-payout-lifecycle.spec.mjs
 
       - name: Install Playwright
         working-directory: sticker-market-demo/e2e
@@ -171,6 +173,10 @@ jobs:
         if: env.SM_STRIPE_READY != 'true'
         working-directory: sticker-market-demo/e2e
         run: npx playwright test staging-mvp.spec.mjs --project=chromium-mobile --grep 'E2E-0[234567]'
+
+      - name: Run payout lifecycle acceptance
+        working-directory: sticker-market-demo/e2e
+        run: npx playwright test staging-payout-lifecycle.spec.mjs --project=chromium-mobile
 
       - name: Upload Playwright diagnostics
         if: always()
@@ -190,4 +196,4 @@ jobs:
           echo "STAGING payment acceptance remains blocked: configure STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET and STRIPE_PUBLISHABLE_KEY (pk_test_*) in Supabase Edge Function secrets." >&2
           exit 1
 
-# one-time push trigger: creator-RLS revision acceptance rerun
+# one-time push trigger: support-router + payout lifecycle acceptance
