@@ -51,14 +51,17 @@ jobs:
           RUN_KEY="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           BUYER_EMAIL="sm-e2e-buyer+${RUN_KEY}@example.test"
           APPLICANT_EMAIL="sm-e2e-applicant+${RUN_KEY}@example.test"
+          CREATOR_EMAIL="sm-e2e-creator+${RUN_KEY}@example.test"
           ADMIN_EMAIL="sm-e2e-admin+${RUN_KEY}@example.test"
           MANUFACTURER_EMAIL="sm-e2e-manufacturer+${RUN_KEY}@example.test"
           BUYER_PASSWORD="SmE2E-B-$(openssl rand -hex 16)"
           APPLICANT_PASSWORD="SmE2E-A-$(openssl rand -hex 16)"
+          CREATOR_PASSWORD="SmE2E-C-$(openssl rand -hex 16)"
           ADMIN_PASSWORD="SmE2E-D-$(openssl rand -hex 16)"
           MANUFACTURER_PASSWORD="SmE2E-M-$(openssl rand -hex 16)"
           echo "::add-mask::$BUYER_PASSWORD"
           echo "::add-mask::$APPLICANT_PASSWORD"
+          echo "::add-mask::$CREATOR_PASSWORD"
           echo "::add-mask::$ADMIN_PASSWORD"
           echo "::add-mask::$MANUFACTURER_PASSWORD"
 
@@ -69,35 +72,51 @@ jobs:
             --arg runId "$RUN_KEY" \
             --arg buyerEmail "$BUYER_EMAIL" --arg buyerPassword "$BUYER_PASSWORD" \
             --arg applicantEmail "$APPLICANT_EMAIL" --arg applicantPassword "$APPLICANT_PASSWORD" \
+            --arg creatorEmail "$CREATOR_EMAIL" --arg creatorPassword "$CREATOR_PASSWORD" \
             --arg adminEmail "$ADMIN_EMAIL" --arg adminPassword "$ADMIN_PASSWORD" \
             --arg manufacturerEmail "$MANUFACTURER_EMAIL" --arg manufacturerPassword "$MANUFACTURER_PASSWORD" \
-            '{runId:$runId,buyer:{email:$buyerEmail,password:$buyerPassword},applicant:{email:$applicantEmail,password:$applicantPassword},admin:{email:$adminEmail,password:$adminPassword},manufacturer:{email:$manufacturerEmail,password:$manufacturerPassword}}')"
+            '{runId:$runId,buyer:{email:$buyerEmail,password:$buyerPassword},applicant:{email:$applicantEmail,password:$applicantPassword},creator:{email:$creatorEmail,password:$creatorPassword},admin:{email:$adminEmail,password:$adminPassword},manufacturer:{email:$manufacturerEmail,password:$manufacturerPassword}}')"
 
           RESPONSE="$(curl -fsSL -X POST "$SM_FIXTURE_URL" -H "Authorization: Bearer $OIDC_TOKEN" -H 'Content-Type: application/json' --data "$BODY")"
           echo "$RESPONSE" | jq -e '.ok == true' >/dev/null
           PRODUCT_ID="$(echo "$RESPONSE" | jq -r '.productId')"
           MANUFACTURER_ID="$(echo "$RESPONSE" | jq -r '.manufacturerId')"
-          test -n "$PRODUCT_ID" && test "$PRODUCT_ID" != "null"
-          test -n "$MANUFACTURER_ID" && test "$MANUFACTURER_ID" != "null"
+          FULFILLMENT_ORDER_ID="$(echo "$RESPONSE" | jq -r '.orders.fulfillment.orderId')"
+          FULFILLMENT_MFG_ID="$(echo "$RESPONSE" | jq -r '.orders.fulfillment.mfgId')"
+          ISSUE_ORDER_ID="$(echo "$RESPONSE" | jq -r '.orders.issue.orderId')"
+          ISSUE_MFG_ID="$(echo "$RESPONSE" | jq -r '.orders.issue.mfgId')"
+          REFUND_ORDER_ID="$(echo "$RESPONSE" | jq -r '.orders.refund.orderId')"
+          REFUND_MFG_ID="$(echo "$RESPONSE" | jq -r '.orders.refund.mfgId')"
+          for v in PRODUCT_ID MANUFACTURER_ID FULFILLMENT_ORDER_ID FULFILLMENT_MFG_ID ISSUE_ORDER_ID ISSUE_MFG_ID REFUND_ORDER_ID REFUND_MFG_ID; do
+            test -n "${!v}" && test "${!v}" != "null"
+          done
 
           {
             echo "SM_STAGING_BUYER_EMAIL=$BUYER_EMAIL"
             echo "SM_STAGING_BUYER_PASSWORD=$BUYER_PASSWORD"
             echo "SM_STAGING_APPLICANT_EMAIL=$APPLICANT_EMAIL"
             echo "SM_STAGING_APPLICANT_PASSWORD=$APPLICANT_PASSWORD"
+            echo "SM_STAGING_CREATOR_EMAIL=$CREATOR_EMAIL"
+            echo "SM_STAGING_CREATOR_PASSWORD=$CREATOR_PASSWORD"
             echo "SM_STAGING_ADMIN_EMAIL=$ADMIN_EMAIL"
             echo "SM_STAGING_ADMIN_PASSWORD=$ADMIN_PASSWORD"
             echo "SM_STAGING_MANUFACTURER_EMAIL=$MANUFACTURER_EMAIL"
             echo "SM_STAGING_MANUFACTURER_PASSWORD=$MANUFACTURER_PASSWORD"
             echo "SM_STAGING_PRODUCT_ID=$PRODUCT_ID"
             echo "SM_STAGING_MANUFACTURER_ID=$MANUFACTURER_ID"
+            echo "SM_STAGING_FULFILLMENT_ORDER_ID=$FULFILLMENT_ORDER_ID"
+            echo "SM_STAGING_FULFILLMENT_MFG_ID=$FULFILLMENT_MFG_ID"
+            echo "SM_STAGING_ISSUE_ORDER_ID=$ISSUE_ORDER_ID"
+            echo "SM_STAGING_ISSUE_MFG_ID=$ISSUE_MFG_ID"
+            echo "SM_STAGING_REFUND_ORDER_ID=$REFUND_ORDER_ID"
+            echo "SM_STAGING_REFUND_MFG_ID=$REFUND_MFG_ID"
           } >> "$GITHUB_ENV"
 
       - name: Preflight STAGING fixture contract
         shell: bash
         run: |
           set -euo pipefail
-          for k in SM_STAGING_BUYER_EMAIL SM_STAGING_BUYER_PASSWORD SM_STAGING_APPLICANT_EMAIL SM_STAGING_APPLICANT_PASSWORD SM_STAGING_ADMIN_EMAIL SM_STAGING_ADMIN_PASSWORD SM_STAGING_MANUFACTURER_EMAIL SM_STAGING_MANUFACTURER_PASSWORD SM_STAGING_PRODUCT_ID SM_STAGING_MANUFACTURER_ID; do
+          for k in SM_STAGING_BUYER_EMAIL SM_STAGING_BUYER_PASSWORD SM_STAGING_APPLICANT_EMAIL SM_STAGING_APPLICANT_PASSWORD SM_STAGING_CREATOR_EMAIL SM_STAGING_CREATOR_PASSWORD SM_STAGING_ADMIN_EMAIL SM_STAGING_ADMIN_PASSWORD SM_STAGING_MANUFACTURER_EMAIL SM_STAGING_MANUFACTURER_PASSWORD SM_STAGING_PRODUCT_ID SM_STAGING_MANUFACTURER_ID SM_STAGING_FULFILLMENT_ORDER_ID SM_STAGING_FULFILLMENT_MFG_ID SM_STAGING_ISSUE_ORDER_ID SM_STAGING_ISSUE_MFG_ID SM_STAGING_REFUND_ORDER_ID SM_STAGING_REFUND_MFG_ID; do
             if [ -z "${!k:-}" ]; then echo "Missing generated STAGING fixture: $k"; exit 1; fi
           done
 
@@ -130,10 +149,10 @@ jobs:
         working-directory: sticker-market-demo/e2e
         run: npm run staging
 
-      - name: Run payment-independent listing and moderation acceptance
+      - name: Run payment-independent MVP business acceptance
         if: env.SM_STRIPE_READY != 'true'
         working-directory: sticker-market-demo/e2e
-        run: npx playwright test staging-mvp.spec.mjs --project=chromium-mobile --grep 'E2E-0[23]'
+        run: npx playwright test staging-mvp.spec.mjs --project=chromium-mobile --grep 'E2E-0[234567]'
 
       - name: Upload Playwright diagnostics
         if: always()
