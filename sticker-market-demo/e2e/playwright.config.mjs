@@ -8,5 +8,9 @@ export default defineConfig({
  retries:0,
  reporter:[['list']],
  use:{baseURL:process.env.SM_E2E_BASE_URL||'http://127.0.0.1:4173',trace:'retain-on-failure',screenshot:'only-on-failure',video:'retain-on-failure'},
- projects:[{name:'chromium-mobile',use:{...devices['iPhone 13'],browserName:'chromium'}}]
+ projects:[
+  {name:'chromium-mobile',use:{...devices['iPhone 13'],browserName:'chromium'}},
+  {name:'iphone-webkit',use:{...devices['iPhone 13'],browserName:'webkit'}},
+  {name:'android-chromium',use:{...devices['Pixel 5'],browserName:'chromium'}}
+ ]
 });
