@@ -1,10 +1,6 @@
 name: Sticker Market STAGING MVP E2E
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/sticker-market-staging-e2e.yml'
   workflow_dispatch:
 
 permissions:
@@ -124,40 +120,6 @@ jobs:
             if [ -z "${!k:-}" ]; then echo "Missing generated STAGING fixture: $k"; exit 1; fi
           done
 
-      - name: Align E2E assertions with live authorization contracts
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('sticker-market-demo/e2e/staging-mvp.spec.mjs')
-          s=p.read_text()
-          replacements=[
-            ("""const r=await rest(creator.page,`sm_manufacturing_orders?select=status&id=eq.${encodeURIComponent(m.id)}`);return r?.[0]?.status""","""const r=await rpc(creator.page,'sm_creator_revision_requests',{});return r?.find(x=>x.manufacturingOrderId===m.id)?.status"""),
-            ("""await buyer.page.waitForFunction(()=>location.hash.includes('/support/'));const caseId=(await buyer.page.evaluate(()=>location.hash)).split('/support/')[1].split('?')[0];""","""await buyer.page.waitForFunction(()=>location.hash.startsWith('#/support/')&&!location.hash.startsWith('#/support/new'),{timeout:20000});const caseId=(await buyer.page.evaluate(()=>location.hash)).split('/support/')[1].split('?')[0];"""),
-            ("""await buyer.page.getByRole('button',{name:'問い合わせを開始'}).click();const caseId=(await buyer.page.evaluate(()=>location.hash)).split('/support/')[1].split('?')[0];""","""await buyer.page.getByRole('button',{name:'問い合わせを開始'}).click();await buyer.page.waitForFunction(()=>location.hash.startsWith('#/support/')&&!location.hash.startsWith('#/support/new'),{timeout:20000});const caseId=(await buyer.page.evaluate(()=>location.hash)).split('/support/')[1].split('?')[0];""")
-          ]
-          for old,new in replacements:
-            if old not in s:
-              raise SystemExit(f'expected E2E snippet not found: {old[:80]}')
-            s=s.replace(old,new,1)
-          p.write_text(s)
-          PY
-
-      - name: Align Stripe Elements frame discovery for current Stripe.js
-        if: env.SM_STRIPE_READY == 'true'
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('sticker-market-demo/e2e/staging-mvp.spec.mjs')
-          s=p.read_text()
-          old='''async function fillStripeCard(page){const frame=page.frameLocator('iframe[title*="Secure card payment input frame"]').first();await frame.locator('input[name="cardnumber"]').fill('4242424242424242');await frame.locator('input[name="exp-date"]').fill('1234');await frame.locator('input[name="cvc"]').fill('123')}'''
-          new='''async function fillStripeCard(page){let cardFrame=null;await expect.poll(async()=>{for(const f of page.frames()){if(await f.locator('input[name="cardnumber"]').count()){cardFrame=f;return true}}return false},{timeout:20000}).toBe(true);await cardFrame.locator('input[name="cardnumber"]').fill('4242424242424242');await cardFrame.locator('input[name="exp-date"]').fill('1234');await cardFrame.locator('input[name="cvc"]').fill('123')}'''
-          if old not in s:
-              raise SystemExit('expected Stripe card helper not found')
-          p.write_text(s.replace(old,new))
-          PY
-
       - name: Validate E2E syntax
         run: |
           node --check sticker-market-demo/e2e/staging-mvp.spec.mjs
@@ -200,5 +162,3 @@ jobs:
         run: |
           echo "STAGING payment acceptance remains blocked: configure STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET and STRIPE_PUBLISHABLE_KEY (pk_test_*) in Supabase Edge Function secrets." >&2
           exit 1
-
-# one-time push trigger: real support case route acceptance

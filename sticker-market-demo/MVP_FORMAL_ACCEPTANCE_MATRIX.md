@@ -21,12 +21,12 @@
 
 | ID | 要件 | 判定 | 根拠 / 残件 |
 |---|---|---:|---|
-| FLOW-01 | 一般ユーザー→Creator申請→承認→商品登録→入稿→審査→公開 | ○ | STAGING実ブラウザ E2E-02 / E2E-03 PASS。受入Run 31836345016。 |
+| FLOW-01 | 一般ユーザー→Creator申請→承認→商品登録→入稿→審査→公開 | ○ | STAGING実ブラウザ E2E-02 / E2E-03 PASS。最新受入Run 31865067990。 |
 | FLOW-02 | 検索→商品→仕様→Cart→配送先→決済→Order | △ | 実装済み。Stripe Test Mode資格情報未設定のためE2E-01完走待ち。 |
-| FLOW-03 | Order→ManufacturingOrder→割当→製造→検品→発送→受取 | △ | 実装済み。実決済起点のE2E-04/05はStripe Test Mode待ち。 |
-| FLOW-04 | 売上予定→配送完了→報酬確定→支払予定→支払済み | △ | DB/RPC実装済み。配送完了でphysical payout確定。実決済起点のE2E-05最終受入待ち。 |
-| FLOW-05 | 不良等→運営→再製造/返金→案件完了 | △ | 再製造/Refund実装済み。E2E-07/08はStripe Test Mode待ち。 |
-| FLOW-06 | 製造不能→保留→修正→再確認→製造再開 | △ | unable/revision_requested/印刷元履歴実装済み。E2E-06はStripe Test Mode待ち。 |
+| FLOW-03 | Order→ManufacturingOrder→割当→製造→検品→発送→受取 | ○ | STAGING E2E-04 / E2E-05 PASS。支払済みfixtureは本番同等のsm_finalize_paid_checkoutを通して生成。Run 31865067990。 |
+| FLOW-04 | 売上予定→配送完了→報酬確定→支払予定→支払済み | ○ | E2E-05でphysical payout confirmed、PAYOUT-01でconfirmed→scheduled→paidをCreator/Admin両視点でPASS。Run 31865067990。 |
+| FLOW-05 | 不良等→運営→再製造/返金→案件完了 | △ | 再製造・再発送・案件完了はE2E-07 PASS。Stripe Test Refundを含むE2E-08のみ資格情報待ち。 |
+| FLOW-06 | 製造不能→保留→修正→再確認→製造再開 | ○ | STAGING E2E-06 PASS。Creatorは正規RPC経由でrevision requestを確認し、修正版提出→製造再開まで完走。Run 31865067990。 |
 
 ## C. 要件別実装
 
@@ -104,17 +104,19 @@
 | MVP-17-07 | テスト製造事業者 | ○ | OIDC fixtureでmanufacturer capability＋Manufacturer紐付け。 |
 | MVP-17-08 | 販売可能テスト商品 | ○ | OIDC fixtureでprivate print source＋原価＋対応variant付き物理商品を生成。 |
 | E2E-01 | 購入 | △ | Playwright実装済み。Stripe Test Mode未設定で決済実走不可。 |
-| E2E-02 | Creator申請/出品 | ○ | STAGING Chromium Mobile PASS。Run 31836345016。 |
-| E2E-03 | 商品審査/公開 | ○ | STAGING Chromium Mobile PASS。原価設定→server承認→buyer公開確認。Run 31836345016。 |
-| E2E-04 | 製造/検品/発送 | △ | Playwright実装済み。実決済起点のOrder生成待ち。 |
-| E2E-05 | 配送/受取/報酬確定 | △ | Playwright実装済み。実決済起点のE2E待ち。 |
-| E2E-06 | 製造不能/修正版/再開 | △ | Playwright実装済み。実決済起点のE2E待ち。 |
-| E2E-07 | 不良/再製造/再発送 | △ | Playwright実装済み。実決済起点のE2E待ち。 |
+| E2E-02 | Creator申請/出品 | ○ | STAGING Chromium Mobile PASS。最新Run 31865067990。 |
+| E2E-03 | 商品審査/公開 | ○ | STAGING Chromium Mobile PASS。原価設定→server承認→buyer公開確認。最新Run 31865067990。 |
+| E2E-04 | 製造/検品/発送 | ○ | STAGING実ブラウザPASS。自動割当→製造→検品→発送準備→発送。Run 31865067990。 |
+| E2E-05 | 配送/受取/報酬確定 | ○ | STAGING実ブラウザPASS。購入者受取→取引完了→physical payout confirmed。Run 31865067990。 |
+| E2E-06 | 製造不能/修正版/再開 | ○ | STAGING実ブラウザPASS。保留→修正依頼→修正版→製造再開。Run 31865067990。 |
+| E2E-07 | 不良/再製造/再発送 | ○ | STAGING実ブラウザPASS。写真申告→再製造→再発送→案件完了。Run 31865067990。 |
 | E2E-08 | Refund/Payout調整/通知 | △ | Playwright実装済み。Stripe Test Mode待ち。 |
-| REG-01 | LP/Home/Search/Product等既存Buyer回帰 | ○ | demo-regression.spec.mjs成功済み。 |
-| REG-02 | Creator商品/注文/売上/AI等回帰 | ○ | demo-regression.spec.mjs成功済み。 |
-| REG-03 | Admin審査/注文/User/監査/製造等回帰 | ○ | demo-regression.spec.mjs成功済み。 |
-| REG-04 | 390px mobile navigation / horizontal overflow | ○ | Chromium mobile regression成功済み。 |
+| REG-01 | LP/Home/Search/Product等既存Buyer回帰 | ○ | Chromium / iPhone WebKit / Android Chromiumの3環境でPASS。Run 31864915463。 |
+| REG-02 | Creator商品/注文/売上/AI等回帰 | ○ | Chromium / iPhone WebKit / Android Chromiumの3環境でPASS。Run 31864915463。 |
+| REG-03 | Admin審査/注文/User/監査/製造等回帰 | ○ | Chromium / iPhone WebKit / Android Chromiumの3環境でPASS。Run 31864915463。 |
+| REG-04 | 390px mobile navigation / horizontal overflow | ○ | Chromium / iPhone WebKit / Android Chromiumの3環境でPASS。Run 31864915463。 |
+| REG-04A | iPhone Safari相当 WebKit自動回帰 | ○ | Playwright iPhone 13 + WebKitでBuyer/Creator/Admin/390px導線をPASS。実機ではない。Run 31864915463。 |
+| REG-04B | Android Chrome相当 Chromium自動回帰 | ○ | Playwright Pixel 5 + ChromiumでBuyer/Creator/Admin/390px導線をPASS。実機ではない。Run 31864915463。 |
 | REG-05 | iPhone Safari実機 | × | 実機受入未実施。 |
 | REG-06 | Android Chrome実機 | × | 実機受入未実施。 |
 
@@ -124,14 +126,14 @@
 |---|---|---:|---|
 | REL-01 | 商品販売 | ○ | FLOW-01をSTAGING実ブラウザで完走。 |
 | REL-02 | 購入 | △ | コード成立。Stripe Test E2E待ち。 |
-| REL-03 | 製造 | △ | コード成立。実決済起点E2E待ち。 |
-| REL-04 | 配送 | △ | コード成立。実決済起点E2E待ち。 |
-| REL-05 | 報酬 | △ | コード成立。配送完了→確定→scheduled/paidのSTAGING受入待ち。 |
-| REL-06 | トラブル復旧 | △ | コード成立。E2E-06/07/08待ち。 |
-| REL-07 | 既存回帰 | ○ | DEMO自動回帰成功。 |
+| REL-03 | 製造 | ○ | E2E-04 PASS。STAGINGサーバー正本で製造割当から発送まで完走。 |
+| REL-04 | 配送 | ○ | E2E-05 PASS。受取・取引完了まで完走。 |
+| REL-05 | 報酬 | ○ | E2E-05 + PAYOUT-01 PASS。confirmed→scheduled→paidをSTAGINGで実確認。 |
+| REL-06 | トラブル復旧 | △ | E2E-06/07はPASS。残件はStripe Test Refundを含むE2E-08のみ。 |
+| REL-07 | 既存回帰 | ○ | 3 mobile browser-engine projectsで12/12 PASS。Run 31864915463。 |
 | REL-08 | Runtime Error | ○ | 現自動回帰範囲で重大pageerrorなし。 |
 | REL-09 | モバイル実機 | × | iPhone/Android実機受入待ち。 |
-| REL-10 | 正式MVP総合 | △ | 商品販売フローは正式受入済み。残リリースゲートはStripe Test全取引E2Eと実機確認。 |
+| REL-10 | 正式MVP総合 | △ | 非決済業務フローと報酬は正式受入済み。残リリースゲートはStripe Test E2E-01/08とiPhone/Android物理実機確認。 |
 
 ## F. 正式受入工程で発見・修正した差分
 
@@ -172,15 +174,40 @@
    - GitHub Actions OIDCをSupabase Edge Functionで検証し、workflow_dispatch / exact repo / main / staging environment限定でrun単位テストユーザー・工場・商品を生成。
    - 実ユーザーへadmin/manufacturer権限を付与しない。
 
+10. **製造担当の発送入力が再描画で消える競合**
+   - 旧: live-modeのバックグラウンド同期でcarrier/tracking入力DOMが再生成され、発送RPCへnullが渡る場合があった。
+   - 修正: ManufacturingOrder単位の一時draftをDOM外へ保持し、再描画後も復元。E2E-04で発送完了を確認。
+
+11. **Support E2EのcaseId誤取得**
+   - 旧テスト: `#/support/new`も`/support/`を含むため遷移完了と誤判定し、caseId=`new`を取得していた。
+   - 修正: `#/support/{実ID}`へ遷移するまで待機する受入条件へ変更。E2E-07 PASS。
+
+12. **モバイルbrowser-engine回帰の拡張**
+   - Chromium mobileだけでなくiPhone 13 + WebKit、Pixel 5 + ChromiumをCIへ追加。
+   - Buyer / Creator / Admin / 390px navigationの12テストを全件PASS。物理実機受入とは区別する。
+
+13. **Actions実行時のテスト書き換えを廃止**
+   - 受入で検証済みのRLS対応・Support遷移待機・Stripe Elements frame検出をリポジトリ正本のE2Eへ反映。
+   - Workflow内の動的なsource書き換えと一時push起動を削除し、workflow_dispatch限定へ戻した。
+
 ## G. 受入証跡
 
-### STAGING 商品販売フロー
+### STAGING 非決済業務フロー + 報酬ライフサイクル
 
-- GitHub Actions Run: `31836345016`
-- E2E-02: PASS（23.4s）
-- E2E-03: PASS（10.4s）
-- 合計: `2 passed (34.5s)`
-- Workflow全体がfailureなのは、最後の正式リリースゲートがStripe Test Mode未設定を意図的に検知したため。
+- GitHub Actions Run: `31865067990`
+- E2E-02〜07: `6 passed (2.4m)`
+- PAYOUT-01: `1 passed (23.7s)`
+- E2E-04/05/06/07で利用する支払済み物理注文は、GitHub OIDCで隔離fixtureを生成し、本番同等の`sm_finalize_paid_checkout`を通してOrder / ManufacturingOrder / Payoutを確定する。
+- Workflow全体がfailureなのはテスト失敗ではなく、最後の正式リリースゲートが`paymentConfigured=false`を意図的に検知したため。
+
+### 既存機能モバイルbrowser-engine回帰
+
+- GitHub Actions Run: `31864915463`
+- Chromium Mobile: 4/4 PASS
+- iPhone 13 + WebKit: 4/4 PASS
+- Pixel 5 + Chromium: 4/4 PASS
+- 合計: `12 passed (43.7s)`
+- これはbrowser-engine/viewport自動回帰であり、REG-05/06の物理実機受入を代替しない。
 
 ### 通常CI
 
@@ -196,11 +223,10 @@
 ## H. 残る△/×を潰す順序
 
 1. Supabase Edge Function SecretsへStripe **Test Mode**の `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` / `STRIPE_PUBLISHABLE_KEY (pk_test_*)` を設定。
-2. STAGING Workflowを手動実行しE2E-01〜08を全件完走。
-3. 失敗があれば当該差分だけ修正し再実走。
-4. iPhone Safari実機で主要購入/Creator/Admin操作を確認。
-5. Android Chrome実機で主要購入/Creator/Admin操作を確認。
-6. 上記完了後、REL-02〜06 / E2E-01,04〜08 / REG-05,06を○へ更新し、REL-10を○にする。
+2. STAGING Workflowを実行し、未受入のE2E-01 / E2E-08を含む全8フローをStripe Test Modeで完走。
+3. iPhone Safari物理実機で主要購入/Creator/Admin操作を確認。
+4. Android Chrome物理実機で主要購入/Creator/Admin操作を確認。
+5. 上記完了後、MVP-17-03 / E2E-01 / E2E-08 / REG-05 / REG-06 / REL-02 / REL-06 / REL-09 / REL-10を○へ更新する。
 
 ## I. 外部本番リリースゲート（MVP機能受入とは別）
 
