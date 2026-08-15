@@ -1,5 +1,5 @@
 /* Sticker Market formal MVP acceptance fixes — additive, loaded last. */
-const SM_MVP_ACCEPTANCE_FIX_VERSION='1.0.3';
+const SM_MVP_ACCEPTANCE_FIX_VERSION='1.0.4';
 
 /* Keep the existing modal/UI, but bind STAGING/PRODUCTION submission to a deterministic
  * server-persist -> route sequence. This avoids full-account rehydrate becoming part of
@@ -93,9 +93,8 @@ if(typeof smMvpEnhanceManufacturerOrder==='function'){
  };
 }
 
-/* v2.1.2 owns the work-detail routes, but later commercial/scenario render wrappers
- * can otherwise fall through to their role dashboards. Resolve these two legacy routes
- * before the final base router, without changing any URL or navigation structure. */
+/* v2.1.2/scenario/commercial layers all add routes. Resolve acceptance-critical legacy
+ * detail routes before the final base router so later role routers cannot absorb them. */
 const smMvpAcceptanceBaseRender=render;
 render=function(){
  const path=routePath().split('?')[0],seg=path.split('/');
@@ -105,6 +104,9 @@ render=function(){
   if(SM_MVP.live()&&typeof smMvpAdminPublishReadiness==='function')setTimeout(()=>smMvpAdminPublishReadiness(seg[1]),0);
   return out;
  }
+ if(path==='support'&&typeof s1SupportListPage==='function')return s1SupportListPage();
+ if(path==='support/new'&&typeof s1SupportNewPage==='function')return s1SupportNewPage();
+ if(seg[0]==='support'&&seg[1]&&seg[1]!=='new'&&typeof s1SupportDetailPage==='function')return s1SupportDetailPage(seg[1]);
  return smMvpAcceptanceBaseRender();
 };
 
