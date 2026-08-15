@@ -26,7 +26,7 @@ permissions:
 jobs:
   mobile-regression:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -34,18 +34,18 @@ jobs:
           node-version: '22'
       - name: Build current single HTML
         run: python sticker-market-demo/apply_v2.py
-      - name: Install Playwright
+      - name: Install Playwright mobile browser engines
         working-directory: sticker-market-demo/e2e
         run: |
           npm install --no-audit --no-fund
-          npx playwright install --with-deps chromium
+          npx playwright install --with-deps chromium webkit
       - name: Start local demo
         run: |
           python -m http.server 4173 -d sticker-market-demo >/tmp/sticker-market-http.log 2>&1 &
           for i in {1..20}; do curl -fsS http://127.0.0.1:4173/ >/dev/null && exit 0; sleep 1; done
           cat /tmp/sticker-market-http.log
           exit 1
-      - name: Run existing-feature mobile regression
+      - name: Run Chromium, iPhone WebKit and Android Chromium regression
         working-directory: sticker-market-demo/e2e
         env:
           SM_E2E_BASE_URL: http://127.0.0.1:4173
