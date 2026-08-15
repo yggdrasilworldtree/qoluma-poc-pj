@@ -1,6 +1,10 @@
 name: Sticker Market STAGING MVP E2E
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sticker-market-staging-e2e.yml'
   workflow_dispatch:
 
 permissions:
