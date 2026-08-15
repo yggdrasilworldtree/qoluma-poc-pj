@@ -124,6 +124,20 @@ jobs:
             if [ -z "${!k:-}" ]; then echo "Missing generated STAGING fixture: $k"; exit 1; fi
           done
 
+      - name: Align E2E assertions with live authorization contracts
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('sticker-market-demo/e2e/staging-mvp.spec.mjs')
+          s=p.read_text()
+          old="""const r=await rest(creator.page,`sm_manufacturing_orders?select=status&id=eq.${encodeURIComponent(m.id)}`);return r?.[0]?.status"""
+          new="""const r=await rpc(creator.page,'sm_creator_revision_requests',{});return r?.find(x=>x.manufacturingOrderId===m.id)?.status"""
+          if old not in s:
+              raise SystemExit('expected creator revision assertion not found')
+          p.write_text(s.replace(old,new,1))
+          PY
+
       - name: Align Stripe Elements frame discovery for current Stripe.js
         if: env.SM_STRIPE_READY == 'true'
         shell: bash
@@ -176,4 +190,4 @@ jobs:
           echo "STAGING payment acceptance remains blocked: configure STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET and STRIPE_PUBLISHABLE_KEY (pk_test_*) in Supabase Edge Function secrets." >&2
           exit 1
 
-# one-time push trigger: shipping draft acceptance rerun
+# one-time push trigger: creator-RLS revision acceptance rerun
