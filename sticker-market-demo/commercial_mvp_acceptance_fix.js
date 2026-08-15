@@ -1,5 +1,5 @@
 /* Sticker Market formal MVP acceptance fixes — additive, loaded last. */
-const SM_MVP_ACCEPTANCE_FIX_VERSION='1.0.2';
+const SM_MVP_ACCEPTANCE_FIX_VERSION='1.0.3';
 
 /* Keep the existing modal/UI, but bind STAGING/PRODUCTION submission to a deterministic
  * server-persist -> route sequence. This avoids full-account rehydrate becoming part of
@@ -54,6 +54,43 @@ async function smMvpAcceptanceCreateProduct(submit){
   toast(e?.message||'商品を保存できませんでした',3600);
   return null;
  }
+}
+
+/* Manufacturing shipping inputs can be destroyed by background live-mode rehydrates while
+ * the manufacturer is typing. Keep a per-order transient draft outside the DOM, restore it
+ * after every enhancer pass, and make the final ship action read that draft. */
+SM_MVP.shippingDrafts??={};
+function smMvpAcceptanceShippingDraft(id){
+ const d=SM_MVP.shippingDrafts[id]||={carrier:'',tracking:''};
+ const carrier=$('#mfgCarrier'),tracking=$('#mfgTracking');
+ if(carrier)d.carrier=carrier.value;
+ if(tracking)d.tracking=tracking.value;
+ return d;
+}
+async function smMvpAcceptanceShip(id){
+ const carrierEl=$('#mfgCarrier'),trackingEl=$('#mfgTracking'),d=SM_MVP.shippingDrafts[id]||{};
+ const carrier=(carrierEl?.value||d.carrier||'').trim(),tracking=(trackingEl?.value||d.tracking||'').trim();
+ if(!carrier||!tracking)return toast('発送時は配送会社と追跡番号を入力してください。');
+ try{
+  await smMvpRpc('sm_set_manufacturing_status',{p_mfg_id:id,p_status:'shipped',p_carrier:carrier,p_tracking:tracking});
+  delete SM_MVP.shippingDrafts[id];
+  await smMvpHydrateUser();
+  render();
+ }catch(e){const map={INVALID_TRANSITION:'現在の工程から発送済みへ変更できません。',SHIPPING_INFO_REQUIRED:'発送時は配送会社と追跡番号を入力してください。'};toast(map[e?.message]||e?.message||'発送状態を更新できませんでした',3600)}
+}
+if(typeof smMvpEnhanceManufacturerOrder==='function'){
+ const smMvpAcceptanceBaseEnhanceManufacturerOrder=smMvpEnhanceManufacturerOrder;
+ smMvpEnhanceManufacturerOrder=function(id){
+  const out=smMvpAcceptanceBaseEnhanceManufacturerOrder(id);
+  if(!SM_MVP.live())return out;
+  const carrier=$('#mfgCarrier'),tracking=$('#mfgTracking'),draft=SM_MVP.shippingDrafts[id];
+  if(draft){if(carrier&&carrier.value!==draft.carrier)carrier.value=draft.carrier||'';if(tracking&&tracking.value!==draft.tracking)tracking.value=draft.tracking||''}
+  if(carrier)carrier.oninput=()=>smMvpAcceptanceShippingDraft(id);
+  if(tracking)tracking.oninput=()=>smMvpAcceptanceShippingDraft(id);
+  const ship=[...document.querySelectorAll('#main button')].find(b=>b.textContent.trim()==='発送する');
+  if(ship)ship.setAttribute('onclick',`smMvpAcceptanceShip('${id}')`);
+  return out;
+ };
 }
 
 /* v2.1.2 owns the work-detail routes, but later commercial/scenario render wrappers
